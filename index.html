@@ -57,6 +57,7 @@
           <p>A standalone skill for hosts that cannot use the MCP yet. Useful as a fallback or as a lighter teaching/coaching surface.</p>
           <p><span class="tag">Public beta</span></p>
           <a class="button ghost" href="https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.1/ux-heuristic-compass.skill" download>Download Skill</a>
+          <a class="button ghost" href="https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.1/skill.zip" download>Download Skill Zip</a>
           <p><a href="#install-skill">How this will install</a></p>
         </div>
       </section>
@@ -228,30 +229,23 @@ Help me turn this into:
     <section id="about" class="tab-panel" role="tabpanel" aria-labelledby="tab-about" hidden>
       <div class="card">
         <h2>What Is UX Heuristics Compass?</h2>
-        <p>UX Heuristics Compass is a local UX review assistant for visible interfaces. It helps you evaluate a website, app screen, prototype, screenshot, or short task flow before it ships or gets shared with stakeholders.</p>
-        <p>The goal is not to replace usability testing with real users. The goal is to catch the obvious problems earlier: unclear labels, hidden next steps, inconsistent patterns, inaccessible controls, overloaded screens, weak error recovery, and gaps in the content or journey.</p>
+        <p>UX Heuristics Compass is a local UX review assistant for visible interfaces. It helps you evaluate a website, app screen, prototype, screenshot, or short task flow before it ships, gets assigned, or gets shown to stakeholders.</p>
+        <p>The plain-language version: it looks for places where people are likely to get confused, miss the next step, struggle to recover from an error, lose trust, or need more effort than the task should require. It turns those observations into a scored UX Health Snapshot, a short issue ledger, and a prioritized fix list.</p>
+        <p>It does not pretend to replace real usability testing. It is the faster earlier pass: a structured way to catch likely usability problems, name evidence limits, and decide what should be fixed before you spend time recruiting users or polishing a report.</p>
       </div>
 
       <div class="card">
         <h2>How It's Built</h2>
         <p>UXHC is built as a local-first MCP with deterministic heuristic data, checklist-level scoring, source preparation, bounded URL capture, report validation, local report artifacts, human-loop guidance, and agent-audit aggregation.</p>
-        <p>The host AI owns conversation, visual interpretation, and user-facing explanation. UXHC owns the rubric structure, scoring contracts, report readiness, source boundaries, local persistence, and artifact generation.</p>
+        <p>The host AI owns conversation, visual interpretation, and user-facing explanation. UXHC owns the rubric structure, scoring contracts, report readiness, source boundaries, local persistence, and artifact generation so the audit does not become generic design commentary.</p>
+        <p>The public beta also includes a standalone skill and plugin packaging. The skill can coach a lighter Markdown-only review when the MCP is unavailable; the MCP adds structured source prep, validation, persistence, report generation, and multi-agent aggregation.</p>
       </div>
 
       <div class="card">
         <h2>What's Inside</h2>
         <p>The beta includes 14 heuristic records and 204 possible desktop/mobile checklist items. The core 10 heuristics come from Nielsen Norman Group's usability heuristic framework. UXHC adds four optional general profiles for accessibility, inclusion, customer journey, and UX writing.</p>
-        <p>This is an early beta. The core audit contract is stable enough to present publicly, but package names, skill wording, and some output shapes may still change before the release assets are attached.</p>
-      </div>
-
-      <div class="card">
-        <h2>How To Use It</h2>
-        <p>Start with a bounded source: one screenshot, one app screen, a small page capture, or a short named task flow. Tell the AI what the user is trying to do, what platform matters, and whether you want the optional profiles included. UXHC works best when the evidence is specific and the task is clear.</p>
-      </div>
-
-      <div class="card">
-        <h2>Tool Overview</h2>
-        <p>A compact map of the current MCP surface. These names are included so host AIs and technical reviewers can understand what the package will expose.</p>
+        <p>This is an early beta. The core audit contract is stable enough to present publicly, but some tool wording and output shapes may still change as local testing tightens the package.</p>
+        <p>The current MCP surface is listed below so host AIs and technical reviewers can understand what the package exposes.</p>
         <dl class="tool-breakdown">
           <dt><code>get_started</code></dt><dd>Gives first-use guidance, recommended next steps, and the current audit workflow.</dd>
           <dt><code>ux_heuristic_overview</code></dt><dd>Explains the UXHC rubric, boundaries, audit modes, and host responsibilities.</dd>
@@ -273,20 +267,26 @@ Help me turn this into:
           <dt><code>stress_test_heuristic_finding</code></dt><dd>Reviews one finding for UX fit, evidence limits, false-positive risk, and the smallest useful fix.</dd>
         </dl>
       </div>
+
+      <div class="card">
+        <h2>How To Use It</h2>
+        <p>Start with a bounded source: one screenshot, one app screen, a small page capture, or a short named task flow. Tell the AI what the user is trying to do, what platform matters, and whether you want the optional profiles included. UXHC works best when the evidence is specific and the task is clear.</p>
+        <p>For a fast pass, use the quick audit prompt and ask for the top findings only. For a fuller review, use the checklist audit so the AI has to separate observed evidence from inference and return scored issues. For more sensitive or ambiguous work, use the advanced human-loop prompt so the host asks context and calibration questions before finalizing severity.</p>
+        <p>When you need a shareable deliverable, use the MCP flow: prepare the source, run the audit, validate the report payload, then generate the report. The <a href="#example">Example tab</a> shows the intended shape: a plain-language readout, a scorecard, prioritized fixes, and evidence limits rather than a wall of generic advice.</p>
+      </div>
     </section>
 
     <section id="install" class="tab-panel" role="tabpanel" aria-labelledby="tab-install" hidden>
       <div class="section-heading">
         <h2>Install Guide</h2>
-        <p>The install paths are staged now and will become active after beta package verification. This page is already using the final public install structure so those links can be filled without redesigning the page.</p>
+        <p>Choose the install path for the Claude surface you use. UXHC beta.1 packages are available now; manual target-client install QA is still tracked separately from package build verification.</p>
       </div>
 
       <section class="grid">
         <div class="card" id="install-cowork">
           <h2>Claude Cowork Plugin</h2>
           <ol>
-            <li>Wait for the verified plugin zip to appear on this page.</li>
-            <li>Download the plugin zip.</li>
+            <li>Download <code>ux-heuristic-compass-plugin.zip</code>.</li>
             <li>Install it through the current Claude Cowork or Claude Code plugin flow.</li>
             <li>Run <code>get_started</code> or use the first prompt on the Get Started tab.</li>
           </ol>
@@ -294,7 +294,7 @@ Help me turn this into:
         <div class="card" id="install-desktop">
           <h2>Claude Desktop Extension</h2>
           <ol>
-            <li>Wait for the verified MCPB/Desktop Extension file.</li>
+            <li>Download <code>ux-heuristic-compass-0.1.0.mcpb</code>.</li>
             <li>Open Claude Desktop settings and find Extensions.</li>
             <li>Install the MCPB file and approve the standard local-extension warning.</li>
             <li>Ask Claude to use UX Heuristics Compass for a quick audit.</li>
@@ -303,7 +303,7 @@ Help me turn this into:
         <div class="card" id="install-skill">
           <h2>Skill File or Skill Zip</h2>
           <ol>
-            <li>Wait for the verified skill file or skill zip.</li>
+            <li>Download <code>ux-heuristic-compass.skill</code> or <code>skill.zip</code>.</li>
             <li>Add it through your host app's skill import flow.</li>
             <li>Use the Skill Audit prompt on the Get Started tab.</li>
           </ol>
@@ -312,7 +312,7 @@ Help me turn this into:
 
       <div class="card">
         <h2>Source Install</h2>
-        <p>The source zip will be available after the final local beta check. Technical users can inspect the repository, run the self-test, and connect the MCP manually when the source package is published.</p>
+        <p>Technical users can download <code>ux-heuristic-compass-source.zip</code>, inspect the source, run the self-test, and connect the MCP manually. This path is useful for review, development, or local troubleshooting.</p>
       </div>
 
       <section class="card notice">
@@ -358,20 +358,12 @@ Help me turn this into:
         <p>UX means user experience: what it feels like for someone to use a product, service, website, or app. Usability is the part of UX focused on whether people can understand, navigate, complete tasks, recover from mistakes, and do what they came to do without unnecessary friction.</p>
       </div>
       <div class="card">
-        <h2>What is a heuristic evaluation?</h2>
-        <p>A heuristic evaluation is a structured expert review. Instead of waiting for a full research cycle, a reviewer checks an interface against known usability principles and flags likely problems. It is fast and useful, but it is not the same as watching real users try the task.</p>
-      </div>
-      <div class="card">
-        <h2>What are Nielsen's heuristics?</h2>
-        <p>Nielsen Norman Group's 10 usability heuristics are a widely used set of principles for evaluating interfaces. UXHC uses those 10 as the core, then adds four optional profiles: accessibility and ease of access, empathetic engagement and inclusion, customer journey and satisfaction, and UX writing.</p>
+        <h2>What is a heuristic evaluation, and what are Nielsen's heuristics?</h2>
+        <p>A heuristic evaluation is a structured expert review. Instead of waiting for a full research cycle, a reviewer checks an interface against known usability principles and flags likely problems. Nielsen Norman Group's 10 usability heuristics are one of the most widely used sets of principles for this kind of review. UXHC uses those 10 as the core, then adds four optional profiles: accessibility and ease of access, empathetic engagement and inclusion, customer journey and satisfaction, and UX writing.</p>
       </div>
       <div class="card">
         <h2>Can this audit code?</h2>
         <p>It can use implementation evidence when a host AI provides it, such as rendered previews, source notes, browser observations, or external audit results. UXHC does not replace code review or accessibility testing, and implementation evidence must still be mapped back to visible usability findings.</p>
-      </div>
-      <div class="card">
-        <h2>Can it crawl a full website or authenticated flow?</h2>
-        <p>No. The beta is intentionally bounded: screenshots, image bundles, desktop/mobile captures, and small public URL captures. It does not do full-site crawling, authenticated-flow automation, analytics ingestion, or unconstrained autonomous navigation.</p>
       </div>
       <div class="card">
         <h2>What is an MCP connector or extension?</h2>
@@ -387,7 +379,7 @@ Help me turn this into:
       </div>
       <div class="card">
         <h2>Is UX Heuristics Compass safe to install?</h2>
-        <p>Downloading anything from the internet carries real risk: malicious code, data collection, hidden scripts. UXHC is designed to reduce that surface area: it runs locally, uses bounded files, and does not need an external service for core workflows. No third-party tool is zero risk, so review the source or ask a trusted technical person before installing. Claude's warning is the standard prompt it shows for local third-party extensions, not a flag specific to this tool.</p>
+        <p>Downloading anything from the internet carries real risk: malicious code, data collection, hidden scripts. UXHC is designed to reduce that surface area: it runs locally, uses bounded files, and does not need an external service for core workflows. No third-party tool is zero risk, so review the source or ask a trusted technical person before installing. Claude's warning is the standard prompt it shows for local third-party extensions, not a flag specific to this tool. <a href="https://jonathankhobson.github.io/what-is-an-mcp/#mcp-risks">Learn more about MCP risks.</a></p>
       </div>
       <div class="card">
         <h2>Do I need a GitHub account to download?</h2>
@@ -398,15 +390,16 @@ Help me turn this into:
     <section id="advanced" class="tab-panel" role="tabpanel" aria-labelledby="tab-advanced" hidden>
       <div class="card">
         <h2>Advanced</h2>
-        <p>This section is for technical reviewers, security-conscious users, and anyone preparing for package verification.</p>
-        <p><a class="button quiet" href="https://github.com/JonathanKHobson/ux-heuristic-compass" target="_blank" rel="noopener">View GitHub Repository</a></p>
+        <p>This section is for IT reviewers, security-conscious users, and anyone troubleshooting installation.</p>
+        <p><a class="button" href="https://github.com/JonathanKHobson/ux-heuristic-compass/releases/tag/v0.1.0-beta.1">View full release notes</a></p>
         <section>
-          <h2>Release Assets</h2>
-          <p>Release files are live for beta.1. Checksums are listed below for technical verification.</p>
-        <p><a class="button quiet" href="https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.1/ux-heuristic-compass-source.zip" download>Download Source Zip</a></p>
+          <h2>Download source files</h2>
+          <p>Use this zip if you want to inspect, modify, or rebuild UX Heuristics Compass yourself. It excludes private state, generated release files, env files, caches, and machine-specific artifacts.</p>
+          <p><a class="button ghost" href="https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.1/ux-heuristic-compass-source.zip" download>Download Source Zip</a></p>
         </section>
         <details>
-          <summary>Advanced: Release Downloads and Checksums</summary>
+          <summary>Advanced: Verify Download</summary>
+          <p>These SHA-256 checksums help technical reviewers confirm that downloaded files match this release.</p>
           <table>
                                     <tr><td><a href="https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.1/ux-heuristic-compass-plugin.zip" download><code>ux-heuristic-compass-plugin.zip</code></a></td><td><code>b64b1b280ba4a9066ed094d60b196968b1fdd309a375d6afcf9a8da644451c1b</code></td></tr>
             <tr><td><a href="https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.1/ux-heuristic-compass-0.1.0.mcpb" download><code>ux-heuristic-compass-0.1.0.mcpb</code></a></td><td><code>97c160c81e1e6397b730dae54498fd8fdae93c28813735d7870931f94907a64c</code></td></tr>
