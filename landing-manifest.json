@@ -1,0 +1,61 @@
+{
+  "schema_version": "uxhc.public_landing_manifest.v1",
+  "product": {
+    "name": "UX Heuristics Compass",
+    "version": "0.1.0-beta.1",
+    "planned_public_url": "https://jonathankhobson.github.io/ux-heuristic-compass/",
+    "repo_url": "https://github.com/JonathanKHobson/ux-heuristic-compass",
+    "status": "landing_page_live_packages_pending"
+  },
+  "release_assets": [
+    {
+      "label": "Plugin Zip",
+      "kind": "plugin_zip",
+      "filename": "ux-heuristic-compass-plugin.zip",
+      "availability": "pending_beta_package_review",
+      "target_users": "Claude Cowork or Claude Code"
+    },
+    {
+      "label": "Desktop Extension",
+      "kind": "mcpb",
+      "filename": "ux-heuristic-compass-0.1.0.mcpb",
+      "availability": "pending_mcpb_manifest_review",
+      "target_users": "Claude Desktop"
+    },
+    {
+      "label": "Skill File",
+      "kind": "skill_file",
+      "filename": "ux-heuristic-compass.skill",
+      "availability": "pending_skill_authoring",
+      "target_users": "Prompt-only skill use"
+    },
+    {
+      "label": "Skill Zip",
+      "kind": "skill_zip",
+      "filename": "skill.zip",
+      "availability": "pending_skill_zip_package",
+      "target_users": "Skill import workflows"
+    },
+    {
+      "label": "Source Zip",
+      "kind": "source_zip",
+      "filename": "ux-heuristic-compass-source.zip",
+      "availability": "pending_source_clean_scan",
+      "target_users": "Technical reviewers and source installs"
+    },
+    {
+      "label": "Checksums",
+      "kind": "checksums",
+      "filename": "checksums.txt",
+      "availability": "pending_artifact_hashes",
+      "target_users": "Technical verification"
+    }
+  ],
+  "public_page_guardrails": [
+    "download buttons must remain disabled until package URLs and checksums exist",
+    "example tab must not link private screenshots, client material, local paths, or draft reports",
+    "tab order must remain Get Started, About, Install Guide, Example, FAQ, Advanced",
+    "no combined About/FAQ tab",
+    "no package, plugin, MCPB, skill, or source zip is built in Phase 1"
+  ]
+}

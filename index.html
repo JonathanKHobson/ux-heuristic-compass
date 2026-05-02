@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Download UX Heuristics Compass</title>
+  <meta name="description" content="UX Heuristics Compass helps you audit websites, app screens, prototypes, and short task flows for visible usability issues before they ship.">
+  <link rel="icon" href="assets/compass-badge.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <img alt="Compass badge" src="assets/compass-badge.svg">
+      <div>
+        <span class="tag">UX Heuristics Compass 0.1.0-beta.1</span>
+        <h1>Download UX Heuristics Compass</h1>
+      </div>
+    </div>
+    <p class="lead">UX Heuristics Compass helps you spot usability problems people are likely to trip over before your site, app, or prototype goes live. Give it screenshots, a small page capture, or a bounded task flow, and it turns what it can see into a scored UX health snapshot and a practical fix list.</p>
+  </header>
+
+  <main>
+    <nav class="tab-nav" role="tablist" aria-label="UX Heuristics Compass download sections">
+      <button id="tab-get-started" role="tab" aria-controls="get-started" aria-selected="true" data-tab-target="get-started">Get Started</button>
+      <button id="tab-about" role="tab" aria-controls="about" aria-selected="false" data-tab-target="about">About</button>
+      <button id="tab-install" role="tab" aria-controls="install" aria-selected="false" data-tab-target="install">Install Guide</button>
+      <button id="tab-example" role="tab" aria-controls="example" aria-selected="false" data-tab-target="example">Example</button>
+      <button id="tab-faq" role="tab" aria-controls="faq" aria-selected="false" data-tab-target="faq">FAQ</button>
+      <button id="tab-advanced" role="tab" aria-controls="advanced" aria-selected="false" data-tab-target="advanced">Advanced</button>
+    </nav>
+
+    <section id="get-started" class="tab-panel" role="tabpanel" aria-labelledby="tab-get-started">
+      <div class="card">
+        <h2>What is UX Heuristics Compass?</h2>
+        <p>UX Heuristics Compass is a local-first usability audit toolbox for websites, app screens, prototypes, screenshots, and short task flows. It helps a reviewer find what feels confusing, hidden, inconsistent, inaccessible, cognitively heavy, or hard to recover from, then ranks the fixes that matter most.</p>
+        <p>The beta is built around a 14-part heuristic system: Nielsen Norman Group's 10 usability heuristics plus accessibility and ease of access, empathetic engagement and inclusion, customer journey and satisfaction, and UX writing.</p>
+      </div>
+
+      <section class="grid">
+        <div class="card">
+          <h2>Claude Cowork Plugin</h2>
+          <p>Best for Claude Cowork or Claude Code once the beta package is verified. The plugin will bundle the local MCP, skill, and host guidance.</p>
+          <p><span class="tag">Package pending</span></p>
+          <button class="button disabled" type="button" disabled>Download Opens After Beta Package Review</button>
+          <p><a href="#install-cowork">How this will install</a></p>
+        </div>
+        <div class="card">
+          <h2>Claude Desktop Extension</h2>
+          <p>Best if you use Claude Desktop. The MCPB/Desktop Extension will connect Claude to the local UXHC tools.</p>
+          <p><span class="tag">MCPB pending</span></p>
+          <button class="button secondary disabled" type="button" disabled>Download Opens After MCPB Review</button>
+          <p><a href="#install-desktop">How this will install</a></p>
+        </div>
+        <div class="card">
+          <h2>Skill / Prompt-Only Alternative</h2>
+          <p>A standalone skill for hosts that cannot use the MCP yet. Useful as a fallback or as a lighter teaching/coaching surface.</p>
+          <p><span class="tag">Skill pending</span></p>
+          <button class="button ghost disabled" type="button" disabled>Skill Download Coming Soon</button>
+          <p><a href="#install-skill">How this will install</a></p>
+        </div>
+      </section>
+
+      <div class="card">
+        <h2>Pick Your Path</h2>
+        <p>Downloads are intentionally paused while local beta testing finishes. These paths are ready for the package pass, so the page can publish now without pretending the assets are finished.</p>
+        <table>
+          <tr><td><strong>I want a fast first read</strong></td><td>Use the quick audit prompt to review a screenshot, page capture, or small task flow.</td></tr>
+          <tr><td><strong>I need the full checklist</strong></td><td>Use the full audit prompt for scored 0-4 checklist ratings and a UX Health Snapshot.</td></tr>
+          <tr><td><strong>I want the AI to ask questions</strong></td><td>Use the advanced audit prompt with human-loop questions for context, calibration, and report readiness.</td></tr>
+          <tr><td><strong>I want multiple perspectives</strong></td><td>Use the multi-agent prompt for general UX, accessibility, and UX-writing perspectives.</td></tr>
+          <tr><td><strong>I am testing implementation details</strong></td><td>Use the implementation-aware prompt with screenshots, source notes, rendered previews, or browser observations.</td></tr>
+        </table>
+      </div>
+
+      <div class="card">
+        <h2>Your First Prompt</h2>
+        <p>Copy a prompt into Claude, Codex, or another host AI. If native question UI is available, the host should use it for the context questions instead of asking in plain chat.</p>
+      </div>
+
+      <section class="grid">
+        <div class="card prompt-card">
+          <h2>Skill Audit</h2>
+          <p><strong>When to use:</strong> You want a prompt-only UX review before the MCP package is installed.</p>
+          <button class="button secondary" type="button" data-copy-target="prompt-skill-audit">Copy prompt</button>
+          <textarea id="prompt-skill-audit" readonly>I have the UX Heuristics Compass skill or prompt guidance available.
+
+Before you begin, ask me these questions one at a time. If your host supports a native question UI, use it instead of asking in plain chat:
+
+1. What am I reviewing? (website, app screen, prototype, screenshot, mobile capture, or task flow)
+2. Who is the main user or audience?
+3. What task should the interface help them complete?
+4. What platform should we focus on? (desktop, mobile, or both)
+5. Do you want the four optional profiles included? (accessibility, inclusion, customer journey, UX writing)
+
+After I answer, run a UX Heuristics Compass audit. Return:
+- UX Health Snapshot
+- Top usability issue and why it matters
+- What appears to be working
+- Checklist areas that need more evidence
+- 3 prioritized fixes
+- 3 questions to ask a real user next</textarea>
+        </div>
+
+        <div class="card prompt-card">
+          <h2>MCP Quick Audit</h2>
+          <p><strong>When to use:</strong> You have UXHC installed and want a compact audit.</p>
+          <button class="button secondary" type="button" data-copy-target="prompt-mcp-quick">Copy prompt</button>
+          <textarea id="prompt-mcp-quick" readonly>Use UX Heuristics Compass for a quick audit.
+
+If you need context before scoring, use the native question UI if available and ask only the minimum questions needed.
+
+Review this interface evidence:
+"""
+[Paste screenshot notes, URL/capture notes, page text, or a source manifest here.]
+"""
+
+Focus on:
+- visible usability issues
+- likely user confusion
+- severity and evidence limits
+- the top fix to make first
+
+Return a compact UX Health Snapshot, the top 5 findings, and one concrete next action.</textarea>
+        </div>
+
+        <div class="card prompt-card">
+          <h2>Full Checklist Audit</h2>
+          <p><strong>When to use:</strong> You want scored findings across the active heuristic checklist.</p>
+          <button class="button secondary" type="button" data-copy-target="prompt-full-audit">Copy prompt</button>
+          <textarea id="prompt-full-audit" readonly>Use UX Heuristics Compass for a full checklist-level audit.
+
+Ask me one context question at a time before scoring if the target user, task, platform, or source scope is unclear. Use native question UI if your host supports it.
+
+Audit this interface evidence:
+"""
+[Paste the source evidence or prepared UX source manifest here.]
+"""
+
+Include:
+- source and scope
+- UX Health Snapshot
+- per-heuristic score table
+- checklist-level issue ledger
+- evidence limits
+- top issues to fix
+- recommended next validation</textarea>
+        </div>
+
+        <div class="card prompt-card">
+          <h2>Advanced Human-Loop Audit</h2>
+          <p><strong>When to use:</strong> You want context, calibration, and report-readiness questions built into the audit.</p>
+          <button class="button secondary" type="button" data-copy-target="prompt-advanced">Copy prompt</button>
+          <textarea id="prompt-advanced" readonly>Use UX Heuristics Compass for an advanced audit with human-in-the-loop support.
+
+Use native question UI if available. Ask:
+- beginning context questions before scoring
+- middle calibration questions for the lowest-scoring heuristic areas
+- final reflection/report-readiness questions before generating a report
+
+Review this interface evidence:
+"""
+[Paste source evidence, prepared source manifest, or bounded capture notes here.]
+"""
+
+Return the audit in phases:
+1. source and evidence limits
+2. checklist scoring
+3. calibration questions
+4. revised priority list
+5. report-ready payload guidance</textarea>
+        </div>
+
+        <div class="card prompt-card">
+          <h2>Multi-Agent UX Panel</h2>
+          <p><strong>When to use:</strong> You want several UX perspectives without pretending there was a real user study.</p>
+          <button class="button secondary" type="button" data-copy-target="prompt-agent-panel">Copy prompt</button>
+          <textarea id="prompt-agent-panel" readonly>Use UX Heuristics Compass Agent Mode 1.
+
+Have three evaluator perspectives review the same bounded interface evidence:
+- generalist UX researcher
+- senior accessibility specialist
+- content strategist / UX writer
+
+If context is missing, ask me one question at a time through native question UI if available.
+
+Return:
+- each evaluator's top findings
+- score disagreements
+- averaged UX Health Snapshot
+- the strongest shared priority
+- what evidence would change the rating</textarea>
+        </div>
+
+        <div class="card prompt-card">
+          <h2>UX Coaching</h2>
+          <p><strong>When to use:</strong> You want help turning findings into practical fixes.</p>
+          <button class="button secondary" type="button" data-copy-target="prompt-coaching">Copy prompt</button>
+          <textarea id="prompt-coaching" readonly>Use UX Heuristics Compass as a coaching partner.
+
+Here is the interface or finding I want to improve:
+"""
+[Paste screenshot notes, audit finding, component description, or UX problem here.]
+"""
+
+Ask one clarifying question at a time if you need context. Use native question UI if available.
+
+Help me turn this into:
+- the user problem in plain language
+- why it likely matters
+- the smallest useful fix
+- a stronger fix if I have more time
+- how to validate whether the fix worked</textarea>
+        </div>
+      </section>
+
+      <div class="card author-card">
+        <img class="author-photo" src="assets/jonathan-kyle-hobson.png" alt="Jonathan Kyle Hobson">
+        <div>
+          <h2>About the author</h2>
+          <p><strong>Jonathan Kyle Hobson</strong> is a UX researcher, product strategist, and AI tool builder with 10+ years of experience across design, storytelling, and emerging technology. He holds a master's degree in User Experience from Arizona State University. Kyle created UX Heuristics Compass to make heuristic UX audits more concrete, structured, and useful for people who need interface feedback before they ship.</p>
+          <p><a href="https://www.linkedin.com/in/jonathankylehobson/" target="_blank" rel="noopener">Connect on LinkedIn</a></p>
+        </div>
+      </div>
+      <p class="about-link"><a href="#about">Read more about this project</a></p>
+    </section>
+
+    <section id="about" class="tab-panel" role="tabpanel" aria-labelledby="tab-about" hidden>
+      <div class="card">
+        <h2>What Is UX Heuristics Compass?</h2>
+        <p>UX Heuristics Compass is a local UX review assistant for visible interfaces. It helps you evaluate a website, app screen, prototype, screenshot, or short task flow before it ships or gets shared with stakeholders.</p>
+        <p>The goal is not to replace usability testing with real users. The goal is to catch the obvious problems earlier: unclear labels, hidden next steps, inconsistent patterns, inaccessible controls, overloaded screens, weak error recovery, and gaps in the content or journey.</p>
+      </div>
+
+      <div class="card">
+        <h2>How It's Built</h2>
+        <p>UXHC is built as a local-first MCP with deterministic heuristic data, checklist-level scoring, source preparation, bounded URL capture, report validation, local report artifacts, human-loop guidance, and agent-audit aggregation.</p>
+        <p>The host AI owns conversation, visual interpretation, and user-facing explanation. UXHC owns the rubric structure, scoring contracts, report readiness, source boundaries, local persistence, and artifact generation.</p>
+      </div>
+
+      <div class="card">
+        <h2>What's Inside</h2>
+        <p>The beta includes 14 heuristic records and 204 possible desktop/mobile checklist items. The core 10 heuristics come from Nielsen Norman Group's usability heuristic framework. UXHC adds four optional general profiles for accessibility, inclusion, customer journey, and UX writing.</p>
+        <p>This is an early beta. The core audit contract is stable enough to present publicly, but package names, skill wording, and some output shapes may still change before the release assets are attached.</p>
+      </div>
+
+      <div class="card">
+        <h2>How To Use It</h2>
+        <p>Start with a bounded source: one screenshot, one app screen, a small page capture, or a short named task flow. Tell the AI what the user is trying to do, what platform matters, and whether you want the optional profiles included. UXHC works best when the evidence is specific and the task is clear.</p>
+      </div>
+
+      <div class="card">
+        <h2>Tool Overview</h2>
+        <p>A compact map of the current MCP surface. These names are included so host AIs and technical reviewers can understand what the package will expose.</p>
+        <dl class="tool-breakdown">
+          <dt><code>get_started</code></dt><dd>Gives first-use guidance, recommended next steps, and the current audit workflow.</dd>
+          <dt><code>ux_heuristic_overview</code></dt><dd>Explains the UXHC rubric, boundaries, audit modes, and host responsibilities.</dd>
+          <dt><code>list_heuristics</code></dt><dd>Lists the 10 core heuristics plus the four optional profiles and their checklist counts.</dd>
+          <dt><code>prepare_ux_source</code></dt><dd>Creates a bounded source manifest from screenshots, image bundles, page notes, or limited public URL captures.</dd>
+          <dt><code>quick_scan_ux</code></dt><dd>Runs a compact UX audit when source context and ratings are available.</dd>
+          <dt><code>audit_ux_surface</code></dt><dd>Runs the fuller audit flow with checklist scoring, evidence limits, and human-loop support.</dd>
+          <dt><code>validate_ux_report_payload</code></dt><dd>Checks whether an audit payload is ready for report generation.</dd>
+          <dt><code>generate_ux_audit_report</code></dt><dd>Writes local Markdown, HTML viewer, and optional PDF report artifacts.</dd>
+          <dt><code>calibrate_ux_sensitivity</code></dt><dd>Runs severity fixtures and human-review guidance for finding quality.</dd>
+          <dt><code>calibrate_ux_severity</code></dt><dd>Compatibility alias for sensitivity calibration.</dd>
+          <dt><code>compare_ux_audits</code></dt><dd>Compares two audit payloads and labels fixed, new, unresolved, or severity-changed findings.</dd>
+          <dt><code>draft_project_addon_profile</code></dt><dd>Drafts an opt-in project-specific checklist profile without changing the core score.</dd>
+          <dt><code>save_preferences</code></dt><dd>Saves complete onboarding preferences for repeated audits.</dd>
+          <dt><code>update_preferences</code></dt><dd>Updates saved audit preferences.</dd>
+          <dt><code>run_agent_audit</code></dt><dd>Aggregates a multi-persona UX audit and flags disagreement across evaluator perspectives.</dd>
+          <dt><code>get_agent_run</code></dt><dd>Retrieves a persisted multi-agent audit run by ID.</dd>
+          <dt><code>run_usability_test</code></dt><dd>Prepares bounded audience-persona usability evidence without full-site crawling or authenticated flows.</dd>
+          <dt><code>stress_test_heuristic_finding</code></dt><dd>Reviews one finding for UX fit, evidence limits, false-positive risk, and the smallest useful fix.</dd>
+        </dl>
+      </div>
+    </section>
+
+    <section id="install" class="tab-panel" role="tabpanel" aria-labelledby="tab-install" hidden>
+      <div class="section-heading">
+        <h2>Install Guide</h2>
+        <p>The install paths are staged now and will become active after beta package verification. This page is already using the final public install structure so those links can be filled without redesigning the page.</p>
+      </div>
+
+      <section class="grid">
+        <div class="card" id="install-cowork">
+          <h2>Claude Cowork Plugin</h2>
+          <ol>
+            <li>Wait for the verified plugin zip to appear on this page.</li>
+            <li>Download the plugin zip.</li>
+            <li>Install it through the current Claude Cowork or Claude Code plugin flow.</li>
+            <li>Run <code>get_started</code> or use the first prompt on the Get Started tab.</li>
+          </ol>
+        </div>
+        <div class="card" id="install-desktop">
+          <h2>Claude Desktop Extension</h2>
+          <ol>
+            <li>Wait for the verified MCPB/Desktop Extension file.</li>
+            <li>Open Claude Desktop settings and find Extensions.</li>
+            <li>Install the MCPB file and approve the standard local-extension warning.</li>
+            <li>Ask Claude to use UX Heuristics Compass for a quick audit.</li>
+          </ol>
+        </div>
+        <div class="card" id="install-skill">
+          <h2>Skill File or Skill Zip</h2>
+          <ol>
+            <li>Wait for the verified skill file or skill zip.</li>
+            <li>Add it through your host app's skill import flow.</li>
+            <li>Use the Skill Audit prompt on the Get Started tab.</li>
+          </ol>
+        </div>
+      </section>
+
+      <div class="card">
+        <h2>Source Install</h2>
+        <p>The source zip will be available after the final local beta check. Technical users can inspect the repository, run the self-test, and connect the MCP manually when the source package is published.</p>
+      </div>
+
+      <section class="card notice">
+        <h2>If Install Fails</h2>
+        <p>Use the diagnostic prompt in the Advanced tab before editing files manually. Most failed installs come from an unavailable package, a host app that has not reloaded the MCP, or a path that needs local-machine adjustment.</p>
+      </section>
+    </section>
+
+    <section id="example" class="tab-panel" role="tabpanel" aria-labelledby="tab-example" hidden>
+      <div class="card">
+        <h2>Example Report Coming Soon</h2>
+        <p>No public example is linked yet. The first example should be a deliberately public-safe interface audit with no private screenshots, no client data, no local paths, and no unfinished package references.</p>
+      </div>
+    </section>
+
+    <section id="faq" class="tab-panel" role="tabpanel" aria-labelledby="tab-faq" hidden>
+      <div class="section-heading">
+        <h2>Frequently Asked Questions</h2>
+        <p>Quick answers about UXHC, heuristic evaluation, MCPs, and install expectations.</p>
+      </div>
+
+      <div class="card">
+        <h2>What does UX Heuristics Compass actually do?</h2>
+        <p>It helps an AI assistant review a visible interface with a structured UX checklist instead of giving generic design commentary. It returns scoped findings, severity, evidence limits, and fixes to prioritize.</p>
+      </div>
+      <div class="card">
+        <h2>What are UX, usability, and user experience?</h2>
+        <p>UX means user experience: what it feels like for someone to use a product, service, website, or app. Usability is the part of UX focused on whether people can understand, navigate, complete tasks, recover from mistakes, and do what they came to do without unnecessary friction.</p>
+      </div>
+      <div class="card">
+        <h2>What is a heuristic evaluation?</h2>
+        <p>A heuristic evaluation is a structured expert review. Instead of waiting for a full research cycle, a reviewer checks an interface against known usability principles and flags likely problems. It is fast and useful, but it is not the same as watching real users try the task.</p>
+      </div>
+      <div class="card">
+        <h2>What are Nielsen's heuristics?</h2>
+        <p>Nielsen Norman Group's 10 usability heuristics are a widely used set of principles for evaluating interfaces. UXHC uses those 10 as the core, then adds four optional profiles: accessibility and ease of access, empathetic engagement and inclusion, customer journey and satisfaction, and UX writing.</p>
+      </div>
+      <div class="card">
+        <h2>Can this audit code?</h2>
+        <p>It can use implementation evidence when a host AI provides it, such as rendered previews, source notes, browser observations, or external audit results. UXHC does not replace code review or accessibility testing, and implementation evidence must still be mapped back to visible usability findings.</p>
+      </div>
+      <div class="card">
+        <h2>Can it crawl a full website or authenticated flow?</h2>
+        <p>No. The beta is intentionally bounded: screenshots, image bundles, desktop/mobile captures, and small public URL captures. It does not do full-site crawling, authenticated-flow automation, analytics ingestion, or unconstrained autonomous navigation.</p>
+      </div>
+      <div class="card">
+        <h2>What is an MCP connector or extension?</h2>
+        <p>MCP means Model Context Protocol. In this context, Claude may call the local tool connection an MCP, connector, or extension. UXHC's extension is the MCP connector: it gives Claude structured local tools for preparing sources, running audits, validating reports, and generating artifacts. <a href="https://jonathankhobson.github.io/what-is-an-mcp/">Learn more about MCPs.</a></p>
+      </div>
+      <div class="card">
+        <h2>What is the difference between the plugin, extension, and skill?</h2>
+        <p><strong>Plugin zip:</strong> the Claude Cowork or Claude Code bundle. <strong>Extension file:</strong> the Claude Desktop MCP connector. <strong>Skill:</strong> the prompt-only alternative a host can read without the MCP. You can install more than one when the release assets are available.</p>
+      </div>
+      <div class="card">
+        <h2>Does this work with Codex?</h2>
+        <p>Yes. Codex can work with local MCPs, source installs, and prompt guidance. This beta.1 landing page does not provide a one-click Codex install path yet; technical Codex users should wait for the source package and AI-assisted install prompt.</p>
+      </div>
+      <div class="card">
+        <h2>Is UX Heuristics Compass safe to install?</h2>
+        <p>Downloading anything from the internet carries real risk: malicious code, data collection, hidden scripts. UXHC is designed to reduce that surface area: it runs locally, uses bounded files, and does not need an external service for core workflows. No third-party tool is zero risk, so review the source or ask a trusted technical person before installing. Claude's warning is the standard prompt it shows for local third-party extensions, not a flag specific to this tool.</p>
+      </div>
+      <div class="card">
+        <h2>Do I need a GitHub account to download?</h2>
+        <p>No. Once the release assets are published, the buttons will go directly to the files. GitHub is only where the files are hosted.</p>
+      </div>
+    </section>
+
+    <section id="advanced" class="tab-panel" role="tabpanel" aria-labelledby="tab-advanced" hidden>
+      <div class="card">
+        <h2>Advanced</h2>
+        <p>This section is for technical reviewers, security-conscious users, and anyone preparing for package verification.</p>
+        <p><a class="button quiet" href="https://github.com/JonathanKHobson/ux-heuristic-compass" target="_blank" rel="noopener">View GitHub Repository</a></p>
+        <section>
+          <h2>Release Assets</h2>
+          <p>Release files are intentionally not linked yet. The planned assets are plugin zip, MCPB/Desktop Extension, skill file, skill zip, source zip, checksums, and a clean GitHub Pages kit.</p>
+        </section>
+        <details>
+          <summary>Advanced: Planned Download Checklist</summary>
+          <table>
+            <tr><td><code>ux-heuristic-compass-plugin.zip</code></td><td>Pending package build and clean scan.</td></tr>
+            <tr><td><code>ux-heuristic-compass-0.1.0.mcpb</code></td><td>Pending MCPB manifest and tool-surface verification.</td></tr>
+            <tr><td><code>ux-heuristic-compass.skill</code></td><td>Pending skill guidance and prompt review.</td></tr>
+            <tr><td><code>skill.zip</code></td><td>Pending skill zip package.</td></tr>
+            <tr><td><code>ux-heuristic-compass-source.zip</code></td><td>Pending source package and private-file scan.</td></tr>
+            <tr><td><code>checksums.txt</code></td><td>Pending SHA-256 generation after artifacts exist.</td></tr>
+          </table>
+        </details>
+      </div>
+      <div id="ai-install-prompt" class="card">
+        <h2>AI-Assisted Install Prompt</h2>
+        <p>This prompt is staged for the package pass. Use it after beta assets are available.</p>
+        <button class="button" type="button" data-copy-target="ai-install-text">Copy install prompt</button>
+        <textarea id="ai-install-text" readonly>You are a careful, technically conservative AI install assistant. Your job is to help me add or install UX Heuristics Compass safely, without modifying unrelated configuration or introducing unexpected dependencies. Do not delete anything; only add.
+
+Release page: https://jonathankhobson.github.io/ux-heuristic-compass/
+
+PHASE 1 - Understand my environment
+Before doing anything, ask me:
+1. Which AI client are you using? (Claude Cowork, Claude Code, Claude Desktop, Codex, or other)
+2. Which operating system are you on?
+3. Have you installed any MCPs, plugins, or skills before?
+4. What do you want installed? (local MCP source, plugin, MCPB Desktop extension, skill, or all)
+
+Do not proceed until I answer all four questions.
+
+PHASE 2 - Choose the install path
+Use the official release files only. Do not invent download URLs. If a release asset is missing, say it is not available yet.
+
+PHASE 3 - Verify
+After install, ask the host to run get_started or use the first quick-audit prompt.</textarea>
+      </div>
+      <div id="diagnostics-prompt" class="card">
+        <h2>Diagnostic Prompt</h2>
+        <button class="button" type="button" data-copy-target="diagnostic-text">Copy diagnostic prompt</button>
+        <textarea id="diagnostic-text" readonly>Help me diagnose a UX Heuristics Compass install.
+
+First, identify which host I am using and which install path I attempted. Then check:
+- whether the package file exists
+- whether the host app has been restarted
+- whether the MCP or skill is visible
+- whether get_started is available
+- whether any local path needs to be adjusted
+
+Do not delete files or rewrite unrelated configuration.</textarea>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>UX Heuristics Compass is part of Jonathan Kyle Hobson's Compass Suite.</p>
+  </footer>
+  <script src="site.js"></script>
+</body>
+</html>
