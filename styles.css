@@ -171,6 +171,23 @@ h3 {
   border-left: 4px solid var(--gold);
 }
 
+.example-card {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.95fr) minmax(280px, 1.05fr);
+  gap: 20px;
+  align-items: start;
+}
+
+.example-screenshot {
+  display: block;
+  width: 100%;
+  max-height: 520px;
+  object-fit: contain;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--soft);
+}
+
 .button {
   display: inline-flex;
   align-items: center;
@@ -325,6 +342,10 @@ footer {
   }
 
   .author-card {
+    grid-template-columns: 1fr;
+  }
+
+  .example-card {
     grid-template-columns: 1fr;
   }
 

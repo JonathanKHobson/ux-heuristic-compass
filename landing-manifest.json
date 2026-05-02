@@ -51,6 +51,16 @@
       "target_users": "Technical verification"
     }
   ],
+  "public_examples": [
+    {
+      "label": "Oppia.org UX Heuristic Audit",
+      "kind": "example_report",
+      "url": "https://jonathankhobson.github.io/ux-heuristic-compass/examples/oppia-ux-audit-report.html",
+      "screenshot": "assets/oppia-ux-audit-scorecard.png",
+      "status": "available",
+      "summary": "Public-safe example report showing a B- / 68.5% heuristic audit scorecard, prioritized findings, evidence limits, and recommended next validation steps."
+    }
+  ],
   "public_page_guardrails": [
     "download buttons must remain disabled until package URLs and checksums exist",
     "example tab must not link private screenshots, client material, local paths, or draft reports",

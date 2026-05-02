@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oppia.org UX Heuristic Audit Report</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f6fa; color: #24292e; line-height: 1.6; }
+  .header { background: #0d6e6e; color: white; padding: 40px 48px; }
+  .header h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+  .header .meta { font-size: 14px; opacity: 0.85; }
+  .header .grade-badge { display: inline-block; background: rgba(255,255,255,0.2); border: 2px solid white; border-radius: 8px; padding: 8px 20px; font-size: 32px; font-weight: 800; margin-top: 16px; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 32px 24px; }
+  .card { background: white; border-radius: 12px; padding: 28px; margin-bottom: 24px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); border: 1px solid #e1e4e8; }
+  .card h2 { font-size: 18px; font-weight: 700; margin-bottom: 16px; color: #0d6e6e; border-bottom: 2px solid #e1e4e8; padding-bottom: 10px; }
+  .card h3 { font-size: 15px; font-weight: 600; margin-bottom: 8px; }
+  .mission-box { background: #fff8e1; border-left: 4px solid #f9a825; padding: 16px 20px; border-radius: 0 8px 8px 0; margin-bottom: 24px; }
+  .mission-box h2 { color: #6d4c00; border-bottom-color: #f9a825; font-size: 16px; }
+  .mission-box p { color: #5d4037; font-size: 14px; }
+  .scorecard-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+  .score-item { border: 1px solid #e1e4e8; border-radius: 8px; padding: 16px; }
+  .score-item .grade { font-size: 28px; font-weight: 800; }
+  .score-item .pct { font-size: 13px; color: #6a737d; }
+  .score-item .name { font-size: 13px; font-weight: 600; margin-top: 4px; }
+  .score-item .desc { font-size: 11px; color: #6a737d; margin-top: 2px; }
+  .score-item .hil-note { font-size: 11px; color: #c96a00; background: #fff8e1; padding: 6px 8px; border-radius: 4px; margin-top: 8px; }
+  .finding { border: 1px solid #e1e4e8; border-radius: 8px; padding: 20px; margin-bottom: 16px; }
+  .finding .finding-header { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; }
+  .finding .rank { background: #0d6e6e; color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; flex-shrink: 0; margin-top: 2px; }
+  .finding h3 { font-size: 15px; font-weight: 700; color: #24292e; margin-bottom: 4px; }
+  .finding .heuristic-tag { font-size: 11px; color: #6a737d; }
+  .finding .section { margin-top: 10px; }
+  .finding .section-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #6a737d; margin-bottom: 4px; }
+  .finding .section-content { font-size: 13px; color: #444; background: #f6f8fa; padding: 10px 12px; border-radius: 6px; }
+  .finding .mission-note { font-size: 12px; color: #856404; background: #fff3cd; padding: 8px 10px; border-radius: 6px; margin-top: 8px; border-left: 3px solid #f9a825; }
+  .strengths-list { list-style: none; }
+  .strengths-list li { padding: 8px 0; border-bottom: 1px solid #f0f0f0; font-size: 14px; display: flex; align-items: flex-start; gap: 8px; }
+  .strengths-list li::before { content: '✓'; color: #22863a; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+  .roadmap-table { width: 100%; border-collapse: collapse; }
+  .roadmap-table th { text-align: left; padding: 10px 12px; background: #f6f8fa; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #6a737d; border-bottom: 2px solid #e1e4e8; }
+  .roadmap-table td { padding: 10px 12px; border-bottom: 1px solid #f0f0f0; font-size: 13px; vertical-align: top; }
+  .sprint-badge { padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 700; color: white; display: inline-block; }
+  .evidence-box { background: #f6f8fa; border: 1px solid #e1e4e8; border-radius: 6px; padding: 16px; font-size: 13px; color: #586069; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 700px) { .two-col { grid-template-columns: 1fr; } .scorecard-grid { grid-template-columns: 1fr 1fr; } }
+  .top-finding-alert { background: linear-gradient(135deg, #fff0f0, #fff8f0); border: 2px solid #cb2431; border-radius: 12px; padding: 24px; margin-bottom: 24px; }
+  .top-finding-alert .label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #cb2431; margin-bottom: 8px; }
+  .top-finding-alert h3 { font-size: 18px; font-weight: 700; color: #24292e; margin-bottom: 8px; }
+  .top-finding-alert p { font-size: 14px; color: #444; }
+  .overall-summary { display: flex; gap: 24px; align-items: stretch; margin-bottom: 24px; flex-wrap: wrap; }
+  .overall-grade-card { background: white; border-radius: 12px; padding: 24px 32px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); border: 1px solid #e1e4e8; text-align: center; min-width: 160px; }
+  .overall-grade-card .big-grade { font-size: 64px; font-weight: 900; line-height: 1; }
+  .overall-grade-card .pct { font-size: 20px; font-weight: 600; color: #6a737d; margin-top: 4px; }
+  .overall-grade-card .descriptor { font-size: 13px; color: #6a737d; margin-top: 6px; }
+  .plain-read { background: white; border-radius: 12px; padding: 24px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); border: 1px solid #e1e4e8; flex: 1; min-width: 300px; }
+  .plain-read .label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #6a737d; margin-bottom: 10px; }
+  .plain-read p { font-size: 15px; color: #24292e; line-height: 1.7; }
+  .plain-read .before { font-size: 13px; color: #586069; margin-top: 12px; padding-top: 12px; border-top: 1px solid #e1e4e8; font-style: italic; }
+  footer { background: #24292e; color: #8b949e; text-align: center; padding: 24px; font-size: 12px; margin-top: 48px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Oppia.org — UX Heuristic Audit Report</h1>
+  <div class="meta">Advanced Agent Audit · Desktop · 4 pages captured · 83 checklist items · Accessibility profile active · HIL gates answered</div>
+  <div class="meta" style="margin-top:4px">Generated: 2026-05-02 · Auditor: UX Heuristic Compass + Human-in-the-Loop calibration</div>
+  <div class="grade-badge">B- · 68.5%</div>
+</div>
+
+<div class="container">
+
+  <!-- Mission Context -->
+  <div class="mission-box card">
+    <h2>⚠ Mission Amplification — Why Severity Ratings Are Higher for Oppia</h2>
+    <p>Oppia's mission is to provide free, effective education to <strong>under-resourced communities worldwide</strong>. This audit applies a mission lens to every finding: issues that are 'minor' on a commercial platform can be critical barriers when the user has limited bandwidth, limited device access, limited time online, and no alternative educational resource. <strong>Severity ratings throughout this report reflect this context.</strong></p>
+  </div>
+
+  <!-- Overall Summary -->
+  <div class="overall-summary">
+    <div class="overall-grade-card">
+      <div class="big-grade" style="color:#b8860b">B-</div>
+      <div class="pct">68.5%</div>
+      <div class="descriptor">Below average<br>multiple issues</div>
+    </div>
+    <div class="plain-read">
+      <div class="label">Plain Language Read</div>
+      <p>Oppia has strong content quality, excellent onboarding guidance, and a coherent brand — but three systemic failures undermine the learning loop for everyone: <strong>progress is lost after every session even for logged-in users</strong>, the lesson player traps users with no visible exit, and every lesson load shows a blank screen that looks broken on slow connections.</p>
+      <p class="before">Before using this interface at scale, fix progress persistence first: lesson progress is currently lost for all users at session end regardless of login status, which breaks Oppia's core learning continuity.</p>
+    </div>
+  </div>
+
+  <!-- Top Finding Alert -->
+  <div class="top-finding-alert">
+    <div class="label">🚨 Critical Finding — Immediate Fix Required</div>
+    <h3>Progress lost for ALL users — including logged-in accounts</h3>
+    <p>HIL auditor confirmed: progress fails to save for authenticated users, not only guests. The 0% progress ring never updates. Users who complete chapters return to find no record of their work. No warning is shown before leaving a lesson. No 'continue where you left off' path exists. <strong>For Oppia's target users with intermittent internet access, this removes the primary motivator to return and eliminates learning continuity.</strong></p>
+  </div>
+
+  <!-- Scorecard -->
+  <div class="card">
+    <h2>Heuristic Scorecard — 11 Heuristics</h2>
+    <div class="scorecard-grid">
+      <div class="score-item">
+        <div class="grade" style="color:#cb2431">C-</div>
+        <div class="pct">52.8% · avg severity 1.89</div>
+        <div class="name">Visibility of System Status</div>
+        <div class="desc">Struggling - widespread issues</div>
+        <div class="hil-note">HIL: Accepted as scored. Mission context elevates this — blank screens on slow connections are a first-impression failure for target users.</div>
+      </div>
+      <div class="score-item">
+        <div class="grade" style="color:#22863a">A-</div>
+        <div class="pct">83.3% · avg severity 0.67</div>
+        <div class="name">Match Between System and the Real World</div>
+        <div class="desc">Above average - minor gaps</div>
+        
+      </div>
+      <div class="score-item">
+        <div class="grade" style="color:#c96a00">C+</div>
+        <div class="pct">60.0% · avg severity 1.60</div>
+        <div class="name">User Control and Freedom</div>
+        <div class="desc">Developing - significant gaps</div>
+        <div class="hil-note">HIL: Accepted as scored. C+ is fair — no visible exit traps young/first-time learners.</div>
+      </div>
+      <div class="score-item">
+        <div class="grade" style="color:#7a8c3e">B</div>
+        <div class="pct">70.2% · avg severity 1.19</div>
+        <div class="name">Consistency and Standards</div>
+        <div class="desc">Acceptable - some improvement needed</div>
+        
+      </div>
+      <div class="score-item">
+        <div class="grade" style="color:#22863a">A-</div>
+        <div class="pct">80.0% · avg severity 0.80</div>
+        <div class="name">Error Prevention</div>
+        <div class="desc">Above average - minor gaps</div>
+        
+      </div>
+      <div class="score-item">
+        <div class="grade" style="color:#b8860b">B-</div>
+        <div class="pct">68.8% · avg severity 1.25</div>
+        <div class="name">Recognition Rather Than Recall</div>
+        <div class="desc">Below average - multiple issues</div>
+        <div class="hil-note">⚠ HIL ESCALATION: Also confirmed failing for authenticated users — treat as C range in prioritization.</div>
+      </div>
+      <div class="score-item">
+        <div class="grade" style="color:#b8860b">B-</div>
+        <div class="pct">66.7% · avg severity 1.33</div>
+        <div class="name">Flexibility and Efficiency of Use</div>
+        <div class="desc">Below average - multiple issues</div>
+        <div class="hil-note">⚠ HIL ESCALATION: Same root cause as H06 — progress loss affects all users. Every session starts from zero.</div>
+      </div>
+      <div class="score-item">
+        <div class="grade" style="color:#5a7f3e">B+</div>
+        <div class="pct">76.6% · avg severity 0.94</div>
+        <div class="name">Aesthetic and Minimalist Design</div>
+        <div class="desc">Good - a few notable issues</div>
+        
+      </div>
+      <div class="score-item">
+        <div class="grade" style="color:#5a7f3e">B+</div>
+        <div class="pct">75.0% · avg severity 1.00</div>
+        <div class="name">Help Users Recognize, Diagnose, and Recover from Errors</div>
+        <div class="desc">Good - a few notable issues</div>
+        
+      </div>
+      <div class="score-item">
+        <div class="grade" style="color:#7a8c3e">B</div>
+        <div class="pct">70.0% · avg severity 1.20</div>
+        <div class="name">Help and Documentation</div>
+        <div class="desc">Acceptable - some improvement needed</div>
+        
+      </div>
+      <div class="score-item">
+        <div class="grade" style="color:#cb2431">C-</div>
+        <div class="pct">50.0% · avg severity 2.00</div>
+        <div class="name">Accessibility and Ease of Access <span style="font-size:10px;background:#0d6e6e;color:white;padding:1px 6px;border-radius:3px">ACCESSIBILITY</span></div>
+        <div class="desc">Struggling - widespread issues</div>
+        <div class="hil-note">HIL: Accepted as scored. Note: surface audit only — full WCAG compliance test needed.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Findings -->
+  <div class="card">
+    <h2>Findings — Prioritized Fix Order</h2>
+    <div class="finding" style="border-left: 4px solid #cb2431">
+      <div class="finding-header">
+        <div class="rank">1</div>
+        <div>
+          <div><span style="background:#cb2431;color:white;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:bold">Critical</span> <span style="font-size:11px;color:#6a737d;margin-left:4px">H06 Recognition Rather Than Recall · h06_d_02</span></div>
+          <h3 style="margin-top:4px">Progress lost for ALL users — including logged-in accounts</h3>
+        </div>
+      </div>
+      <div class="section"><div class="section-label">Observed Issue</div><div class="section-content">HIL auditor confirmed: progress fails to save for authenticated users, not only guests. The 0% progress ring on the topic page never updates. Users who complete chapters return to find no record of their work. No warning is shown before leaving a lesson. No 'continue where you left off' path exists.</div></div>
+      <div class="section"><div class="section-label">Recommendation</div><div class="section-content">1. Immediately audit the progress persistence pipeline for authenticated users — confirm if this is a backend bug or missing session sync. 2. Add a visible 'Sign in to save your progress' prompt for unauthenticated users at lesson start. 3. Show a progress-loss warning before navigating away from an in-progress lesson.</div></div>
+      <div class="mission-note">⚡ Mission impact: Critical for Oppia's audience: users with intermittent internet access lose all progress between sessions. For learners in low-resource environments who access the internet occasionally, this removes the primary motivator to return.</div>
+      <div style="margin-top:8px;font-size:11px;color:#6a737d">Evidence: Place Values topic page, Lesson Player</div>
+    </div>
+    <div class="finding" style="border-left: 4px solid #c96a00">
+      <div class="finding-header">
+        <div class="rank">2</div>
+        <div>
+          <div><span style="background:#c96a00;color:white;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:bold">Major</span> <span style="font-size:11px;color:#6a737d;margin-left:4px">H08 Aesthetic and Minimalist Design · h08_d_12</span></div>
+          <h3 style="margin-top:4px">Lesson player shows blank grey screen for 3–5 seconds with no loading feedback</h3>
+        </div>
+      </div>
+      <div class="section"><div class="section-label">Observed Issue</div><div class="section-content">Every lesson load presents a full blank grey page with only 'Loading...' text for 3–5 seconds on a fast connection. No skeleton UI, no spinner, no progress bar. Browser tab also shows 'Loading | Oppia' during this window.</div></div>
+      <div class="section"><div class="section-label">Recommendation</div><div class="section-content">Add a lesson skeleton screen matching the lesson player layout. At minimum, add a branded spinner. Fix the Angular routing config so the tab never reads 'Loading | Oppia'.</div></div>
+      <div class="mission-note">⚡ Mission impact: On low-bandwidth connections typical in Oppia's target communities, blank loading screens are indistinguishable from broken pages and cause first-impression abandonment.</div>
+      <div style="margin-top:8px;font-size:11px;color:#6a737d">Evidence: Lesson Player</div>
+    </div>
+    <div class="finding" style="border-left: 4px solid #c96a00">
+      <div class="finding-header">
+        <div class="rank">3</div>
+        <div>
+          <div><span style="background:#c96a00;color:white;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:bold">Major</span> <span style="font-size:11px;color:#6a737d;margin-left:4px">H03 User Control and Freedom · h03_d_02</span></div>
+          <h3 style="margin-top:4px">No visible exit from the lesson player</h3>
+        </div>
+      </div>
+      <div class="section"><div class="section-label">Observed Issue</div><div class="section-content">Inside the lesson player, there is no Exit Lesson, Back to Topic, or X button anywhere in the viewport. The only escapes are browser back or a small breadcrumb link in the stripped navigation bar. The full site navigation is hidden entirely while inside a lesson.</div></div>
+      <div class="section"><div class="section-label">Recommendation</div><div class="section-content">Add a clearly labeled 'Back to [Topic Name]' button in the lesson player header. Consider restoring at minimum a minimal nav with the parent topic link prominently visible.</div></div>
+      <div class="mission-note">⚡ Mission impact: Young learners and first-time users who arrive via a direct lesson link have no visible way to leave — a critical failure for a platform serving children in low-resource contexts.</div>
+      <div style="margin-top:8px;font-size:11px;color:#6a737d">Evidence: Lesson Player</div>
+    </div>
+    <div class="finding" style="border-left: 4px solid #c96a00">
+      <div class="finding-header">
+        <div class="rank">4</div>
+        <div>
+          <div><span style="background:#c96a00;color:white;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:bold">Major</span> <span style="font-size:11px;color:#6a737d;margin-left:4px">H01 Visibility of System Status · h01_d_07</span></div>
+          <h3 style="margin-top:4px">'Loading | Oppia' page title read by screen readers before content appears</h3>
+        </div>
+      </div>
+      <div class="section"><div class="section-label">Observed Issue</div><div class="section-content">The Angular SPA bootstraps with 'Loading | Oppia' as the document title for 3–5 seconds. Screen readers announce this as the page title. Browser tab shows 'Loading | Oppia'. No ARIA live region announces when lesson content finishes loading.</div></div>
+      <div class="section"><div class="section-label">Recommendation</div><div class="section-content">Set the initial Angular HTML title to something meaningful. Use an ARIA live region (role=status, aria-live=polite) to announce when lesson content has finished loading.</div></div>
+      <div class="mission-note">⚡ Mission impact: Screen reader users — often relying on assistive technology due to limited access to other educational resources — receive no status update when content loads.</div>
+      <div style="margin-top:8px;font-size:11px;color:#6a737d">Evidence: Lesson Player</div>
+    </div>
+    <div class="finding" style="border-left: 4px solid #c96a00">
+      <div class="finding-header">
+        <div class="rank">5</div>
+        <div>
+          <div><span style="background:#c96a00;color:white;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:bold">Major</span> <span style="font-size:11px;color:#6a737d;margin-left:4px">H07 Flexibility and Efficiency of Use · h07_d_03</span></div>
+          <h3 style="margin-top:4px">No 'continue where you left off' path for any user</h3>
+        </div>
+      </div>
+      <div class="section"><div class="section-label">Observed Issue</div><div class="section-content">Returning users (authenticated or guest) must navigate the full hierarchy (Homepage → Learn → Classroom → Topic → Chapter) to resume a lesson. No recently visited, in-progress, or bookmarked lessons surface. HIL confirmed: even logged-in users see 0% progress.</div></div>
+      <div class="section"><div class="section-label">Recommendation</div><div class="section-content">Add a 'Resume Learning' widget on the homepage for signed-in users showing their most recent in-progress lesson. For guests, use localStorage to persist the last-visited lesson URL.</div></div>
+      <div class="mission-note">⚡ Mission impact: For users with limited time online, spending session time re-navigating rather than learning is a critical friction cost.</div>
+      <div style="margin-top:8px;font-size:11px;color:#6a737d">Evidence: Homepage, Math Classroom</div>
+    </div>
+    <div class="finding" style="border-left: 4px solid #b8860b">
+      <div class="finding-header">
+        <div class="rank">6</div>
+        <div>
+          <div><span style="background:#b8860b;color:white;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:bold">Minor</span> <span style="font-size:11px;color:#6a737d;margin-left:4px">H08 Aesthetic and Minimalist Design · h08_d_09</span></div>
+          <h3 style="margin-top:4px">Homepage hero has two competing equal-weight CTAs</h3>
+        </div>
+      </div>
+      <div class="section"><div class="section-label">Observed Issue</div><div class="section-content">The homepage hero presents 'Explore Oppia Classrooms' and 'Access the Android app' as side-by-side buttons with near-equal visual weight. A desktop visitor who wants to start learning has no clear primary path.</div></div>
+      <div class="section"><div class="section-label">Recommendation</div><div class="section-content">Make 'Explore Oppia Classrooms' the primary CTA (filled, prominent) and demote 'Access the Android app' to a secondary link or a mobile-only conditional display.</div></div>
+      
+      <div style="margin-top:8px;font-size:11px;color:#6a737d">Evidence: Homepage</div>
+    </div>
+    <div class="finding" style="border-left: 4px solid #b8860b">
+      <div class="finding-header">
+        <div class="rank">7</div>
+        <div>
+          <div><span style="background:#b8860b;color:white;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:bold">Minor</span> <span style="font-size:11px;color:#6a737d;margin-left:4px">H04 Consistency and Standards · h04_d_02</span></div>
+          <h3 style="margin-top:4px">Terminology hierarchy inconsistent across the site</h3>
+        </div>
+      </div>
+      <div class="section"><div class="section-label">Observed Issue</div><div class="section-content">Nav says 'Learn → Classrooms'. Classroom pages say 'Topics Covered'. Topic pages say 'Chapters'. URLs use '/explore/' while the UI says 'Lessons'. The mental model is correct but labels applied inconsistently.</div></div>
+      <div class="section"><div class="section-label">Recommendation</div><div class="section-content">Standardize on one vocabulary: Classroom → Topic → Lesson → Chapter. Apply consistently in nav labels, breadcrumbs, page headings, URLs, and CTAs.</div></div>
+      
+      <div style="margin-top:8px;font-size:11px;color:#6a737d">Evidence: Math Classroom, Place Values Topic</div>
+    </div>
+    <div class="finding" style="border-left: 4px solid #b8860b">
+      <div class="finding-header">
+        <div class="rank">8</div>
+        <div>
+          <div><span style="background:#b8860b;color:white;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:bold">Minor</span> <span style="font-size:11px;color:#6a737d;margin-left:4px">H04 Consistency and Standards · h04_d_12</span></div>
+          <h3 style="margin-top:4px">Multiple H1 headings on classroom page break document structure</h3>
+        </div>
+      </div>
+      <div class="section"><div class="section-label">Observed Issue</div><div class="section-content">On /learn/math, 'Course Details' and 'Topics Covered' are both marked as H1 in the accessibility tree — a heading hierarchy violation.</div></div>
+      <div class="section"><div class="section-label">Recommendation</div><div class="section-content">Change 'Course Details' and 'Topics Covered' to H2 or H3. Reserve H1 for the classroom name ('Math').</div></div>
+      <div class="mission-note">⚡ Mission impact: Screen reader users relying on heading navigation cannot determine the primary topic of the page.</div>
+      <div style="margin-top:8px;font-size:11px;color:#6a737d">Evidence: Math Classroom</div>
+    </div>
+    <div class="finding" style="border-left: 4px solid #b8860b">
+      <div class="finding-header">
+        <div class="rank">9</div>
+        <div>
+          <div><span style="background:#b8860b;color:white;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:bold">Minor</span> <span style="font-size:11px;color:#6a737d;margin-left:4px">H11 Accessibility · h11_d_04</span></div>
+          <h3 style="margin-top:4px">SPA loading state not communicated to assistive technology</h3>
+        </div>
+      </div>
+      <div class="section"><div class="section-label">Observed Issue</div><div class="section-content">No ARIA live region is present to announce when lesson content finishes loading. The Angular SPA uses client-side routing but does not programmatically announce navigation completions to screen readers.</div></div>
+      <div class="section"><div class="section-label">Recommendation</div><div class="section-content">Add an ARIA live region that announces navigation completions. Use focus management to move focus to the main heading after navigation.</div></div>
+      <div class="mission-note">⚡ Mission impact: Screen reader users navigating between lessons hear nothing when content loads — they cannot confirm if navigation succeeded.</div>
+      <div style="margin-top:8px;font-size:11px;color:#6a737d">Evidence: Lesson Player</div>
+    </div>
+    <div class="finding" style="border-left: 4px solid #b8860b">
+      <div class="finding-header">
+        <div class="rank">10</div>
+        <div>
+          <div><span style="background:#b8860b;color:white;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:bold">Minor</span> <span style="font-size:11px;color:#6a737d;margin-left:4px">H08 Aesthetic and Minimalist Design · h08_d_01</span></div>
+          <h3 style="margin-top:4px">Persistent cookie banner covers lower viewport content on every page</h3>
+        </div>
+      </div>
+      <div class="section"><div class="section-label">Observed Issue</div><div class="section-content">The cookie consent banner appears on every page and covers the lower ~15% of the viewport including lesson content and topic cards. No decline option is shown — only OK.</div></div>
+      <div class="section"><div class="section-label">Recommendation</div><div class="section-content">Auto-dismiss after explicit OK click and persist that choice in localStorage. Add a 'Manage preferences' option for GDPR/CCPA compliance.</div></div>
+      
+      <div style="margin-top:8px;font-size:11px;color:#6a737d">Evidence: Homepage, Lesson Player</div>
+    </div>
+  </div>
+
+  <!-- What's Working Well -->
+  <div class="card">
+    <h2>What Is Working Well</h2>
+    <ul class="strengths-list"><li>Story-based learning metaphor ('Jaime's Adventures') — strong real-world match (H02: A-)</li><li>Two-path onboarding on classroom pages ('Don't know where to start?' / 'Already know some Math?') — best-practice progressive disclosure</li><li>Language selector available in both global nav and inside lessons — strong multilingual support</li><li>Skip to Main Content link present on all pages — keyboard accessibility awareness</li><li>Social media footer links include both icon AND text labels — good screen reader practice</li><li>Visual design is cohesive, minimal, and on-brand — strong whitespace and typography</li><li>No-login-required lesson browsing — very low friction for exploration</li><li>Audio 'Listen to the lesson' feature in lesson player — strong accessibility addition</li><li>Error prevention: newsletter Subscribe button correctly disabled until email entered</li><li>Android app link in footer — multi-platform access acknowledged</li>
+    </ul>
+  </div>
+
+  <!-- Prioritized Roadmap -->
+  <div class="card">
+    <h2>Prioritized Fix Roadmap</h2>
+    <table class="roadmap-table">
+      <thead><tr><th>Sprint</th><th>Action</th></tr></thead>
+      <tbody><tr><td><span class="sprint-badge" style="background:#cb2431">Immediate</span></td><td>Audit and fix authenticated user progress persistence pipeline</td></tr><tr><td><span class="sprint-badge" style="background:#cb2431">Immediate</span></td><td>Add 'Sign in to save progress' prompt at lesson start for guests</td></tr><tr><td><span class="sprint-badge" style="background:#c96a00">Sprint 1</span></td><td>Add skeleton screen / branded spinner to lesson player loading state</td></tr><tr><td><span class="sprint-badge" style="background:#c96a00">Sprint 1</span></td><td>Add visible 'Back to [Topic]' button in lesson player header</td></tr><tr><td><span class="sprint-badge" style="background:#c96a00">Sprint 1</span></td><td>Fix Angular router to set meaningful initial page title</td></tr><tr><td><span class="sprint-badge" style="background:#c96a00">Sprint 1</span></td><td>Add ARIA live region for SPA navigation announcements</td></tr><tr><td><span class="sprint-badge" style="background:#b8860b">Sprint 2</span></td><td>Add 'Continue where you left off' widget on homepage and classrooms</td></tr><tr><td><span class="sprint-badge" style="background:#b8860b">Sprint 2</span></td><td>Demote Android CTA to secondary on homepage hero</td></tr><tr><td><span class="sprint-badge" style="background:#b8860b">Sprint 2</span></td><td>Standardize vocabulary across nav, headings, breadcrumbs, and URLs</td></tr><tr><td><span class="sprint-badge" style="background:#5a7f3e">Sprint 3</span></td><td>Fix H1 heading hierarchy on all classroom pages</td></tr><tr><td><span class="sprint-badge" style="background:#5a7f3e">Sprint 3</span></td><td>Persist cookie consent dismissal and add decline option</td></tr><tr><td><span class="sprint-badge" style="background:#5a7f3e">Sprint 3</span></td><td>Run full axe-core accessibility scan — surface audit only covers visible issues</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Evidence Limits -->
+  <div class="card">
+    <h2>Evidence Limits</h2>
+    <div class="evidence-box">
+      <p><strong>Scope:</strong> 4 pages audited — homepage, Math classroom, Place Values topic, lesson player. Authenticated post-completion flows, error states, and mobile views not captured.</p>
+      <p style="margin-top:8px"><strong>H11 Accessibility:</strong> Surface audit only — not a full WCAG 2.1/2.2 compliance test. Actual accessibility severity may be significantly higher. A dedicated axe-core or manual screen reader audit is strongly recommended.</p>
+      <p style="margin-top:8px"><strong>H09 Error Recovery:</strong> Error states were not triggered during evidence capture. Error messaging quality rated with low confidence.</p>
+      <p style="margin-top:8px"><strong>Progress loss:</strong> H06/H07 scores reflect unauthenticated evidence from the audit; HIL auditor confirmed authenticated users also lose progress. Scores may understate true severity.</p>
+    </div>
+  </div>
+
+  <!-- Next Validation Steps -->
+  <div class="card">
+    <h2>Recommended Next Validation Steps</h2>
+    <ol style="padding-left:20px;font-size:14px;line-height:2">
+      <li>Run axe-core automated scan across all 4 audited pages to get a baseline WCAG report</li>
+      <li>Test on a throttled 3G connection to measure actual lesson load time for target audience</li>
+      <li>Verify with engineering: is authenticated progress loss a known bug or undocumented design decision?</li>
+      <li>Conduct a 5-minute usability test with a first-time learner: observe them landing on the homepage and navigating to their first lesson</li>
+      <li>Check lesson player on Android Chrome (Oppia's primary mobile platform) for exit affordance and loading behavior</li>
+    </ol>
+  </div>
+
+</div>
+
+<footer>
+  Oppia.org UX Heuristic Audit · Advanced Agent Mode · Desktop · 83 checklist items · Accessibility profile · HIL-calibrated<br>
+  Generated by UX Heuristic Compass via Claude Code · 2026-05-02
+</footer>
+
+</body>
+</html>

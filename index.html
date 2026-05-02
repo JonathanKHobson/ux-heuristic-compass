@@ -323,8 +323,23 @@ Help me turn this into:
 
     <section id="example" class="tab-panel" role="tabpanel" aria-labelledby="tab-example" hidden>
       <div class="card">
-        <h2>Example Report Coming Soon</h2>
-        <p>No public example is linked yet. The first example should be a deliberately public-safe interface audit with no private screenshots, no client data, no local paths, and no unfinished package references.</p>
+        <h2>Oppia.org UX Heuristic Audit</h2>
+        <p>This public-safe example shows UX Heuristics Compass turning bounded page evidence into a scored heuristic audit, a plain-language readout, prioritized findings, evidence limits, and recommended next validation steps.</p>
+        <p><span class="tag">Example output</span> <span class="status-pill">B- / 68.5%</span></p>
+        <p><a class="button" href="examples/oppia-ux-audit-report.html">Open Example Report</a><a class="button ghost" href="#get-started">Try the Quick Audit Prompt</a></p>
+      </div>
+
+      <div class="card example-card">
+        <img class="example-screenshot" src="assets/oppia-ux-audit-scorecard.png" alt="Screenshot of the Oppia.org UX Heuristic Audit scorecard showing an overall B minus grade, heuristic ratings, and a critical finding about lost progress.">
+        <div>
+          <h2>What the example demonstrates</h2>
+          <p>The audit does more than list UI issues. It identifies progress loss as the highest-priority problem because it breaks the core learning loop, then separates what was observed from what still needs validation.</p>
+          <table>
+            <tr><td><strong>Top finding</strong></td><td>Progress is lost for all users, including logged-in accounts.</td></tr>
+            <tr><td><strong>Primary themes</strong></td><td>Progress persistence, lesson loading feedback, visible exit path, and screen-reader loading state.</td></tr>
+            <tr><td><strong>Evidence limit</strong></td><td>The audit is bounded to selected pages and is not a full WCAG compliance test.</td></tr>
+          </table>
+        </div>
       </div>
     </section>
 
