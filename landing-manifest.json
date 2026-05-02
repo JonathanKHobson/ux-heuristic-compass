@@ -5,50 +5,62 @@
     "version": "0.1.0-beta.1",
     "planned_public_url": "https://jonathankhobson.github.io/ux-heuristic-compass/",
     "repo_url": "https://github.com/JonathanKHobson/ux-heuristic-compass",
-    "status": "landing_page_live_packages_pending"
+    "status": "public_beta_available"
   },
   "release_assets": [
     {
       "label": "Plugin Zip",
       "kind": "plugin_zip",
       "filename": "ux-heuristic-compass-plugin.zip",
-      "availability": "pending_beta_package_review",
-      "target_users": "Claude Cowork or Claude Code"
+      "availability": "available",
+      "target_users": "Claude Cowork or Claude Code",
+      "url": "https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.1/ux-heuristic-compass-plugin.zip",
+      "checksum": "b64b1b280ba4a9066ed094d60b196968b1fdd309a375d6afcf9a8da644451c1b"
     },
     {
       "label": "Desktop Extension",
       "kind": "mcpb",
       "filename": "ux-heuristic-compass-0.1.0.mcpb",
-      "availability": "pending_mcpb_manifest_review",
-      "target_users": "Claude Desktop"
+      "availability": "available",
+      "target_users": "Claude Desktop",
+      "url": "https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.1/ux-heuristic-compass-0.1.0.mcpb",
+      "checksum": "97c160c81e1e6397b730dae54498fd8fdae93c28813735d7870931f94907a64c"
     },
     {
       "label": "Skill File",
       "kind": "skill_file",
       "filename": "ux-heuristic-compass.skill",
-      "availability": "pending_skill_authoring",
-      "target_users": "Prompt-only skill use"
+      "availability": "available",
+      "target_users": "Prompt-only skill use",
+      "url": "https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.1/ux-heuristic-compass.skill",
+      "checksum": "ba2867b1fa9e1016050f4dfd678f3487ea44f4f5120644737f1e324c35f23231"
     },
     {
       "label": "Skill Zip",
       "kind": "skill_zip",
       "filename": "skill.zip",
-      "availability": "pending_skill_zip_package",
-      "target_users": "Skill import workflows"
+      "availability": "available",
+      "target_users": "Skill import workflows",
+      "url": "https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.1/skill.zip",
+      "checksum": "de3141506fd73ce1bcfdd92c9d11d56f06310fce9d39c8b5cff76ce6c64e1c04"
     },
     {
       "label": "Source Zip",
       "kind": "source_zip",
       "filename": "ux-heuristic-compass-source.zip",
-      "availability": "pending_source_clean_scan",
-      "target_users": "Technical reviewers and source installs"
+      "availability": "available",
+      "target_users": "Technical reviewers and source installs",
+      "url": "https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.1/ux-heuristic-compass-source.zip",
+      "checksum": "75892c1980da6338959de547821f9f2945a8bca217a3e8fed5283ed454f9d45d"
     },
     {
       "label": "Checksums",
       "kind": "checksums",
       "filename": "checksums.txt",
-      "availability": "pending_artifact_hashes",
-      "target_users": "Technical verification"
+      "availability": "available",
+      "target_users": "Technical verification",
+      "url": "https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.1/checksums.txt",
+      "checksum": "a3236a1270ca52c0f59681a3dc9d147cdf86ff4c32ed5618c2225b992ea75653"
     }
   ],
   "public_examples": [
@@ -62,10 +74,10 @@
     }
   ],
   "public_page_guardrails": [
-    "download buttons must remain disabled until package URLs and checksums exist",
+    "download buttons use verified beta.1 release URLs",
     "example tab must not link private screenshots, client material, local paths, or draft reports",
     "tab order must remain Get Started, About, Install Guide, Example, FAQ, Advanced",
     "no combined About/FAQ tab",
-    "no package, plugin, MCPB, skill, or source zip is built in Phase 1"
+    "manual install QA status must remain explicit and separate from package build verification"
   ]
 }
