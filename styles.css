@@ -95,6 +95,17 @@ h3 {
   font-size: 1.18rem;
 }
 
+.header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 18px 0 0;
+}
+
+.header-actions .button {
+  margin: 0;
+}
+
 .tag,
 .status-pill {
   display: inline-flex;
@@ -186,6 +197,20 @@ h3 {
   border: 1px solid var(--line);
   border-radius: 8px;
   background: var(--soft);
+}
+
+.example-output {
+  margin: 0 0 18px;
+}
+
+.example-output-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: var(--shadow);
 }
 
 .button {
