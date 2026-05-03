@@ -18,10 +18,10 @@ UX Heuristics Compass 0.1.0-beta.1 is the first public beta package release.
 
 ## Checksums
 
-- `ux-heuristic-compass-plugin.zip`: `b64b1b280ba4a9066ed094d60b196968b1fdd309a375d6afcf9a8da644451c1b`
-- `ux-heuristic-compass-0.1.0.mcpb`: `97c160c81e1e6397b730dae54498fd8fdae93c28813735d7870931f94907a64c`
-- `ux-heuristic-compass.skill`: `ba2867b1fa9e1016050f4dfd678f3487ea44f4f5120644737f1e324c35f23231`
-- `skill.zip`: `de3141506fd73ce1bcfdd92c9d11d56f06310fce9d39c8b5cff76ce6c64e1c04`
-- `ux-heuristic-compass-source.zip`: `75892c1980da6338959de547821f9f2945a8bca217a3e8fed5283ed454f9d45d`
-- `ux-heuristic-compass-manual-share.zip`: `28615344e32a0c8539c86c715d1526182a62e7b2cd766b08ff0f2db3ff2717fd`
-- `checksums.txt`: `a3236a1270ca52c0f59681a3dc9d147cdf86ff4c32ed5618c2225b992ea75653`
+- `ux-heuristic-compass-plugin.zip`: `f54afb8be72d067c2b315dfff444300b5c27fe30b4447334cb9829fea33ea397`
+- `ux-heuristic-compass-0.1.0.mcpb`: `06fa89dcab73aea50297510c7568ee5b5ef205daf25e69b3815bf4f776f1b9a4`
+- `ux-heuristic-compass.skill`: `2ce183910446ac132e3a60f94bb7fa722d0719990dc2594e19b988775e2fa450`
+- `skill.zip`: `13ab2212ef345df6bfb4d4c21ed080e75175ccd8b73d12c83f38197f735f03e4`
+- `ux-heuristic-compass-source.zip`: `f55a9795f21e540e94eb002cf85ec40614303e49b45ab2ab27abd2c02e94efaa`
+- `ux-heuristic-compass-manual-share.zip`: `83d1ca77a71c9600ef099cbaddec5353e3e7b1bd94edd8986f6fe8241ad048f1`
+- `checksums.txt`: `6ed4d08c87eca5c3261405dc68e4815e751b17c5be01426e14aea36ae8c39a12`

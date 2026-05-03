@@ -323,24 +323,98 @@ Help me turn this into:
 
     <section id="example" class="tab-panel" role="tabpanel" aria-labelledby="tab-example" hidden>
       <div class="card">
-        <h2>Oppia.org UX Heuristic Audit</h2>
-        <p>This public-safe example shows UX Heuristics Compass turning bounded page evidence into a scored heuristic audit, a plain-language readout, prioritized findings, evidence limits, and recommended next validation steps.</p>
-        <p><span class="tag">Example output</span> <span class="status-pill">B- / 68.5%</span></p>
-        <p><a class="button" href="examples/oppia-ux-audit-report.html">Open Example Report</a><a class="button ghost" href="#get-started">Try the Quick Audit Prompt</a></p>
+        <h2>Example</h2>
+        <p>See what a finished UX Heuristics Compass audit can look like. This example is fully public — nothing has been redacted.</p>
       </div>
 
-      <div class="card example-card">
-        <img class="example-screenshot" src="assets/oppia-ux-audit-scorecard.png" alt="Screenshot of the Oppia.org UX Heuristic Audit scorecard showing an overall B minus grade, heuristic ratings, and a critical finding about lost progress.">
-        <div>
-          <h2>What the example demonstrates</h2>
-          <p>The audit does more than list UI issues. It identifies progress loss as the highest-priority problem because it breaks the core learning loop, then separates what was observed from what still needs validation.</p>
-          <table>
-            <tr><td><strong>Top finding</strong></td><td>Progress is lost for all users, including logged-in accounts.</td></tr>
-            <tr><td><strong>Primary themes</strong></td><td>Progress persistence, lesson loading feedback, visible exit path, and screen-reader loading state.</td></tr>
-            <tr><td><strong>Evidence limit</strong></td><td>The audit is bounded to selected pages and is not a full WCAG compliance test.</td></tr>
-          </table>
-        </div>
+      <div class="card">
+        <h2>Finished Audit Snapshot</h2>
+        <p>This public-safe example shows UX Heuristics Compass turning bounded page evidence into a scored heuristic audit, a plain-language readout, prioritized findings, evidence limits, and recommended next validation steps.</p>
+        <p><span class="tag">Example output</span> <span class="status-pill">B- / 68.5%</span></p>
       </div>
+
+      <div class="card">
+        <h2>What this example shows</h2>
+        <p>This example shows how UX Heuristics Compass turns a provided source into a ready-to-read audit report. It does more than list UI issues. It identifies progress loss as the highest-priority problem because it breaks the core learning loop, then separates what was observed from what still needs validation.</p>
+        <ul>
+          <li><strong>UX Health Snapshot:</strong> gives the grade, percentage score, plain-language read, and the highest-priority before-use warning.</li>
+          <li><strong>Scorecard:</strong> shows how each heuristic performed and where the biggest friction concentrates.</li>
+          <li><strong>Critical findings:</strong> names the specific interface failures that most affect the learner journey.</li>
+          <li><strong>Evidence limits:</strong> explains what was observed directly and where a fuller accessibility or usability pass is still needed.</li>
+          <li><strong>Prioritized fixes:</strong> turns findings into a practical repair sequence instead of a loose critique list.</li>
+          <li><strong>Next validation:</strong> points toward the follow-up checks that would make the audit stronger.</li>
+        </ul>
+        <table>
+          <tr><td><strong>Top finding</strong></td><td>Progress is lost for all users, including logged-in accounts.</td></tr>
+          <tr><td><strong>Primary themes</strong></td><td>Progress persistence, lesson loading feedback, visible exit path, and screen-reader loading state.</td></tr>
+          <tr><td><strong>Evidence limit</strong></td><td>The audit is bounded to selected pages and is not a full WCAG compliance test.</td></tr>
+        </table>
+        <p><a class="button" href="examples/oppia-ux-audit-report.html" target="_blank" rel="noopener">Open HTML Example (new tab)</a></p>
+      </div>
+
+      <div class="card">
+        <h2>Output Snapshot</h2>
+        <p>These snapshots show the report-style output: a scorecard with the overall grade, then a compact plain-language read that turns the audit into a usable decision point.</p>
+      </div>
+      <div class="grid">
+        <figure class="card">
+          <img class="example-screenshot" src="assets/oppia-ux-audit-scorecard.png" alt="Screenshot of the Oppia.org UX Heuristic Audit scorecard showing an overall B minus grade, heuristic ratings, and a critical finding about lost progress." loading="lazy" decoding="async">
+          <figcaption>Output snapshot from the finished Oppia.org UX Heuristic Audit scorecard.</figcaption>
+        </figure>
+        <figure class="card">
+          <img class="example-screenshot" src="examples/screenshots/output-snapshot-01.png" alt="Screenshot of the Oppia.org UX Heuristic Audit plain-language read showing a B minus grade and a before-use warning about progress persistence." loading="lazy" decoding="async">
+          <figcaption>Output snapshot showing the grade, percentage score, and before-use warning.</figcaption>
+        </figure>
+      </div>
+
+      <div class="card">
+        <h2>Claude Conversation Snapshot</h2>
+        <p>These are Claude Code conversation screenshots from the audit flow. Claude chat and Claude for Work can produce similar results, with some variation based on the model, host surface, available tools, and evidence supplied.</p>
+      </div>
+      <div class="grid">
+        <figure class="card">
+          <img class="example-screenshot" src="examples/screenshots/claude-code-conversation-01.png" alt="Claude Code conversation screenshot 1 showing the UXHC advanced audit setup and source preparation flow." loading="lazy" decoding="async">
+          <figcaption>Claude Code conversation snapshot 1 of 8.</figcaption>
+        </figure>
+        <figure class="card">
+          <img class="example-screenshot" src="examples/screenshots/claude-code-conversation-02.png" alt="Claude Code conversation screenshot 2 showing human-in-the-loop audit questions and score calibration." loading="lazy" decoding="async">
+          <figcaption>Claude Code conversation snapshot 2 of 8.</figcaption>
+        </figure>
+        <figure class="card">
+          <img class="example-screenshot" src="examples/screenshots/claude-code-conversation-03.png" alt="Claude Code conversation screenshot 3 showing accepted and adjusted UXHC score calibration responses." loading="lazy" decoding="async">
+          <figcaption>Claude Code conversation snapshot 3 of 8.</figcaption>
+        </figure>
+        <figure class="card">
+          <img class="example-screenshot" src="examples/screenshots/claude-code-conversation-04.png" alt="Claude Code conversation screenshot 4 showing final UXHC audit results and scorecard output." loading="lazy" decoding="async">
+          <figcaption>Claude Code conversation snapshot 4 of 8.</figcaption>
+        </figure>
+        <figure class="card">
+          <img class="example-screenshot" src="examples/screenshots/claude-code-conversation-05.png" alt="Claude Code conversation screenshot 5 showing a native question UI for H03 user-control scoring." loading="lazy" decoding="async">
+          <figcaption>Claude Code conversation snapshot 5 of 8.</figcaption>
+        </figure>
+        <figure class="card">
+          <img class="example-screenshot" src="examples/screenshots/claude-code-conversation-06.png" alt="Claude Code conversation screenshot 6 showing a native question UI for H06 and H07 progress persistence scoring." loading="lazy" decoding="async">
+          <figcaption>Claude Code conversation snapshot 6 of 8.</figcaption>
+        </figure>
+        <figure class="card">
+          <img class="example-screenshot" src="examples/screenshots/claude-code-conversation-07.png" alt="Claude Code conversation screenshot 7 showing a native question UI for H11 accessibility scoring." loading="lazy" decoding="async">
+          <figcaption>Claude Code conversation snapshot 7 of 8.</figcaption>
+        </figure>
+        <figure class="card">
+          <img class="example-screenshot" src="examples/screenshots/claude-code-conversation-08.png" alt="Claude Code conversation screenshot 8 showing final prioritization questions during the UXHC audit." loading="lazy" decoding="async">
+          <figcaption>Claude Code conversation snapshot 8 of 8.</figcaption>
+        </figure>
+      </div>
+
+      <div class="card">
+        <h2>Bonus: Human + AI Output</h2>
+        <p>This bonus example shows a follow-up synthesis where Claude combines UXHC results with a human evaluation panel and another AI evaluation. This is a demonstration of what Claude can do with the audit output afterward; it is not an inherent MCP report function at this stage.</p>
+        <p><a class="button" href="examples/oppia-ux-audit-report-human-ai.html" target="_blank" rel="noopener">Open Human + AI HTML Example (new tab)</a></p>
+      </div>
+      <figure class="card">
+        <img class="example-screenshot" src="examples/screenshots/bonus-human-ai-output-snapshot-02.png" alt="Screenshot of the Human plus AI merged UX evaluation output showing a B minus grade, source scores, and a before-use warning." loading="lazy" decoding="async">
+        <figcaption>Bonus output snapshot showing a merged Human + AI evaluation readout.</figcaption>
+      </figure>
     </section>
 
     <section id="faq" class="tab-panel" role="tabpanel" aria-labelledby="tab-faq" hidden>
@@ -401,11 +475,11 @@ Help me turn this into:
           <summary>Advanced: Verify Download</summary>
           <p>These SHA-256 checksums help technical reviewers confirm that downloaded files match this release.</p>
           <table>
-                                    <tr><td><a href="https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.1/ux-heuristic-compass-plugin.zip" download><code>ux-heuristic-compass-plugin.zip</code></a></td><td><code>b64b1b280ba4a9066ed094d60b196968b1fdd309a375d6afcf9a8da644451c1b</code></td></tr>
-            <tr><td><a href="https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.1/ux-heuristic-compass-0.1.0.mcpb" download><code>ux-heuristic-compass-0.1.0.mcpb</code></a></td><td><code>97c160c81e1e6397b730dae54498fd8fdae93c28813735d7870931f94907a64c</code></td></tr>
-            <tr><td><a href="https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.1/ux-heuristic-compass.skill" download><code>ux-heuristic-compass.skill</code></a></td><td><code>ba2867b1fa9e1016050f4dfd678f3487ea44f4f5120644737f1e324c35f23231</code></td></tr>
-            <tr><td><a href="https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.1/skill.zip" download><code>skill.zip</code></a></td><td><code>de3141506fd73ce1bcfdd92c9d11d56f06310fce9d39c8b5cff76ce6c64e1c04</code></td></tr>
-            <tr><td><a href="https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.1/ux-heuristic-compass-source.zip" download><code>ux-heuristic-compass-source.zip</code></a></td><td><code>75892c1980da6338959de547821f9f2945a8bca217a3e8fed5283ed454f9d45d</code></td></tr>
+                                                <tr><td><a href="https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.1/ux-heuristic-compass-plugin.zip" download><code>ux-heuristic-compass-plugin.zip</code></a></td><td><code>f54afb8be72d067c2b315dfff444300b5c27fe30b4447334cb9829fea33ea397</code></td></tr>
+            <tr><td><a href="https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.1/ux-heuristic-compass-0.1.0.mcpb" download><code>ux-heuristic-compass-0.1.0.mcpb</code></a></td><td><code>06fa89dcab73aea50297510c7568ee5b5ef205daf25e69b3815bf4f776f1b9a4</code></td></tr>
+            <tr><td><a href="https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.1/ux-heuristic-compass.skill" download><code>ux-heuristic-compass.skill</code></a></td><td><code>2ce183910446ac132e3a60f94bb7fa722d0719990dc2594e19b988775e2fa450</code></td></tr>
+            <tr><td><a href="https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.1/skill.zip" download><code>skill.zip</code></a></td><td><code>13ab2212ef345df6bfb4d4c21ed080e75175ccd8b73d12c83f38197f735f03e4</code></td></tr>
+            <tr><td><a href="https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.1/ux-heuristic-compass-source.zip" download><code>ux-heuristic-compass-source.zip</code></a></td><td><code>f55a9795f21e540e94eb002cf85ec40614303e49b45ab2ab27abd2c02e94efaa</code></td></tr>
             <tr><td><a href="https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.1/checksums.txt" download><code>checksums.txt</code></a></td><td>SHA-256 manifest</td></tr>
           </table>
         </details>

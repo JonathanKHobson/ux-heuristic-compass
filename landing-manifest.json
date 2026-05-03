@@ -15,7 +15,7 @@
       "availability": "available",
       "target_users": "Claude Cowork or Claude Code",
       "url": "https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.1/ux-heuristic-compass-plugin.zip",
-      "checksum": "b64b1b280ba4a9066ed094d60b196968b1fdd309a375d6afcf9a8da644451c1b"
+      "checksum": "f54afb8be72d067c2b315dfff444300b5c27fe30b4447334cb9829fea33ea397"
     },
     {
       "label": "Desktop Extension",
@@ -24,7 +24,7 @@
       "availability": "available",
       "target_users": "Claude Desktop",
       "url": "https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.1/ux-heuristic-compass-0.1.0.mcpb",
-      "checksum": "97c160c81e1e6397b730dae54498fd8fdae93c28813735d7870931f94907a64c"
+      "checksum": "06fa89dcab73aea50297510c7568ee5b5ef205daf25e69b3815bf4f776f1b9a4"
     },
     {
       "label": "Skill File",
@@ -33,7 +33,7 @@
       "availability": "available",
       "target_users": "Prompt-only skill use",
       "url": "https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.1/ux-heuristic-compass.skill",
-      "checksum": "ba2867b1fa9e1016050f4dfd678f3487ea44f4f5120644737f1e324c35f23231"
+      "checksum": "2ce183910446ac132e3a60f94bb7fa722d0719990dc2594e19b988775e2fa450"
     },
     {
       "label": "Skill Zip",
@@ -42,7 +42,7 @@
       "availability": "available",
       "target_users": "Skill import workflows",
       "url": "https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.1/skill.zip",
-      "checksum": "de3141506fd73ce1bcfdd92c9d11d56f06310fce9d39c8b5cff76ce6c64e1c04"
+      "checksum": "13ab2212ef345df6bfb4d4c21ed080e75175ccd8b73d12c83f38197f735f03e4"
     },
     {
       "label": "Source Zip",
@@ -51,7 +51,7 @@
       "availability": "available",
       "target_users": "Technical reviewers and source installs",
       "url": "https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.1/ux-heuristic-compass-source.zip",
-      "checksum": "75892c1980da6338959de547821f9f2945a8bca217a3e8fed5283ed454f9d45d"
+      "checksum": "f55a9795f21e540e94eb002cf85ec40614303e49b45ab2ab27abd2c02e94efaa"
     },
     {
       "label": "Checksums",
@@ -60,7 +60,7 @@
       "availability": "available",
       "target_users": "Technical verification",
       "url": "https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.1/checksums.txt",
-      "checksum": "a3236a1270ca52c0f59681a3dc9d147cdf86ff4c32ed5618c2225b992ea75653"
+      "checksum": "6ed4d08c87eca5c3261405dc68e4815e751b17c5be01426e14aea36ae8c39a12"
     }
   ],
   "public_examples": [
