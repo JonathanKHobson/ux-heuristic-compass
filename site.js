@@ -17,6 +17,31 @@
     }
   }
 
+  const downloadFeedback = document.createElement("div");
+  downloadFeedback.className = "sr-only";
+  downloadFeedback.setAttribute("aria-live", "polite");
+  document.body.append(downloadFeedback);
+
+  document.querySelectorAll("[data-guide-hash]").forEach((downloadButton) => {
+    downloadButton.addEventListener("click", () => {
+      const originalLabel = downloadButton.dataset.originalLabel || downloadButton.textContent;
+      downloadButton.dataset.originalLabel = originalLabel;
+      downloadButton.textContent = "Download started. Guide opened.";
+      downloadFeedback.textContent = "Download started. Install guide opened.";
+      const guideHash = (downloadButton.dataset.guideHash || "#install").replace("#", "");
+      window.setTimeout(() => {
+        activateTab(guideHash, true);
+        const target = document.getElementById(guideHash);
+        if (target) {
+          target.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }, 80);
+      window.setTimeout(() => {
+        downloadButton.textContent = originalLabel;
+      }, 2400);
+    });
+  });
+
   tabs.forEach((tab) => {
     tab.addEventListener("click", () => activateTab(tab.dataset.tabTarget, true));
     tab.addEventListener("keydown", (event) => {
