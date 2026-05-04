@@ -40,24 +40,36 @@
         <p>The beta is built around a 14-part heuristic system: Nielsen Norman Group's 10 usability heuristics plus accessibility and ease of access, empathetic engagement and inclusion, customer journey and satisfaction, and UX writing.</p>
       </div>
 
+      <section class="download-chooser card" aria-labelledby="download-chooser-title">
+        <p class="eyebrow">Not sure what to download?</p>
+        <h2 id="download-chooser-title">Pick the file that matches where you work.</h2>
+        <p>Start with the host app you use most. You can install more than one format later if you want both the tool connection and the prompt-only fallback. <a href="https://jonathankhobson.github.io/what-is-an-mcp/" target="_blank" rel="noopener">MCP Basics (opens in a new tab)</a>.</p>
+        <div class="chooser-grid">
+          <div><strong>I use Claude Desktop</strong><span>Choose the Claude Desktop Extension.</span></div>
+          <div><strong>I use Claude Code or Claude Cowork</strong><span>Choose the Claude Code / Cowork Plugin.</span></div>
+          <div><strong>I only want prompt guidance</strong><span>Choose the Skill File or Skill Zip.</span></div>
+          <div><strong>I want to inspect the code first</strong><span>Use the Source Zip from the Advanced tab.</span></div>
+        </div>
+      </section>
+
       <section class="grid">
         <div class="card">
-          <h2>Claude Cowork Plugin</h2>
-          <p>Best for Claude Cowork or Claude Code once the beta package is verified. The plugin will bundle the local MCP, skill, and host guidance.</p>
+          <h2>Claude Code / Cowork Plugin</h2>
+          <p>Plugin Zip. Use this if you already work in Claude Code or Claude Cowork. This bundle includes the local MCP, skill, and host guidance.</p>
           <p><span class="tag">Public beta</span></p>
-          <a class="button" href="https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.1/ux-heuristic-compass-plugin.zip" download>Download Plugin</a>
+          <a class="button" href="https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.1/ux-heuristic-compass-plugin.zip" download data-guide-hash="#install">Download and Open Guide</a>
           <p><a href="#install-cowork">How this will install</a></p>
         </div>
         <div class="card">
           <h2>Claude Desktop Extension</h2>
-          <p>Best if you use Claude Desktop. The MCPB/Desktop Extension will connect Claude to the local UXHC tools.</p>
+          <p>MCPB/Desktop Extension. Use this if you already have Claude Desktop installed. This connects Claude Desktop to the local UXHC tools.</p>
           <p><span class="tag">Public beta</span></p>
-          <a class="button secondary" href="https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.1/ux-heuristic-compass-0.1.0.mcpb" download>Download Extension</a>
+          <a class="button secondary" href="https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.1/ux-heuristic-compass-0.1.0.mcpb" download data-guide-hash="#install">Download and Open Guide</a>
           <p><a href="#install-desktop">How this will install</a></p>
         </div>
         <div class="card">
           <h2>Skill / Prompt-Only Alternative</h2>
-          <p>A standalone skill for hosts that cannot use the MCP yet. Useful as a fallback or as a lighter teaching/coaching surface.</p>
+          <p>Use this when you want prompt guidance without the MCP tools, or when your host app cannot use local connectors yet.</p>
           <p><span class="tag">Public beta</span></p>
           <a class="button ghost" href="https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.1/ux-heuristic-compass.skill" download>Download Skill</a>
           <a class="button ghost" href="https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.1/skill.zip" download>Download Skill Zip</a>
@@ -287,7 +299,7 @@ Help me turn this into:
 
       <section class="grid">
         <div class="card" id="install-cowork">
-          <h2>Claude Cowork Plugin</h2>
+          <h2>Claude Code / Cowork Plugin</h2>
           <ol>
             <li>Download <code>ux-heuristic-compass-plugin.zip</code>.</li>
             <li>Install it through the current Claude Cowork or Claude Code plugin flow.</li>
