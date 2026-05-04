@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Compass Suite UXHC Desktop/Mobile Comparison</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { color-scheme: light; --uxhc-green: #0d6e6e; --ink: #24292e; --muted: #6a737d; --line: #e1e4e8; --soft-line: #f0f0f0; --bg: #f5f6fa; --panel: #ffffff; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--ink); line-height: 1.6; }
+    .header { background: var(--uxhc-green); color: #ffffff; padding: 40px 48px; }
+    .header h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+    .header .meta { font-size: 14px; opacity: 0.9; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 32px 24px; }
+    .card { background: var(--panel); border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); border: 1px solid var(--line); padding: 28px; margin-bottom: 24px; }
+    .card h2 { font-size: 18px; font-weight: 700; margin-bottom: 16px; color: var(--uxhc-green); border-bottom: 2px solid var(--line); padding-bottom: 10px; }
+    .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+    .summary-item { border: 1px solid var(--line); border-radius: 8px; padding: 14px; background: #f6f8fa; }
+    .summary-item .value { font-size: 26px; font-weight: 800; }
+    .summary-item .label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); }
+    table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 13px; }
+    th { text-align: left; padding: 10px 12px; background: #f6f8fa; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); border-bottom: 2px solid var(--line); }
+    td { padding: 10px 12px; border-bottom: 1px solid var(--soft-line); font-size: 13px; vertical-align: top; }
+    footer { background: var(--ink); color: #8b949e; text-align: center; padding: 24px; font-size: 12px; margin-top: 48px; }
+    @media (max-width: 700px) { .header { padding: 32px 24px; } .container { padding: 24px 16px; } table { display: block; overflow-x: auto; } }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <h1>Compass Suite UXHC Desktop/Mobile Comparison</h1>
+    <div class="meta">Desktop all-tabs public journey compared with Mobile all-tabs public journey - UXHC static comparison report</div>
+  </header>
+  <main class="container">
+    <section class="card">
+      <h2>Comparison Summary</h2>
+      <div class="summary-grid">
+        <div class="summary-item"><div class="value">47</div><div class="label">Fixed</div></div>
+        <div class="summary-item"><div class="value">66</div><div class="label">New</div></div>
+        <div class="summary-item"><div class="value">0</div><div class="label">Unresolved</div></div>
+        <div class="summary-item"><div class="value">0</div><div class="label">Severity Changed</div></div>
+        <div class="summary-item"><div class="value">-22.91</div><div class="label">Overall Delta</div></div>
+      </div>
+    </section>
+    <section class="card">
+      <h2>Findings Delta</h2>
+      <p>Matched checklist items are classified as fixed, new, unresolved, or severity changed. Existing comparison fields remain available in the payload.</p>
+    </section>
+    
+        <section class="card">
+          <h2>Fixed Findings</h2>
+          <table>
+            <thead><tr><th>Item</th><th>Heuristic</th><th>Severity</th><th>Evidence</th><th>Recommendation</th></tr></thead>
+            <tbody><tr><td>h01_d_08</td><td>h01</td><td>1.0</td><td>state-01, state-05, state-11, state-17, state-23</td><td>Standard elements (page titles, site navigation, page navigation, privacy policy, etc.) are easy to locate</td></tr><tr><td>h01_d_09</td><td>h01</td><td>1.0</td><td>state-01, state-05, state-11, state-17, state-23</td><td>Logo is in a consistent location, and clicking the logo returns the user back to the home page</td></tr><tr><td>h03_d_01</td><td>h03</td><td>1.0</td><td>state-01, state-02, state-03, state-04, state-05, state-06, state-07, state-08, state-09, state-10, state-11, state-12, state-13, state-14, state-15, state-16, state-17, state-18, state-19, state-20, state-21, state-22, state-23</td><td>There is a search box</td></tr><tr><td>h03_d_02</td><td>h03</td><td>1.0</td><td>state-04, state-09, state-15, state-21, state-03, state-07</td><td>There are clearly marked exits on every page allowing the user to bail out of the current task without having to depend on the browser Back button</td></tr><tr><td>h03_d_05</td><td>h03</td><td>1.0</td><td>state-23</td><td>Undo and redo are supported</td></tr><tr><td>h04_d_07</td><td>h04</td><td>1.0</td><td>state-03, state-07, state-13, state-19</td><td>Terminology is consistent with general web usage</td></tr><tr><td>h04_d_09</td><td>h04</td><td>1.0</td><td>state-03, state-07, state-13, state-19</td><td>Hypertext links that invoke actions, such as downloads or new windows, are clearly distinguished from hypertext links that load another page</td></tr><tr><td>h04_d_13</td><td>h04</td><td>2.0</td><td>state-01, state-05, state-11, state-17, state-23, state-03, state-07, state-13, state-19</td><td>The site contains third-party support, such as citations or testimonials, to verify the accuracy of information</td></tr><tr><td>h04_d_14</td><td>h04</td><td>2.0</td><td>state-01, state-05, state-11, state-17, state-23, state-03, state-07, state-13, state-19</td><td>It is clear that there is a real organization behind the site, such as a physical address or office photo</td></tr><tr><td>h05_d_02</td><td>h05</td><td>2.17</td><td>state-03, state-07, state-13, state-19</td><td>The user does not need to consult user manuals or other external information to use the site</td></tr><tr><td>h05_d_04</td><td>h05</td><td>1.0</td><td>state-03, state-07, state-13, state-19</td><td>The site provides feedback that helps the user learn how to use the site</td></tr><tr><td>h06_d_01</td><td>h06</td><td>1.0</td><td>state-01, state-02, state-03, state-04, state-05, state-06, state-07, state-08, state-09, state-10, state-11, state-12, state-13, state-14, state-15, state-16, state-17, state-18, state-19, state-20, state-21, state-22, state-23</td><td>Search suggestions or filters are provided</td></tr><tr><td>h06_d_04</td><td>h06</td><td>1.0</td><td>state-04, state-10, state-16, state-22</td><td>Buttons and links show that they have been clicked</td></tr><tr><td>h07_d_02</td><td>h07</td><td>2.17</td><td>state-03, state-07, state-13, state-19</td><td>The terms used for navigation items and hypertext links are unambiguous and jargon-free</td></tr><tr><td>h07_d_04</td><td>h07</td><td>2.17</td><td>state-03, state-07, state-13, state-19</td><td>The words, phrases and concepts used will be familiar to the typical user</td></tr><tr><td>h07_d_05</td><td>h07</td><td>1.17</td><td>state-03, state-07, state-13, state-19</td><td>Content feels friendly for new users</td></tr><tr><td>h07_d_06</td><td>h07</td><td>1.17</td><td>state-03, state-07, state-13, state-19</td><td>Content feels customizable or useable for frequent or expert users</td></tr><tr><td>h08_d_01</td><td>h08</td><td>1.17</td><td>state-01, state-02, state-05, state-11, state-17</td><td>By just looking at the home page, the first time user will understand where to start</td></tr><tr><td>h08_d_02</td><td>h08</td><td>1.17</td><td>state-01, state-02, state-05, state-11, state-17</td><td>Primary actions are easy to find and understand</td></tr><tr><td>h08_d_07</td><td>h08</td><td>1.17</td><td>state-03, state-07, state-13, state-19</td><td>Text is concise, with no needless instructions or welcome notes</td></tr></tbody>
+          </table>
+        </section>
+        
+    
+        <section class="card">
+          <h2>New Findings</h2>
+          <table>
+            <thead><tr><th>Item</th><th>Heuristic</th><th>Severity</th><th>Evidence</th><th>Recommendation</th></tr></thead>
+            <tbody><tr><td>h01_m_04</td><td>h01</td><td>2.0</td><td>state-01, state-05, state-11, state-17, state-22</td><td>The items on the home page are clearly focused on primary actions</td></tr><tr><td>h01_m_06</td><td>h01</td><td>2.0</td><td>state-04, state-10, state-16, state-22</td><td>Navigation makes it clear which page I am on</td></tr><tr><td>h01_m_08</td><td>h01</td><td>2.0</td><td>state-01, state-05, state-11, state-17, state-22</td><td>Standard elements (page titles, site navigation, page navigation, privacy policy, etc.) are easy to locate</td></tr><tr><td>h01_m_09</td><td>h01</td><td>2.0</td><td>state-01, state-05, state-11, state-17, state-23</td><td>Logo is in a consistent location, and clicking the logo returns the user back to the home page</td></tr><tr><td>h02_m_01</td><td>h02</td><td>3.0</td><td>state-04, state-10, state-16, state-22</td><td>Navigation tabs are located at the top of the page, and look like clickable versions of real-world tabs</td></tr><tr><td>h02_m_03</td><td>h02</td><td>2.0</td><td>state-01, state-05, state-11, state-17, state-22</td><td>Items that are clickable look like they are clickable</td></tr><tr><td>h03_m_01</td><td>h03</td><td>1.0</td><td>state-01, state-02, state-03, state-04, state-05, state-06, state-07, state-08, state-09, state-10, state-11, state-12, state-13, state-14, state-15, state-16, state-17, state-18, state-19, state-20, state-21, state-22, state-23</td><td>There is a search box</td></tr><tr><td>h03_m_02</td><td>h03</td><td>2.0</td><td>state-04, state-09, state-15, state-21, state-03, state-07</td><td>There are clearly marked exits on every page allowing the user to bail out of the current task without having to depend on the browser Back button</td></tr><tr><td>h03_m_05</td><td>h03</td><td>1.0</td><td>state-23</td><td>Undo and redo are supported</td></tr><tr><td>h04_m_04</td><td>h04</td><td>2.33</td><td>state-04, state-10, state-16, state-22</td><td>Navigation choices are ordered in the most logical or task-oriented manner, with less important corporate information at the bottom</td></tr><tr><td>h04_m_07</td><td>h04</td><td>2.33</td><td>state-03, state-07, state-13, state-19</td><td>Terminology is consistent with general web usage</td></tr><tr><td>h04_m_09</td><td>h04</td><td>2.33</td><td>state-03, state-07, state-13, state-19</td><td>Hypertext links that invoke actions, such as downloads or new windows, are clearly distinguished from hypertext links that load another page</td></tr><tr><td>h04_m_13</td><td>h04</td><td>2.17</td><td>state-01, state-05, state-11, state-17, state-23, state-03, state-07, state-13, state-19</td><td>The site contains third-party support, such as citations or testimonials, to verify the accuracy of information</td></tr><tr><td>h04_m_14</td><td>h04</td><td>2.17</td><td>state-01, state-05, state-11, state-17, state-23, state-03, state-07, state-13, state-19</td><td>It is clear that there is a real organization behind the site, such as a physical address or office photo</td></tr><tr><td>h04_m_18</td><td>h04</td><td>3.33</td><td>state-01, state-05, state-11, state-17, state-22</td><td>On content pages, line lengths are neither too short (under 50 characters per line) nor too long (over 100 characters per line) when viewed in a standard browser width window</td></tr><tr><td>h04_m_19</td><td>h04</td><td>2.33</td><td>state-01, state-05, state-11, state-17, state-22</td><td>Fonts are used consistently and are legible</td></tr><tr><td>h04_m_20</td><td>h04</td><td>4.0</td><td>state-01, state-05, state-11, state-17, state-22</td><td>The site can be used without scrolling horizontally</td></tr><tr><td>h05_m_01</td><td>h05</td><td>2.33</td><td>state-01, state-05, state-11, state-17, state-22</td><td>Pages are free of scroll stoppers: headings or page elements that create the illusion that users have reached the top or bottom of a page when they have not</td></tr><tr><td>h05_m_02</td><td>h05</td><td>2.33</td><td>state-03, state-07, state-13, state-19</td><td>The user does not need to consult user manuals or other external information to use the site</td></tr><tr><td>h05_m_04</td><td>h05</td><td>2.33</td><td>state-03, state-07, state-13, state-19</td><td>The site provides feedback that helps the user learn how to use the site</td></tr></tbody>
+          </table>
+        </section>
+        
+    
+        <section class="card">
+          <h2>Unresolved Findings</h2>
+          <table>
+            <thead><tr><th>Item</th><th>Heuristic</th><th>Severity</th><th>Evidence</th><th>Recommendation</th></tr></thead>
+            <tbody><tr><td colspan="5">None</td></tr></tbody>
+          </table>
+        </section>
+        
+    
+        <section class="card">
+          <h2>Severity-Changed Findings</h2>
+          <table>
+            <thead><tr><th>Item</th><th>Heuristic</th><th>Severity</th><th>Evidence</th><th>Recommendation</th></tr></thead>
+            <tbody><tr><td colspan="5">None</td></tr></tbody>
+          </table>
+        </section>
+        
+    <section class="card">
+      <h2>Comparison Next Action</h2>
+      <p>Review new or worsened severity 3-4 checklist items before treating the candidate audit as improved.</p>
+    </section>
+  </main>
+  <footer>UX Heuristic Compass - static one-page comparison report - no links, scripts, or external assets.</footer>
+</body>
+</html>

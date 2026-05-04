@@ -58,6 +58,57 @@
     });
   });
 
+  const exampleTabs = Array.from(document.querySelectorAll("[data-example-target]"));
+  const examplePanels = Array.from(document.querySelectorAll(".example-panel"));
+
+  function activateExamplePanel(id) {
+    const target = examplePanels.find((panel) => panel.id === id) ? id : "example-one-panel";
+    exampleTabs.forEach((tab) => {
+      const selected = tab.dataset.exampleTarget === target;
+      tab.setAttribute("aria-selected", String(selected));
+      tab.tabIndex = selected ? 0 : -1;
+    });
+    examplePanels.forEach((panel) => {
+      panel.hidden = panel.id !== target;
+    });
+  }
+
+  exampleTabs.forEach((tab) => {
+    tab.addEventListener("click", () => activateExamplePanel(tab.dataset.exampleTarget));
+    tab.addEventListener("keydown", (event) => {
+      const index = exampleTabs.indexOf(tab);
+      let next = null;
+      if (event.key === "ArrowRight") next = exampleTabs[(index + 1) % exampleTabs.length];
+      if (event.key === "ArrowLeft") next = exampleTabs[(index - 1 + exampleTabs.length) % exampleTabs.length];
+      if (event.key === "Home") next = exampleTabs[0];
+      if (event.key === "End") next = exampleTabs[exampleTabs.length - 1];
+      if (!next) return;
+      event.preventDefault();
+      next.focus();
+      activateExamplePanel(next.dataset.exampleTarget);
+    });
+  });
+
+  const reportButtons = Array.from(document.querySelectorAll("[data-report-src]"));
+  const reportFrame = document.getElementById("example-two-report-frame");
+  const openSelectedReport = document.getElementById("open-selected-report");
+
+  function activateReportPreview(button) {
+    if (!button || !reportFrame || !openSelectedReport) return;
+    const src = button.dataset.reportSrc;
+    const title = button.dataset.reportTitle || button.textContent.trim();
+    reportButtons.forEach((item) => {
+      item.setAttribute("aria-pressed", String(item === button));
+    });
+    reportFrame.src = src;
+    reportFrame.title = title + " preview";
+    openSelectedReport.href = src;
+  }
+
+  reportButtons.forEach((button) => {
+    button.addEventListener("click", () => activateReportPreview(button));
+  });
+
   document.querySelectorAll('a[href^="#"]').forEach((link) => {
     link.addEventListener("click", (event) => {
       const id = link.getAttribute("href").slice(1);
@@ -91,4 +142,5 @@
 
   const initial = window.location.hash ? window.location.hash.slice(1) : "get-started";
   activateTab(initial, false);
+  activateExamplePanel("example-one-panel");
 })();

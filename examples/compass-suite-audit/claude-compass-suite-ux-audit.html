@@ -1,0 +1,790 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Compass Suite UX Audit — jonathankhobson.github.io</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { color-scheme: light; --uxhc-green: #0d6e6e; --ink: #24292e; --muted: #6a737d; --line: #e1e4e8; --soft-line: #f0f0f0; --bg: #f5f6fa; --panel: #ffffff; --warning-bg: #fff8e1; --warning-line: #f9a825; --danger: #cb2431; --major: #c96a00; --medium: #b8860b; --success: #22863a; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--ink); line-height: 1.6; }
+    .header { background: var(--uxhc-green); color: #ffffff; padding: 40px 48px; }
+    .header h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+    .header .meta { font-size: 14px; opacity: 0.86; margin-top: 4px; }
+    .header .grade-badge { display: inline-block; background: rgba(255,255,255,0.18); border: 2px solid #ffffff; border-radius: 8px; padding: 8px 20px; font-size: 32px; font-weight: 800; margin-top: 16px; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 32px 24px; }
+    .card, .plain-read, .overall-grade-card, .finding, .top-finding-alert, .scope-lock { background: var(--panel); border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); border: 1px solid var(--line); }
+    .card, .scope-lock { padding: 28px; margin-bottom: 24px; }
+    .card h2, .scope-lock h2 { font-size: 18px; font-weight: 700; margin-bottom: 16px; color: var(--uxhc-green); border-bottom: 2px solid var(--line); padding-bottom: 10px; }
+    .mission-box { background: var(--warning-bg); border-left: 4px solid var(--warning-line); border-radius: 0 8px 8px 0; }
+    .mission-box h2 { color: #6d4c00; border-bottom-color: var(--warning-line); }
+    .mission-box p { color: #5d4037; font-size: 14px; }
+    .overall-summary { display: flex; gap: 24px; align-items: flex-start; margin-bottom: 24px; flex-wrap: wrap; }
+    .overall-grade-card { padding: 24px 32px; text-align: center; min-width: 160px; align-self: flex-start; }
+    .overall-grade-card .big-grade { font-size: 64px; font-weight: 900; line-height: 1; }
+    .overall-grade-card .pct { font-size: 20px; font-weight: 600; color: var(--muted); margin-top: 4px; }
+    .overall-grade-card .descriptor { font-size: 13px; color: var(--muted); margin-top: 6px; max-width: 180px; }
+    .plain-read { padding: 24px; flex: 1; min-width: 300px; }
+    .label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 10px; }
+    .plain-read p { font-size: 15px; color: var(--ink); line-height: 1.7; }
+    .plain-read .before { font-size: 13px; color: #586069; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line); font-style: italic; }
+    .research-recommendation { background: #ffffff; border-radius: 12px; padding: 20px 24px; border: 1px solid #d0d7de; border-left: 4px solid var(--uxhc-green); margin-top: 16px; }
+    .research-recommendation .label { color: var(--uxhc-green); }
+    .research-recommendation p { font-size: 14px; }
+    .top-finding-alert { background: linear-gradient(135deg, #fff0f0, #fff8f0); border: 2px solid var(--danger); padding: 24px; margin-bottom: 24px; }
+    .top-finding-ok { background: #f6f8fa; border-color: var(--line); }
+    .top-finding-alert .label { color: var(--danger); }
+    .top-finding-alert h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+    .top-finding-alert p { font-size: 14px; color: #444; }
+    .scorecard-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+    .score-item { border: 1px solid var(--line); border-radius: 8px; padding: 16px; }
+    .score-item .grade { font-size: 28px; font-weight: 800; }
+    .score-item .pct { font-size: 13px; color: var(--muted); }
+    .score-item .name { font-size: 13px; font-weight: 600; margin-top: 4px; }
+    .score-item .desc { font-size: 11px; color: var(--muted); margin-top: 2px; }
+    .finding { padding: 20px; margin-bottom: 16px; border-left: 4px solid var(--medium); }
+    .finding-header { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; }
+    .rank { background: var(--uxhc-green); color: #ffffff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; flex-shrink: 0; margin-top: 2px; }
+    .severity-badge, .sprint-badge, .role-badge { display: inline-block; border-radius: 12px; padding: 3px 10px; font-size: 11px; font-weight: 700; color: #ffffff; white-space: nowrap; }
+    .heuristic-tag { font-size: 11px; color: var(--muted); margin-left: 4px; }
+    .finding h3 { font-size: 15px; font-weight: 700; margin-top: 4px; }
+    .section { margin-top: 10px; }
+    .section-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); margin-bottom: 4px; }
+    .section-content { font-size: 13px; color: #444; background: #f6f8fa; padding: 10px 12px; border-radius: 6px; }
+    .mission-note { font-size: 12px; color: #856404; background: #fff3cd; padding: 8px 10px; border-radius: 6px; margin-top: 8px; border-left: 3px solid var(--warning-line); }
+    .evidence-line { margin-top: 8px; font-size: 11px; color: var(--muted); }
+    .strengths-list { list-style: none; }
+    .strengths-list li { padding: 8px 0; border-bottom: 1px solid var(--soft-line); font-size: 14px; }
+    .evidence-box { background: #f6f8fa; border: 1px solid var(--line); border-radius: 6px; padding: 16px; font-size: 13px; color: #586069; }
+    .support-lens-warnings { margin-top: 14px; }
+    .validation-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+    .validation-option { border: 1px solid #d0d7de; background: #f6f8fa; border-radius: 8px; padding: 14px; }
+    .option-title { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+    .option-copy { font-size: 12px; color: #57606a; line-height: 1.55; }
+    table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 13px; }
+    th { text-align: left; padding: 10px 12px; background: #f6f8fa; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); border-bottom: 2px solid var(--line); }
+    td { padding: 10px 12px; border-bottom: 1px solid var(--soft-line); font-size: 13px; vertical-align: top; }
+    details { margin: 12px 0; }
+    summary { cursor: pointer; font-weight: 700; }
+    .section-intro { color: var(--muted); font-size: 13px; }
+    .score-pill { display: inline-block; min-width: 30px; text-align: center; border-radius: 999px; padding: 2px 8px; color: #ffffff; font-size: 11px; font-weight: 800; background: var(--muted); }
+    .severity-4, .severity-3 { background: var(--danger); }
+    .severity-2 { background: var(--medium); }
+    .severity-1 { background: var(--success); }
+    .severity-0 { background: var(--muted); }
+    .role-engineer { background: #0969da; }
+    .role-designer { background: #8250df; }
+    .role-product { background: var(--uxhc-green); }
+    .role-research { background: #6f42c1; }
+    .micro-solution-table th:last-child, .micro-solution-table td:last-child { min-width: 118px; white-space: nowrap; }
+    .effort-pill { display: inline-block; border: 1px solid #d0d7de; border-radius: 999px; padding: 2px 8px; font-size: 11px; font-weight: 700; color: #57606a; background: #ffffff; white-space: nowrap; }
+    footer { background: var(--ink); color: #8b949e; text-align: center; padding: 24px; font-size: 12px; margin-top: 48px; }
+    @media (max-width: 700px) { .header { padding: 32px 24px; } .container { padding: 24px 16px; } .scorecard-grid { grid-template-columns: 1fr; } .plain-read { min-width: 100%; } table { display: block; overflow-x: auto; } }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <h1>Compass Suite UX Audit — jonathankhobson.github.io</h1>
+    <div class="meta">AI audit - Desktop - 0 source item(s) - 102 checklist items</div>
+    <div class="meta">Generated: 2026-05-03 - UX Heuristic Compass report harness uxhc.report_design_system.v1</div>
+    <div class="grade-badge">B+ - 78.01%</div>
+  </header>
+  <main class="container">
+    
+    <section class="mission-box card">
+      <h2>Mission Context</h2>
+      <p>Severity ratings reflect the supplied evidence, user goal, optional-profile scope, and any stated evidence limits. Support flows and activities should never outrank the checklist scorecard.</p>
+    </section>
+    
+    
+    <section class="overall-summary" aria-label="Overall audit summary">
+      <div class="overall-grade-card">
+        <div class="big-grade" style="color:#5a7f3e">B+</div>
+        <div class="pct">78.01%</div>
+        <div class="descriptor">Good - a few notable issues</div>
+      </div>
+      <div class="plain-read">
+        <div class="label">Plain Language Read</div>
+        <p>The biggest visible usability risk is inclusion and emotional fit need review. It affects Empathetic Engagement and Inclusion and should be fixed before broader polish.</p>
+        <div class="research-recommendation">
+          <div class="label">Next Research Recommendation</div>
+          <p>Supply a usable source and checklist-level ratings before generating a scored report.</p>
+        </div>
+        <p class="before">Before using this interface, address Empathetic Engagement and Inclusion first: Review the screen through emotional, cultural, and situational user contexts, then remove the highest-friction exclusion point.</p>
+      </div>
+    </section>
+    
+    
+    <section class="top-finding-alert">
+      <div class="label">Major Finding - Immediate Attention</div>
+      <h3>Inclusion and emotional fit need review</h3>
+      <p>Technical jargon barrier on Get Started tab: Plugin Zip, MCP/extension, Claude Cowork, MCPB assume Claude ecosystem knowledge. FAQ tab defines these terms but is one click away from the download decision. Non-technical practitioners encounter jargon before finding help.</p>
+    </section>
+    
+    
+    <section class="card">
+      <h2>Heuristic Scorecard - AI Audit, 14 Heuristics</h2>
+      <div class="scorecard-grid">
+            <article class="score-item">
+              <div class="grade" style="color:#22863a">A-</div>
+              <div class="pct">80.56% - avg severity 0.78</div>
+              <div class="name">Visibility of System Status</div>
+              <div class="desc">Above average - minor gaps</div>
+            </article>
+            
+            <article class="score-item">
+              <div class="grade" style="color:#c96a00">C</div>
+              <div class="pct">58.33% - avg severity 1.67</div>
+              <div class="name">Match Between System and the Real World</div>
+              <div class="desc">Needs attention - failing in places</div>
+            </article>
+            
+            <article class="score-item">
+              <div class="grade" style="color:#22863a">A++</div>
+              <div class="pct">95.0% - avg severity 0.2</div>
+              <div class="name">User Control and Freedom</div>
+              <div class="desc">Exceptional - industry benchmark</div>
+            </article>
+            
+            <article class="score-item">
+              <div class="grade" style="color:#22863a">A-</div>
+              <div class="pct">82.14% - avg severity 0.71</div>
+              <div class="name">Consistency and Standards</div>
+              <div class="desc">Above average - minor gaps</div>
+            </article>
+            
+            <article class="score-item">
+              <div class="grade" style="color:#5a7f3e">B+</div>
+              <div class="pct">75.0% - avg severity 1.0</div>
+              <div class="name">Error Prevention</div>
+              <div class="desc">Good - a few notable issues</div>
+            </article>
+            
+            <article class="score-item">
+              <div class="grade" style="color:#5a7f3e">B+</div>
+              <div class="pct">75.0% - avg severity 1.0</div>
+              <div class="name">Recognition Rather Than Recall</div>
+              <div class="desc">Good - a few notable issues</div>
+            </article>
+            
+            <article class="score-item">
+              <div class="grade" style="color:#22863a">A-</div>
+              <div class="pct">83.33% - avg severity 0.67</div>
+              <div class="name">Flexibility and Efficiency of Use</div>
+              <div class="desc">Above average - minor gaps</div>
+            </article>
+            
+            <article class="score-item">
+              <div class="grade" style="color:#22863a">A</div>
+              <div class="pct">85.94% - avg severity 0.56</div>
+              <div class="name">Aesthetic and Minimalist Design</div>
+              <div class="desc">Strong - meets standard</div>
+            </article>
+            
+            <article class="score-item">
+              <div class="grade" style="color:#5a7f3e">B+</div>
+              <div class="pct">75.0% - avg severity 1.0</div>
+              <div class="name">Help Users Recognize, Diagnose, and Recover from Errors</div>
+              <div class="desc">Good - a few notable issues</div>
+            </article>
+            
+            <article class="score-item">
+              <div class="grade" style="color:#22863a">A++</div>
+              <div class="pct">100.0% - avg severity 0.0</div>
+              <div class="name">Help and Documentation</div>
+              <div class="desc">Exceptional - industry benchmark</div>
+            </article>
+            
+            <article class="score-item">
+              <div class="grade" style="color:#7a8c3e">B-</div>
+              <div class="pct">68.75% - avg severity 1.25</div>
+              <div class="name">Accessibility and Ease of Access</div>
+              <div class="desc">Below average - multiple issues</div>
+            </article>
+            
+            <article class="score-item">
+              <div class="grade" style="color:#c96a00">C</div>
+              <div class="pct">58.33% - avg severity 1.67</div>
+              <div class="name">Empathetic Engagement and Inclusion</div>
+              <div class="desc">Needs attention - failing in places</div>
+            </article>
+            
+            <article class="score-item">
+              <div class="grade" style="color:#22863a">A-</div>
+              <div class="pct">83.33% - avg severity 0.67</div>
+              <div class="name">Customer Journey and Satisfaction</div>
+              <div class="desc">Above average - minor gaps</div>
+            </article>
+            
+            <article class="score-item">
+              <div class="grade" style="color:#7a8c3e">B</div>
+              <div class="pct">71.43% - avg severity 1.14</div>
+              <div class="name">UX Writing / Content and Tone</div>
+              <div class="desc">Acceptable - some improvement needed</div>
+            </article>
+            </div>
+    </section>
+    
+    
+    <section class="card">
+      <h2>Findings - Prioritized Fix Order</h2>
+      
+            <article class="finding" style="border-left-color:#c96a00">
+              <div class="finding-header">
+                <div class="rank">1</div>
+                <div>
+                  <div><span class="severity-badge" style="background:#c96a00">Major</span> <span class="heuristic-tag">Empathetic Engagement and Inclusion - h12_d_01</span></div>
+                  <h3>Inclusion and emotional fit need review</h3>
+                </div>
+              </div>
+              <div class="section"><div class="section-label">Observed Issue</div><div class="section-content">Technical jargon barrier on Get Started tab: Plugin Zip, MCP/extension, Claude Cowork, MCPB assume Claude ecosystem knowledge. FAQ tab defines these terms but is one click away from the download decision. Non-technical practitioners encounter jargon before finding help.</div></div>
+              <div class="section"><div class="section-label">Recommendation</div><div class="section-content">Review the screen through emotional, cultural, and situational user contexts, then remove the highest-friction exclusion point.</div></div>
+              <div class="mission-note">This checklist item indicates measurable heuristic friction for the evaluated surface.</div>
+              <div class="evidence-line">Supporting lenses: Goodhart&#x27;s Law / Metric Gaming, Design Justice Principles</div>
+              <div class="evidence-line">Evidence: img-1 - Confidence: high</div>
+            </article>
+            
+            <article class="finding" style="border-left-color:#c96a00">
+              <div class="finding-header">
+                <div class="rank">2</div>
+                <div>
+                  <div><span class="severity-badge" style="background:#c96a00">Major</span> <span class="heuristic-tag">Empathetic Engagement and Inclusion - h12_d_06</span></div>
+                  <h3>Users may need more control and choice</h3>
+                </div>
+              </div>
+              <div class="section"><div class="section-label">Observed Issue</div><div class="section-content">What is an MCP? is a separate URL not linked from main navigation of tool product pages. A confused user on Critical Compass or UXHC page has no visible path to understanding the ecosystem. Footer link on home page is insufficient prominence.</div></div>
+              <div class="section"><div class="section-label">Recommendation</div><div class="section-content">Expose user controls for notifications, permissions, personalization, or recovery where users can find them quickly.</div></div>
+              <div class="mission-note">This checklist item indicates measurable heuristic friction for the evaluated surface.</div>
+              <div class="evidence-line">Supporting lenses: Default Effect, Goodhart&#x27;s Law / Metric Gaming</div>
+              <div class="evidence-line">Evidence: img-1 - Confidence: high</div>
+            </article>
+            
+            <article class="finding" style="border-left-color:#c96a00">
+              <div class="finding-header">
+                <div class="rank">3</div>
+                <div>
+                  <div><span class="severity-badge" style="background:#c96a00">Major</span> <span class="heuristic-tag">Error Prevention - h05_d_05</span></div>
+                  <h3>Error Prevention needs targeted review</h3>
+                </div>
+              </div>
+              <div class="section"><div class="section-label">Observed Issue</div><div class="section-content">Three download options require knowing which Claude surface the user has. Best for Claude Cowork or Claude Code context clues assume prior platform knowledge. New users cannot confidently choose. FAQ tab explains terms but is behind navigation.</div></div>
+              <div class="section"><div class="section-label">Recommendation</div><div class="section-content">Review the affected element against Error Prevention and make the next user action clearer, safer, or easier to recover from.</div></div>
+              <div class="mission-note">This checklist item indicates measurable heuristic friction for the evaluated surface.</div>
+              <div class="evidence-line">Supporting lenses: Law of Proximity, Fitts&#x27;s Law</div>
+              <div class="evidence-line">Evidence: img-2 - Confidence: high</div>
+            </article>
+            
+            <article class="finding" style="border-left-color:#c96a00">
+              <div class="finding-header">
+                <div class="rank">4</div>
+                <div>
+                  <div><span class="severity-badge" style="background:#c96a00">Major</span> <span class="heuristic-tag">Match Between System and the Real World - h02_d_01</span></div>
+                  <h3>Match Between System and the Real World needs targeted review</h3>
+                </div>
+              </div>
+              <div class="section"><div class="section-label">Observed Issue</div><div class="section-content">Multiple undefined technical terms inline: Plugin Zip, MCP/extension, Claude Cowork, MCPB. FAQ tab defines these but is one click away from the download decision. Non-technical practitioners will encounter jargon before finding the FAQ.</div></div>
+              <div class="section"><div class="section-label">Recommendation</div><div class="section-content">Review the affected element against Match Between System and the Real World and make the next user action clearer, safer, or easier to recover from.</div></div>
+              <div class="mission-note">This checklist item indicates measurable heuristic friction for the evaluated surface.</div>
+              <div class="evidence-line">Supporting lenses: Jakob&#x27;s Law / Familiar Conventions, Plain Language Principle</div>
+              <div class="evidence-line">Evidence: img-1 - Confidence: high</div>
+            </article>
+            
+            <article class="finding" style="border-left-color:#b8860b">
+              <div class="finding-header">
+                <div class="rank">5</div>
+                <div>
+                  <div><span class="severity-badge" style="background:#b8860b">Moderate</span> <span class="heuristic-tag">Accessibility and Ease of Access - h11_d_01</span></div>
+                  <h3>Content may not be perceivable for everyone</h3>
+                </div>
+              </div>
+              <div class="section"><div class="section-label">Observed Issue</div><div class="section-content">Green/teal text for links on white backgrounds may not meet WCAG AA 4.5:1 for small text. Cannot verify exact ratio from screenshot.</div></div>
+              <div class="section"><div class="section-label">Recommendation</div><div class="section-content">Add text alternatives and non-color cues so critical content remains perceivable across assistive and display settings.</div></div>
+              <div class="mission-note">This checklist item indicates measurable heuristic friction for the evaluated surface.</div>
+              <div class="evidence-line">Supporting lenses: WCAG POUR Principles, Figure-Ground</div>
+              <div class="evidence-line">Evidence: img-2 - Confidence: medium</div>
+            </article>
+            
+            <article class="finding" style="border-left-color:#b8860b">
+              <div class="finding-header">
+                <div class="rank">6</div>
+                <div>
+                  <div><span class="severity-badge" style="background:#b8860b">Moderate</span> <span class="heuristic-tag">Accessibility and Ease of Access - h11_d_04</span></div>
+                  <h3>Surface accessibility needs targeted review</h3>
+                </div>
+              </div>
+              <div class="section"><div class="section-label">Observed Issue</div><div class="section-content">Cannot verify alt text from screenshots. Compass logo, infographic images, and author photos all require descriptive alt text. High likelihood of missing alt text.</div></div>
+              <div class="section"><div class="section-label">Recommendation</div><div class="section-content">Run a surface accessibility pass on the affected screen and fix the visible access barrier before deeper compliance review.</div></div>
+              <div class="mission-note">This checklist item indicates measurable heuristic friction for the evaluated surface.</div>
+              <div class="evidence-line">Supporting lenses: WCAG POUR Principles, WAI-ARIA Authoring Practices</div>
+              <div class="evidence-line">Evidence: img-1 - Confidence: low</div>
+            </article>
+            
+            <article class="finding" style="border-left-color:#b8860b">
+              <div class="finding-header">
+                <div class="rank">7</div>
+                <div>
+                  <div><span class="severity-badge" style="background:#b8860b">Moderate</span> <span class="heuristic-tag">Aesthetic and Minimalist Design - h08_d_02</span></div>
+                  <h3>Primary action hierarchy is not clear</h3>
+                </div>
+              </div>
+              <div class="section"><div class="section-label">Observed Issue</div><div class="section-content">Multiple competing CTAs per tool card: Learn More, GitHub, Download + Learn, Download Plugin, Download Extension. No single dominant action on home page grid.</div></div>
+              <div class="section"><div class="section-label">Recommendation</div><div class="section-content">Make the primary action the clearest visual starting point and reduce secondary actions around it.</div></div>
+              <div class="mission-note">This checklist item indicates measurable heuristic friction for the evaluated surface.</div>
+              <div class="evidence-line">Supporting lenses: Visual Hierarchy, Fitts&#x27;s Law</div>
+              <div class="evidence-line">Evidence: img-1 - Confidence: high</div>
+            </article>
+            
+            <article class="finding" style="border-left-color:#b8860b">
+              <div class="finding-header">
+                <div class="rank">8</div>
+                <div>
+                  <div><span class="severity-badge" style="background:#b8860b">Moderate</span> <span class="heuristic-tag">Aesthetic and Minimalist Design - h08_d_06</span></div>
+                  <h3>Visual hierarchy is not supporting the task</h3>
+                </div>
+              </div>
+              <div class="section"><div class="section-label">Observed Issue</div><div class="section-content">Plugin download uses teal/green, Desktop Extension uses orange. Two competing primary button colors create visual noise and may imply unintended priority.</div></div>
+              <div class="section"><div class="section-label">Recommendation</div><div class="section-content">Rework the visual hierarchy so the page guides users from the main purpose to the next action without extra scanning.</div></div>
+              <div class="mission-note">This checklist item indicates measurable heuristic friction for the evaluated surface.</div>
+              <div class="evidence-line">Supporting lenses: Fitts&#x27;s Law, Visual Hierarchy</div>
+              <div class="evidence-line">Evidence: img-2 - Confidence: high</div>
+            </article>
+            
+            <article class="finding" style="border-left-color:#b8860b">
+              <div class="finding-header">
+                <div class="rank">9</div>
+                <div>
+                  <div><span class="severity-badge" style="background:#b8860b">Moderate</span> <span class="heuristic-tag">Consistency and Standards - h04_d_05</span></div>
+                  <h3>Consistency and trust cues need review</h3>
+                </div>
+              </div>
+              <div class="section"><div class="section-label">Observed Issue</div><div class="section-content">Terminology inconsistencies: Plugin Zip vs Claude Cowork Plugin. MCPB/Desktop Extension vs Desktop Extension.</div></div>
+              <div class="section"><div class="section-label">Recommendation</div><div class="section-content">Audit repeated navigation, labels, components, and trust cues, then align any pattern that changes meaning across screens.</div></div>
+              <div class="mission-note">This checklist item indicates measurable heuristic friction for the evaluated surface.</div>
+              <div class="evidence-line">Supporting lenses: Law of Common Region, Shneiderman&#x27;s Eight Golden Rules</div>
+              <div class="evidence-line">Evidence: img-2 - Confidence: high</div>
+            </article>
+            
+            <article class="finding" style="border-left-color:#b8860b">
+              <div class="finding-header">
+                <div class="rank">10</div>
+                <div>
+                  <div><span class="severity-badge" style="background:#b8860b">Moderate</span> <span class="heuristic-tag">Consistency and Standards - h04_d_06</span></div>
+                  <h3>Consistency and trust cues need review</h3>
+                </div>
+              </div>
+              <div class="section"><div class="section-label">Observed Issue</div><div class="section-content">CTA labels vary: Download Plugin, Download Extension, Download Skill, Download + Learn, Learn More, Read Suite Overview. Inconsistent verb/noun patterns.</div></div>
+              <div class="section"><div class="section-label">Recommendation</div><div class="section-content">Audit repeated navigation, labels, components, and trust cues, then align any pattern that changes meaning across screens.</div></div>
+              <div class="mission-note">This checklist item indicates measurable heuristic friction for the evaluated surface.</div>
+              <div class="evidence-line">Supporting lenses: Shneiderman&#x27;s Eight Golden Rules, Platform Human Interface Guidelines</div>
+              <div class="evidence-line">Evidence: img-1 - Confidence: high</div>
+            </article>
+            
+    </section>
+    
+    
+    <section class="card">
+      <h2>Owner-Role Triage Matrix</h2>
+      
+        <table class="owner-triage-table">
+          <thead><tr><th>Owner</th><th>Linked finding</th><th>Next action</th><th>Impact</th><th>Effort</th><th>Confidence</th><th>Supporting roles</th></tr></thead>
+          <tbody>
+                <tr>
+                  <td><span class="role-badge role-research">Research</span></td>
+                  <td>h12 / h12_d_01</td>
+                  <td>Review the screen through emotional, cultural, and situational user contexts, then remove the highest-friction exclusion point.</td>
+                  <td>high</td>
+                  <td><span class="effort-pill">Low-Medium</span></td>
+                  <td>high</td>
+                  <td></td>
+                </tr>
+                
+                <tr>
+                  <td><span class="role-badge role-research">Research</span></td>
+                  <td>h12 / h12_d_06</td>
+                  <td>Expose user controls for notifications, permissions, personalization, or recovery where users can find them quickly.</td>
+                  <td>high</td>
+                  <td><span class="effort-pill">Low-Medium</span></td>
+                  <td>high</td>
+                  <td></td>
+                </tr>
+                
+                <tr>
+                  <td><span class="role-badge role-engineer">Engineer</span></td>
+                  <td>h05 / h05_d_05</td>
+                  <td>Review the affected element against Error Prevention and make the next user action clearer, safer, or easier to recover from.</td>
+                  <td>high</td>
+                  <td><span class="effort-pill">Medium</span></td>
+                  <td>high</td>
+                  <td></td>
+                </tr>
+                
+                <tr>
+                  <td><span class="role-badge role-product">Product</span></td>
+                  <td>h02 / h02_d_01</td>
+                  <td>Review the affected element against Match Between System and the Real World and make the next user action clearer, safer, or easier to recover from.</td>
+                  <td>high</td>
+                  <td><span class="effort-pill">Low-Medium</span></td>
+                  <td>high</td>
+                  <td></td>
+                </tr>
+                
+                <tr>
+                  <td><span class="role-badge role-engineer">Engineer</span></td>
+                  <td>h11 / h11_d_01</td>
+                  <td>Add text alternatives and non-color cues so critical content remains perceivable across assistive and display settings.</td>
+                  <td>medium</td>
+                  <td><span class="effort-pill">Medium</span></td>
+                  <td>medium</td>
+                  <td></td>
+                </tr>
+                
+                <tr>
+                  <td><span class="role-badge role-engineer">Engineer</span></td>
+                  <td>h11 / h11_d_04</td>
+                  <td>Run a surface accessibility pass on the affected screen and fix the visible access barrier before deeper compliance review.</td>
+                  <td>medium</td>
+                  <td><span class="effort-pill">Medium</span></td>
+                  <td>low</td>
+                  <td>Research</td>
+                </tr>
+                
+                <tr>
+                  <td><span class="role-badge role-designer">Designer</span></td>
+                  <td>h08 / h08_d_02</td>
+                  <td>Make the primary action the clearest visual starting point and reduce secondary actions around it.</td>
+                  <td>medium</td>
+                  <td><span class="effort-pill">Low</span></td>
+                  <td>high</td>
+                  <td></td>
+                </tr>
+                
+                <tr>
+                  <td><span class="role-badge role-designer">Designer</span></td>
+                  <td>h08 / h08_d_06</td>
+                  <td>Rework the visual hierarchy so the page guides users from the main purpose to the next action without extra scanning.</td>
+                  <td>medium</td>
+                  <td><span class="effort-pill">Low</span></td>
+                  <td>high</td>
+                  <td></td>
+                </tr>
+                
+                <tr>
+                  <td><span class="role-badge role-product">Product</span></td>
+                  <td>h04 / h04_d_05</td>
+                  <td>Audit repeated navigation, labels, components, and trust cues, then align any pattern that changes meaning across screens.</td>
+                  <td>medium</td>
+                  <td><span class="effort-pill">Low</span></td>
+                  <td>high</td>
+                  <td></td>
+                </tr>
+                
+                <tr>
+                  <td><span class="role-badge role-product">Product</span></td>
+                  <td>h04 / h04_d_06</td>
+                  <td>Audit repeated navigation, labels, components, and trust cues, then align any pattern that changes meaning across screens.</td>
+                  <td>medium</td>
+                  <td><span class="effort-pill">Low</span></td>
+                  <td>high</td>
+                  <td></td>
+                </tr>
+                </tbody>
+        </table>
+        
+    </section>
+    
+    
+    <section class="card">
+      <h2>What Is Working Well</h2>
+      <ul class="strengths-list"><li>Visibility of System Status holds up with A- (80.56%).</li><li>User Control and Freedom holds up with A++ (95.0%).</li><li>Consistency and Standards holds up with A- (82.14%).</li><li>Flexibility and Efficiency of Use holds up with A- (83.33%).</li><li>Aesthetic and Minimalist Design holds up with A (85.94%).</li><li>Help and Documentation holds up with A++ (100.0%).</li><li>Customer Journey and Satisfaction holds up with A- (83.33%).</li></ul>
+    </section>
+    
+    
+    <section class="card">
+      <h2>Evidence Limits</h2>
+      <div class="evidence-box"><p>source: source preparation was partial or blocked (ratings may be incomplete or unavailable)</p><p>h01_d_03: Dynamic states not observable from static screenshots (rating confidence is reduced)</p><p>h01_d_05: Static captures cannot show error feedback (rating confidence is reduced)</p><p>h01_d_06: Active/hover states for nav elements not captured in static screenshots (rating confidence is reduced)</p><p>h02_d_01: FAQ tab content captured in follow-up; jargon definitions exist behind tab navigation, not inline on Get Started tab (rating confidence is reduced)</p><p>h04_d_08: Hover/focus state consistency not verifiable from static screenshots (rating confidence is reduced)</p><p>h04_d_09: Action links vs navigation links state differences not captured in static screenshots (rating confidence is reduced)</p><p>h04_d_16: Static site; no transition states observable (rating confidence is reduced)</p><p>h04_d_17: Locked product interactive state behavior not captured (rating confidence is reduced)</p><p>h07_d_02: Keyboard navigation not verifiable from static screenshots (rating confidence is reduced)</p><p>h07_d_03: Product detail depth limited to static download cards (rating confidence is reduced)</p><p>h09_d_01: Static captures cannot show error messages (rating confidence is reduced)</p><p>h09_d_02: Error and loading states not visible in static screenshots; no form submission, failed-auth, or API-error states captured (rating confidence is reduced)</p><p>h10_d_01: In-context help links not clicked through; help destination quality not verified (rating confidence is reduced)</p><p>h12_d_01: FAQ and Install Guide tab content captured in follow-up review; jargon definitions exist behind tab navigation, not inline (rating confidence is reduced)</p><p>h14_d_05: No error message copy observable from static screenshots (rating confidence is reduced)</p><p>h14_d_06: Paragraph length measured from visible viewport; full tab content not captured in original screenshots (rating confidence is reduced)</p><p>h01_d_01: evidence_ref &#x27;img-1&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h01_d_01: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h01_d_01: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h01_d_02: evidence_ref &#x27;img-1&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h01_d_03: evidence_ref &#x27;img-1&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h01_d_04: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h01_d_04: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h01_d_06: evidence_ref &#x27;img-1&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h01_d_06: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h01_d_06: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h01_d_06: evidence_ref &#x27;img-4&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h01_d_06: evidence_ref &#x27;img-5&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h01_d_07: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h01_d_07: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h01_d_07: evidence_ref &#x27;img-4&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h01_d_08: evidence_ref &#x27;img-1&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h01_d_09: evidence_ref &#x27;img-1&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h02_d_01: evidence_ref &#x27;img-1&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h02_d_01: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h02_d_01: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h02_d_01: evidence_ref &#x27;img-4&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h02_d_02: evidence_ref &#x27;img-1&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h02_d_02: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h02_d_02: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h02_d_03: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h02_d_03: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h02_d_03: evidence_ref &#x27;img-4&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h03_d_01: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h03_d_01: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h03_d_01: evidence_ref &#x27;img-4&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h03_d_02: evidence_ref &#x27;img-1&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h03_d_03: evidence_ref &#x27;img-1&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h03_d_04: evidence_ref &#x27;img-1&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h03_d_05: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h03_d_05: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h03_d_05: evidence_ref &#x27;img-4&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h04_d_01: evidence_ref &#x27;img-1&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h04_d_01: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h04_d_01: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h04_d_01: evidence_ref &#x27;img-4&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h04_d_01: evidence_ref &#x27;img-5&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h04_d_02: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h04_d_02: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h04_d_02: evidence_ref &#x27;img-4&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h04_d_03: evidence_ref &#x27;img-1&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h04_d_03: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h04_d_03: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h04_d_04: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h04_d_04: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h04_d_04: evidence_ref &#x27;img-4&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h04_d_05: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h04_d_05: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h04_d_05: evidence_ref &#x27;img-4&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h04_d_06: evidence_ref &#x27;img-1&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h04_d_06: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h04_d_06: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h04_d_06: evidence_ref &#x27;img-4&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h04_d_07: evidence_ref &#x27;img-1&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h04_d_09: evidence_ref &#x27;img-1&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h04_d_10: evidence_ref &#x27;img-1&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h04_d_10: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h04_d_10: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h04_d_10: evidence_ref &#x27;img-4&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h04_d_11: evidence_ref &#x27;img-1&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h04_d_11: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h04_d_12: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h04_d_12: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h04_d_13: evidence_ref &#x27;img-1&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h04_d_13: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h04_d_14: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h04_d_14: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h04_d_14: evidence_ref &#x27;img-4&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h04_d_15: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h04_d_15: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h04_d_15: evidence_ref &#x27;img-4&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h04_d_17: evidence_ref &#x27;img-1&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h04_d_17: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h04_d_17: evidence_ref &#x27;img-4&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h04_d_18: evidence_ref &#x27;img-1&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h04_d_19: evidence_ref &#x27;img-1&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h04_d_20: evidence_ref &#x27;img-1&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h04_d_20: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h04_d_20: evidence_ref &#x27;img-5&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h04_d_21: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h04_d_21: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h04_d_21: evidence_ref &#x27;img-4&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h05_d_01: evidence_ref &#x27;img-1&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h05_d_02: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h05_d_02: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h05_d_02: evidence_ref &#x27;img-4&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h05_d_03: evidence_ref &#x27;img-1&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h05_d_04: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h05_d_04: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h05_d_05: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h05_d_05: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h05_d_05: evidence_ref &#x27;img-4&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h06_d_01: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h06_d_01: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h06_d_01: evidence_ref &#x27;img-4&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h06_d_02: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h06_d_02: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h06_d_02: evidence_ref &#x27;img-4&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h06_d_03: evidence_ref &#x27;img-1&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h06_d_04: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h06_d_04: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h06_d_04: evidence_ref &#x27;img-4&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h07_d_01: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h07_d_01: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h07_d_01: evidence_ref &#x27;img-4&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h07_d_03: evidence_ref &#x27;img-1&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h07_d_04: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h07_d_04: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h07_d_04: evidence_ref &#x27;img-4&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h07_d_05: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h07_d_05: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h07_d_05: evidence_ref &#x27;img-4&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h07_d_06: evidence_ref &#x27;img-1&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h07_d_07: evidence_ref &#x27;img-1&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h07_d_08: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h07_d_08: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h07_d_08: evidence_ref &#x27;img-4&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h07_d_09: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h07_d_09: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h07_d_09: evidence_ref &#x27;img-4&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h08_d_01: evidence_ref &#x27;img-1&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h08_d_01: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h08_d_02: evidence_ref &#x27;img-1&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h08_d_02: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h08_d_03: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h08_d_03: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h08_d_04: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h08_d_04: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h08_d_04: evidence_ref &#x27;img-4&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h08_d_05: evidence_ref &#x27;img-1&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h08_d_05: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h08_d_06: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h08_d_06: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h08_d_06: evidence_ref &#x27;img-4&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h08_d_07: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h08_d_07: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h08_d_08: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h08_d_08: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h08_d_09: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h08_d_09: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h08_d_09: evidence_ref &#x27;img-4&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h08_d_10: evidence_ref &#x27;img-1&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h08_d_11: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h08_d_11: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h08_d_12: evidence_ref &#x27;img-1&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h08_d_12: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h08_d_13: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h08_d_13: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h08_d_14: evidence_ref &#x27;img-5&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h08_d_15: evidence_ref &#x27;img-1&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h08_d_15: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h08_d_15: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h08_d_16: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h08_d_16: evidence_ref &#x27;img-4&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h10_d_01: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h10_d_01: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h10_d_01: evidence_ref &#x27;img-4&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h10_d_02: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h10_d_02: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h10_d_02: evidence_ref &#x27;img-4&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h10_d_03: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h10_d_03: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h10_d_03: evidence_ref &#x27;img-4&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h10_d_04: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h10_d_04: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h10_d_04: evidence_ref &#x27;img-4&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h10_d_05: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h10_d_05: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h10_d_05: evidence_ref &#x27;img-4&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h11_d_01: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h11_d_01: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h11_d_02: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h11_d_02: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h11_d_02: evidence_ref &#x27;img-4&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h11_d_03: evidence_ref &#x27;img-1&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h11_d_03: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h11_d_04: evidence_ref &#x27;img-1&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h11_d_04: evidence_ref &#x27;img-5&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h12_d_01: evidence_ref &#x27;img-1&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h12_d_01: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h12_d_01: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h12_d_01: evidence_ref &#x27;img-4&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h12_d_02: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h12_d_02: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h12_d_03: evidence_ref &#x27;img-1&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h12_d_03: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h12_d_04: evidence_ref &#x27;img-1&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h12_d_05: evidence_ref &#x27;img-1&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h12_d_05: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h12_d_05: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h12_d_06: evidence_ref &#x27;img-1&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h12_d_06: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h12_d_06: evidence_ref &#x27;img-4&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h13_d_01: evidence_ref &#x27;img-1&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h13_d_01: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h13_d_01: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h13_d_01: evidence_ref &#x27;img-4&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h13_d_02: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h13_d_02: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h13_d_03: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h13_d_03: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h13_d_03: evidence_ref &#x27;img-4&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h13_d_04: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h13_d_04: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h13_d_05: evidence_ref &#x27;img-1&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h13_d_05: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h13_d_06: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h13_d_06: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h13_d_06: evidence_ref &#x27;img-4&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h14_d_01: evidence_ref &#x27;img-1&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h14_d_01: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h14_d_02: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h14_d_02: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h14_d_02: evidence_ref &#x27;img-4&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h14_d_03: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h14_d_03: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h14_d_04: evidence_ref &#x27;img-1&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h14_d_04: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h14_d_04: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h14_d_04: evidence_ref &#x27;img-4&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h14_d_06: evidence_ref &#x27;img-1&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h14_d_07: evidence_ref &#x27;img-2&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h14_d_07: evidence_ref &#x27;img-3&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p><p>h14_d_07: evidence_ref &#x27;img-4&#x27; was not found in the AuditEvidenceGraph (rating remains usable but traceability is reduced)</p></div>
+    </section>
+    
+    
+    <section class="card">
+      <h2>Recommended Next Validation Steps</h2>
+      <div class="validation-list">
+        <article class="validation-option">
+          <div class="option-title">Validation Step 1</div>
+          <div class="option-copy">Supply a usable source and checklist-level ratings before generating a scored report.</div>
+        </article>
+        </div>
+    </section>
+    
+    
+    <section class="card">
+      <h2>Supporting UX Laws And Principles</h2>
+      <p class="section-intro">Support-only explanation. These lenses do not create findings, change 0-4 checklist ratings, or certify compliance.</p>
+      <table>
+        <thead><tr><th>Lens</th><th>Source family</th><th>Applies to</th><th>Why it matters</th><th>Caveat</th></tr></thead>
+        <tbody>
+            <tr>
+              <td>Shneiderman&#x27;s Eight Golden Rules</td>
+              <td>Shneiderman</td>
+              <td>h04/h04_d_05, h04/h04_d_06, h04/h04_d_02</td>
+              <td>The finding is also consistent with Shneiderman-style interface review principles.</td>
+              <td>The rules are broad and require domain-specific interpretation.</td>
+            </tr>
+            
+            <tr>
+              <td>Plain Language Principle</td>
+              <td>Content design practice</td>
+              <td>h02/h02_d_01, h07/h07_d_01, h14/h14_d_01</td>
+              <td>The finding is supported by plain-language risk: the wording may slow understanding or recovery.</td>
+              <td>Plain language depends on audience, domain vocabulary, localization, and risk level.</td>
+            </tr>
+            
+            <tr>
+              <td>Visual Hierarchy</td>
+              <td>UI design practice</td>
+              <td>h08/h08_d_02, h08/h08_d_06, h01/h01_d_04</td>
+              <td>The finding is supported by visual hierarchy: the screen does not make the most important next action visually primary.</td>
+              <td>Hierarchy needs to match the user&#x27;s current task, not only stakeholder importance.</td>
+            </tr>
+            
+            <tr>
+              <td>Fitts&#x27;s Law</td>
+              <td>Laws of UX / HCI</td>
+              <td>h05/h05_d_05, h08/h08_d_02, h08/h08_d_06</td>
+              <td>The finding is supported by target-acquisition risk: the important action is not easy enough to locate or activate.</td>
+              <td>Motor models predict tendencies; device, posture, tremor, screen size, and assistive technology can change the risk.</td>
+            </tr>
+            
+            <tr>
+              <td>Platform Human Interface Guidelines</td>
+              <td>Apple / Material / Fluent</td>
+              <td>h04/h04_d_06, h04/h04_d_12, h04/h04_d_13</td>
+              <td>The finding is supported by platform-guideline risk: the component may not match expected platform behavior.</td>
+              <td>Platform guidance differs across iOS, Android, web, and desktop.</td>
+            </tr>
+            
+            <tr>
+              <td>KLM / GOMS Expert Efficiency Models</td>
+              <td>HCI</td>
+              <td>h07/h07_d_01, h13/h13_d_02, h07/h07_d_02</td>
+              <td>The finding is supported by expert-efficiency risk: repeated users may spend avoidable effort on extra operations.</td>
+              <td>These models are best for routine expert tasks; novice learning and emotional safety need other lenses too.</td>
+            </tr>
+            </tbody>
+      </table>
+      <div class="evidence-box support-lens-warnings"><p>Do not use this as a replacement rubric; map it back to the active UXHC checklist item.</p><p>Do not remove precise domain terms that expert users need; explain them when needed.</p><p>Do not make every business priority visually dominant; hierarchy requires tradeoffs.</p><p>Do not reduce this to bigger buttons everywhere; apply it to task-critical targets with evidence.</p><p>Do not mix platform guidance without naming the evaluated platform.</p></div>
+    </section>
+    
+    
+    
+    <section class="card">
+      <h2>Prioritized Fix Roadmap</h2>
+      <table class="roadmap-table">
+        <thead><tr><th>When</th><th>Recommended action</th></tr></thead>
+        <tbody><tr><td><span class="sprint-badge" style="background:#c96a00">Sprint 1</span></td><td>Review the screen through emotional, cultural, and situational user contexts, then remove the highest-friction exclusion point.</td></tr><tr><td><span class="sprint-badge" style="background:#c96a00">Sprint 1</span></td><td>Expose user controls for notifications, permissions, personalization, or recovery where users can find them quickly.</td></tr><tr><td><span class="sprint-badge" style="background:#c96a00">Sprint 1</span></td><td>Review the affected element against Error Prevention and make the next user action clearer, safer, or easier to recover from.</td></tr><tr><td><span class="sprint-badge" style="background:#c96a00">Sprint 1</span></td><td>Review the affected element against Match Between System and the Real World and make the next user action clearer, safer, or easier to recover from.</td></tr><tr><td><span class="sprint-badge" style="background:#b8860b">Sprint 2</span></td><td>Add text alternatives and non-color cues so critical content remains perceivable across assistive and display settings.</td></tr><tr><td><span class="sprint-badge" style="background:#b8860b">Sprint 2</span></td><td>Run a surface accessibility pass on the affected screen and fix the visible access barrier before deeper compliance review.</td></tr><tr><td><span class="sprint-badge" style="background:#b8860b">Sprint 2</span></td><td>Make the primary action the clearest visual starting point and reduce secondary actions around it.</td></tr><tr><td><span class="sprint-badge" style="background:#b8860b">Sprint 2</span></td><td>Rework the visual hierarchy so the page guides users from the main purpose to the next action without extra scanning.</td></tr><tr><td><span class="sprint-badge" style="background:#b8860b">Sprint 2</span></td><td>Audit repeated navigation, labels, components, and trust cues, then align any pattern that changes meaning across screens.</td></tr><tr><td><span class="sprint-badge" style="background:#b8860b">Sprint 2</span></td><td>Audit repeated navigation, labels, components, and trust cues, then align any pattern that changes meaning across screens.</td></tr><tr><td><span class="sprint-badge" style="background:#b8860b">Sprint 2</span></td><td>Standardize repeated components, labels, and visual treatments so the same action looks and behaves the same way everywhere.</td></tr><tr><td><span class="sprint-badge" style="background:#b8860b">Sprint 2</span></td><td>Review the affected element against Customer Journey and Satisfaction and make the next user action clearer, safer, or easier to recover from.</td></tr></tbody>
+      </table>
+    </section>
+    
+    
+    <section class="card">
+      <h2>High-Impact / Low-Effort Micro-Solutions</h2>
+      <table class="micro-solution-table">
+        <thead><tr><th>Role</th><th>Micro-solution</th><th>Linked finding</th><th>Why high impact</th><th>Estimated effort</th></tr></thead>
+        <tbody>
+                <tr>
+                  <td><span class="role-badge role-research">Research</span></td>
+                  <td>Review the screen through emotional, cultural, and situational user contexts, then remove the highest-friction exclusion point.</td>
+                  <td>h12 / h12_d_01</td>
+                  <td>This checklist item indicates measurable heuristic friction for the evaluated surface.</td>
+                  <td><span class="effort-pill">Low-Medium</span></td>
+                </tr>
+                
+                <tr>
+                  <td><span class="role-badge role-research">Research</span></td>
+                  <td>Expose user controls for notifications, permissions, personalization, or recovery where users can find them quickly.</td>
+                  <td>h12 / h12_d_06</td>
+                  <td>This checklist item indicates measurable heuristic friction for the evaluated surface.</td>
+                  <td><span class="effort-pill">Low-Medium</span></td>
+                </tr>
+                
+                <tr>
+                  <td><span class="role-badge role-engineer">Engineer</span></td>
+                  <td>Review the affected element against Error Prevention and make the next user action clearer, safer, or easier to recover from.</td>
+                  <td>h05 / h05_d_05</td>
+                  <td>This checklist item indicates measurable heuristic friction for the evaluated surface.</td>
+                  <td><span class="effort-pill">Low-Medium</span></td>
+                </tr>
+                
+                <tr>
+                  <td><span class="role-badge role-product">Product</span></td>
+                  <td>Review the affected element against Match Between System and the Real World and make the next user action clearer, safer, or easier to recover from.</td>
+                  <td>h02 / h02_d_01</td>
+                  <td>This checklist item indicates measurable heuristic friction for the evaluated surface.</td>
+                  <td><span class="effort-pill">Low-Medium</span></td>
+                </tr>
+                
+                <tr>
+                  <td><span class="role-badge role-engineer">Engineer</span></td>
+                  <td>Add text alternatives and non-color cues so critical content remains perceivable across assistive and display settings.</td>
+                  <td>h11 / h11_d_01</td>
+                  <td>This checklist item indicates measurable heuristic friction for the evaluated surface.</td>
+                  <td><span class="effort-pill">Low-Medium</span></td>
+                </tr>
+                
+                <tr>
+                  <td><span class="role-badge role-engineer">Engineer</span></td>
+                  <td>Run a surface accessibility pass on the affected screen and fix the visible access barrier before deeper compliance review.</td>
+                  <td>h11 / h11_d_04</td>
+                  <td>This checklist item indicates measurable heuristic friction for the evaluated surface.</td>
+                  <td><span class="effort-pill">Low-Medium</span></td>
+                </tr>
+                </tbody>
+      </table>
+    </section>
+    
+    
+    <section class="scope-lock">
+      <h2>Audit Scope and Omitted Profiles</h2>
+      <p><strong>Status:</strong> all_optionals_active</p>
+      <p><strong>Optional profile mode:</strong> scoped</p>
+      <p><strong>Scored optional profiles:</strong> accessibility (h11), inclusion (h12), journey (h13), ux_writing (h14)</p>
+      <p><strong>Omitted optional profiles:</strong></p>
+      <p>None</p>
+      <p>For a full advanced audit, rerun with optional_profile_mode=&#x27;all_optionals&#x27; or profiles=[&#x27;accessibility&#x27;,&#x27;inclusion&#x27;,&#x27;journey&#x27;,&#x27;ux_writing&#x27;].</p>
+    </section>
+    
+    <section class="card">
+      <h2>Complete Checklist Scores</h2>
+      
+    <p class="section-intro">All checklist rows are shown. Use the Score and Status columns to scan Passed, Issue, and Major rows without JavaScript filters.</p>
+    
+            <details class="checklist-table">
+              <summary>Visibility of System Status (h01) - 9 checklist items</summary>
+              <table>
+                <thead><tr><th>Item</th><th>Checklist text</th><th>Score</th><th>Status</th><th>Confidence</th><th>Severity basis</th><th>Evidence</th><th>Rationale</th></tr></thead>
+                <tbody><tr class="checklist-row checklist-state-passed"><td>h01_d_01</td><td>Every interface begins with a title/header that describes page contents</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>high</td><td></td><td>img-1, img-2, img-3</td><td>Active tab is underlined in red/orange across all product pages. Current section visually indicated.</td></tr><tr class="checklist-row checklist-state-issue"><td>h01_d_02</td><td>Headings and subheadings are short, straightforward and descriptive</td><td><span class="score-pill severity-2">2.0</span></td><td>Issue</td><td>low</td><td></td><td>img-1</td><td>Download button and copy-prompt actions have no visible confirmation state observable from static screenshots.</td></tr><tr class="checklist-row checklist-state-issue"><td>h01_d_03</td><td>Value proposition is clearly stated on the home page (tagline or welcome blurb)</td><td><span class="score-pill severity-1">1.0</span></td><td>Issue</td><td>low</td><td></td><td>img-1</td><td>Static site, limited loading states visible.</td></tr><tr class="checklist-row checklist-state-issue"><td>h01_d_04</td><td>The items on the home page are clearly focused on primary actions</td><td><span class="score-pill severity-2">2.0</span></td><td>Issue</td><td>low</td><td></td><td>img-2, img-3</td><td>Copy prompt buttons show no visible confirmation state after activation. File download completion not observable.</td></tr><tr class="checklist-row checklist-state-issue"><td>h01_d_05</td><td>Each page is clearly branded so that the user knows they are on the same site</td><td><span class="score-pill severity-1">1.0</span></td><td>Issue</td><td>low</td><td></td><td></td><td>No error states visible.</td></tr><tr class="checklist-row checklist-state-passed"><td>h01_d_06</td><td>Navigation makes it clear which page I am on</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>high</td><td></td><td>img-1, img-2, img-3, img-4, img-5</td><td>Page titles accurately reflect content: Compass Suite, Download Critical Compass, Download Prompt Compass, Download UX Heuristics Compass, What is an MCP?</td></tr><tr class="checklist-row checklist-state-issue"><td>h01_d_07</td><td>Link names match the title of destination pages, so users will know when they have reached the intended page</td><td><span class="score-pill severity-1">1.0</span></td><td>Issue</td><td>high</td><td></td><td>img-2, img-3, img-4</td><td>Back to Compass Suite button present and helpful. Active tab underlined. No breadcrumb trail for deeper navigation.</td></tr><tr class="checklist-row checklist-state-passed"><td>h01_d_08</td><td>Standard elements (page titles, site navigation, page navigation, privacy policy, etc.) are easy to locate</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>high</td><td></td><td>img-1</td><td>Locked and unavailable tools clearly labeled: Downloads Coming Later, Locked Until Privacy Scrub. Status communicated proactively.</td></tr><tr class="checklist-row checklist-state-passed"><td>h01_d_09</td><td>Logo is in a consistent location, and clicking the logo returns the user back to the home page</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>high</td><td></td><td>img-1</td><td>No multi-step processes on these informational/download pages. Not applicable.</td></tr></tbody>
+              </table>
+            </details>
+            
+
+            <details class="checklist-table">
+              <summary>Match Between System and the Real World (h02) - 3 checklist items</summary>
+              <table>
+                <thead><tr><th>Item</th><th>Checklist text</th><th>Score</th><th>Status</th><th>Confidence</th><th>Severity basis</th><th>Evidence</th><th>Rationale</th></tr></thead>
+                <tbody><tr class="checklist-row checklist-state-major"><td>h02_d_01</td><td>Navigation tabs are located at the top of the page, and look like clickable versions of real-world tabs</td><td><span class="score-pill severity-3">3.0</span></td><td>Major</td><td>high</td><td></td><td>img-1, img-2, img-3, img-4</td><td>Multiple undefined technical terms inline: Plugin Zip, MCP/extension, Claude Cowork, MCPB. FAQ tab defines these but is one click away from the download decision. Non-technical practitioners will encounter jargon before finding the FAQ.</td></tr><tr class="checklist-row checklist-state-passed"><td>h02_d_02</td><td>Items that are not clickable do not have characteristics that suggest that they are clickable</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>high</td><td></td><td>img-1, img-2, img-3</td><td>Tab navigation order is logical. Card layout follows left-to-right reading flow.</td></tr><tr class="checklist-row checklist-state-issue"><td>h02_d_03</td><td>Items that are clickable look like they are clickable</td><td><span class="score-pill severity-2">2.0</span></td><td>Issue</td><td>high</td><td></td><td>img-2, img-3, img-4</td><td>Skill is Claude-specific terminology. Plugin Zip describes a file format, not a user task. Compass metaphor works well.</td></tr></tbody>
+              </table>
+            </details>
+            
+
+            <details class="checklist-table">
+              <summary>User Control and Freedom (h03) - 5 checklist items</summary>
+              <table>
+                <thead><tr><th>Item</th><th>Checklist text</th><th>Score</th><th>Status</th><th>Confidence</th><th>Severity basis</th><th>Evidence</th><th>Rationale</th></tr></thead>
+                <tbody><tr class="checklist-row checklist-state-passed"><td>h03_d_01</td><td>There is a search box</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>high</td><td></td><td>img-2, img-3, img-4</td><td>Back to Compass Suite button clearly visible on all product pages.</td></tr><tr class="checklist-row checklist-state-passed"><td>h03_d_02</td><td>There are clearly marked exits on every page allowing the user to bail out of the current task without having to depend on the browser Back button</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>high</td><td></td><td>img-1</td><td>No irreversible actions on this informational/download site.</td></tr><tr class="checklist-row checklist-state-passed"><td>h03_d_03</td><td>The site does not disable the browser Back button and the Back button appears on the browser toolbar on every page</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>high</td><td></td><td>img-1</td><td>No processes to get trapped in. Static pages with free navigation.</td></tr><tr class="checklist-row checklist-state-passed"><td>h03_d_04</td><td>Clicking the back button always takes the user back to the page they came from</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>high</td><td></td><td>img-1</td><td>No modal dialogs or overlays observed.</td></tr><tr class="checklist-row checklist-state-issue"><td>h03_d_05</td><td>Undo and redo are supported</td><td><span class="score-pill severity-1">1.0</span></td><td>Issue</td><td>medium</td><td></td><td>img-2, img-3, img-4</td><td>No skip navigation links visible. Pages have repeated header and tab navigation. Minor accessibility concern.</td></tr></tbody>
+              </table>
+            </details>
+            
+
+            <details class="checklist-table">
+              <summary>Consistency and Standards (h04) - 21 checklist items</summary>
+              <table>
+                <thead><tr><th>Item</th><th>Checklist text</th><th>Score</th><th>Status</th><th>Confidence</th><th>Severity basis</th><th>Evidence</th><th>Rationale</th></tr></thead>
+                <tbody><tr class="checklist-row checklist-state-issue"><td>h04_d_01</td><td>In your expert opinion, site content does not look like advertisements</td><td><span class="score-pill severity-1">1.0</span></td><td>Issue</td><td>high</td><td></td><td>img-1, img-2, img-3, img-4, img-5</td><td>Highly consistent across Critical, Prompt, and UXHC pages. what-is-an-mcp uses slightly different layout.</td></tr><tr class="checklist-row checklist-state-issue"><td>h04_d_02</td><td>Clickable elements use a consistent style/color for primary, secondary, and tertiary actions</td><td><span class="score-pill severity-2">2.0</span></td><td>Issue</td><td>high</td><td></td><td>img-2, img-3, img-4</td><td>Download buttons use two colors: teal for Plugin, orange for Desktop Extension. Creates visual inconsistency and implies unintended priority hierarchy.</td></tr><tr class="checklist-row checklist-state-issue"><td>h04_d_03</td><td>Value proposition is clearly stated on the home page (tagline or welcome blurb)</td><td><span class="score-pill severity-1">1.0</span></td><td>Issue</td><td>high</td><td></td><td>img-1, img-2, img-3</td><td>Tab navigation consistent across product pages. Home page has a different tab structure.</td></tr><tr class="checklist-row checklist-state-passed"><td>h04_d_04</td><td>Navigation choices are ordered in the most logical or task-oriented manner, with less important corporate information at the bottom</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>high</td><td></td><td>img-2, img-3, img-4</td><td>Critical, Prompt, and UXHC pages follow identical layout template.</td></tr><tr class="checklist-row checklist-state-issue"><td>h04_d_05</td><td>All corporate information is grouped in one distinct area, such as About Us</td><td><span class="score-pill severity-2">2.0</span></td><td>Issue</td><td>high</td><td></td><td>img-2, img-3, img-4</td><td>Terminology inconsistencies: Plugin Zip vs Claude Cowork Plugin. MCPB/Desktop Extension vs Desktop Extension.</td></tr><tr class="checklist-row checklist-state-issue"><td>h04_d_06</td><td>The home page of the site has a memorable URL</td><td><span class="score-pill severity-2">2.0</span></td><td>Issue</td><td>high</td><td></td><td>img-1, img-2, img-3, img-4</td><td>CTA labels vary: Download Plugin, Download Extension, Download Skill, Download + Learn, Learn More, Read Suite Overview. Inconsistent verb/noun patterns.</td></tr><tr class="checklist-row checklist-state-passed"><td>h04_d_07</td><td>Terminology is consistent with general web usage</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>high</td><td></td><td>img-1</td><td>Status badges (Public beta, Alpha, Preview, Early beta) are styled consistently.</td></tr><tr class="checklist-row checklist-state-issue"><td>h04_d_08</td><td>There is a visible change when the mouse points at something clickable, excluding cursor changes</td><td><span class="score-pill severity-1">1.0</span></td><td>Issue</td><td>low</td><td></td><td></td><td>Hover states not observable from screenshots.</td></tr><tr class="checklist-row checklist-state-passed"><td>h04_d_09</td><td>Hypertext links that invoke actions, such as downloads or new windows, are clearly distinguished from hypertext links that load another page</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>high</td><td></td><td>img-1</td><td>No form elements observed. Not applicable.</td></tr><tr class="checklist-row checklist-state-passed"><td>h04_d_10</td><td>If the site spawns new windows, these will not confuse the user and can be easily closed</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>high</td><td></td><td>img-1, img-2, img-3, img-4</td><td>Compass icon used consistently. Version badge styling consistent.</td></tr><tr class="checklist-row checklist-state-issue"><td>h04_d_11</td><td>Menu instructions, prompts and messages appear in the same place on each screen</td><td><span class="score-pill severity-1">1.0</span></td><td>Issue</td><td>medium</td><td></td><td>img-1, img-2</td><td>Spacing mostly consistent. Home page grid and product page card spacing differ slightly.</td></tr><tr class="checklist-row checklist-state-issue"><td>h04_d_12</td><td>The content is up-to-date, authoritative and trustworthy</td><td><span class="score-pill severity-1">1.0</span></td><td>Issue</td><td>medium</td><td></td><td>img-2, img-3</td><td>Heading hierarchy appears logical visually.</td></tr><tr class="checklist-row checklist-state-issue"><td>h04_d_13</td><td>The site contains third-party support, such as citations or testimonials, to verify the accuracy of information</td><td><span class="score-pill severity-1">1.0</span></td><td>Issue</td><td>medium</td><td></td><td>img-1, img-2</td><td>Tool cards on home page differ from download option cards on product pages.</td></tr><tr class="checklist-row checklist-state-passed"><td>h04_d_14</td><td>It is clear that there is a real organization behind the site, such as a physical address or office photo</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>high</td><td></td><td>img-2, img-3, img-4</td><td>Active tab indicated consistently with red/orange underline.</td></tr><tr class="checklist-row checklist-state-passed"><td>h04_d_15</td><td>The content is fresh: the site includes recent content</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>high</td><td></td><td>img-2, img-3, img-4</td><td>Download [Tool Name] H1 pattern used consistently.</td></tr><tr class="checklist-row checklist-state-passed"><td>h04_d_16</td><td>The site is free of typographic errors and spelling mistakes</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>high</td><td></td><td></td><td>Static site. Loading/transition states not applicable.</td></tr><tr class="checklist-row checklist-state-passed"><td>h04_d_17</td><td>The visual design is consistent, including colors, layout, iconography, etc.</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>high</td><td></td><td>img-1, img-2, img-4</td><td>Locked/coming-soon states labeled consistently with text badges.</td></tr><tr class="checklist-row checklist-state-issue"><td>h04_d_18</td><td>On content pages, line lengths are neither too short (under 50 characters per line) nor too long (over 100 characters per line) when viewed in a standard browser width window</td><td><span class="score-pill severity-1">1.0</span></td><td>Issue</td><td>high</td><td></td><td>img-1</td><td>Available tool cards have many CTAs; locked tools have much less content. Card heights differ.</td></tr><tr class="checklist-row checklist-state-passed"><td>h04_d_19</td><td>Fonts are used consistently and are legible</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>high</td><td></td><td>img-1</td><td>More download options expandable section used consistently.</td></tr><tr class="checklist-row checklist-state-issue"><td>h04_d_20</td><td>The site can be used without scrolling horizontally</td><td><span class="score-pill severity-1">1.0</span></td><td>Issue</td><td>high</td><td></td><td>img-1, img-2, img-5</td><td>Home page has tabs in header, product pages have back button plus tabs, what-is-an-mcp has thin colored top bar with no tabs. Header structure varies.</td></tr><tr class="checklist-row checklist-state-issue"><td>h04_d_21</td><td>Design components, such as radio buttons and checkboxes, are used appropriately</td><td><span class="score-pill severity-1">1.0</span></td><td>Issue</td><td>medium</td><td></td><td>img-2, img-3, img-4</td><td>Links styled in teal/green. External links may not have external-link indicators.</td></tr></tbody>
+              </table>
+            </details>
+            
+
+            <details class="checklist-table">
+              <summary>Error Prevention (h05) - 5 checklist items</summary>
+              <table>
+                <thead><tr><th>Item</th><th>Checklist text</th><th>Score</th><th>Status</th><th>Confidence</th><th>Severity basis</th><th>Evidence</th><th>Rationale</th></tr></thead>
+                <tbody><tr class="checklist-row checklist-state-passed"><td>h05_d_01</td><td>Pages are free of scroll stoppers: headings or page elements that create the illusion that users have reached the top or bottom of a page when they have not</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>high</td><td></td><td>img-1</td><td>No destructive or irreversible actions on this informational/download site.</td></tr><tr class="checklist-row checklist-state-issue"><td>h05_d_02</td><td>The user does not need to consult user manuals or other external information to use the site</td><td><span class="score-pill severity-2">2.0</span></td><td>Issue</td><td>medium</td><td></td><td>img-2, img-3, img-4</td><td>Installation complexity not surfaced upfront. Downloads go directly to file without prerequisites summary.</td></tr><tr class="checklist-row checklist-state-passed"><td>h05_d_03</td><td>User confirmation is required before carrying out potentially dangerous actions, such as deleting something</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>high</td><td></td><td>img-1</td><td>No form elements visible. Not applicable.</td></tr><tr class="checklist-row checklist-state-passed"><td>h05_d_04</td><td>The site provides feedback that helps the user learn how to use the site</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>high</td><td></td><td>img-2, img-3</td><td>Copy prompt buttons have low-consequence accidental activation.</td></tr><tr class="checklist-row checklist-state-major"><td>h05_d_05</td><td>There is sufficient space between targets to prevent the user from hitting multiple or incorrect targets</td><td><span class="score-pill severity-3">3.0</span></td><td>Major</td><td>high</td><td></td><td>img-2, img-3, img-4</td><td>Three download options require knowing which Claude surface the user has. Best for Claude Cowork or Claude Code context clues assume prior platform knowledge. New users cannot confidently choose. FAQ tab explains terms but is behind navigation.</td></tr></tbody>
+              </table>
+            </details>
+            
+
+            <details class="checklist-table">
+              <summary>Recognition Rather Than Recall (h06) - 4 checklist items</summary>
+              <table>
+                <thead><tr><th>Item</th><th>Checklist text</th><th>Score</th><th>Status</th><th>Confidence</th><th>Severity basis</th><th>Evidence</th><th>Rationale</th></tr></thead>
+                <tbody><tr class="checklist-row checklist-state-passed"><td>h06_d_01</td><td>Search suggestions or filters are provided</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>high</td><td></td><td>img-2, img-3, img-4</td><td>Pick Your Path table makes all use-case options visible without requiring recall. Excellent recognition aid.</td></tr><tr class="checklist-row checklist-state-issue"><td>h06_d_02</td><td>Each page is clearly labeled with a descriptive and useful title that makes sense as a bookmark</td><td><span class="score-pill severity-2">2.0</span></td><td>Issue</td><td>high</td><td></td><td>img-2, img-3, img-4</td><td>Context clues like Best for Claude Cowork or Claude Code assume prior knowledge of Claude platform surfaces.</td></tr><tr class="checklist-row checklist-state-passed"><td>h06_d_03</td><td>Links and link titles are descriptive and predictive, and there are no Click here links</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>high</td><td></td><td>img-1</td><td>Static information site. No user state to surface or recall.</td></tr><tr class="checklist-row checklist-state-issue"><td>h06_d_04</td><td>Buttons and links show that they have been clicked</td><td><span class="score-pill severity-2">2.0</span></td><td>Issue</td><td>high</td><td></td><td>img-2, img-3, img-4</td><td>Install guides available only via How to install link and Install Guide tab, not inline with download buttons.</td></tr></tbody>
+              </table>
+            </details>
+            
+
+            <details class="checklist-table">
+              <summary>Flexibility and Efficiency of Use (h07) - 9 checklist items</summary>
+              <table>
+                <thead><tr><th>Item</th><th>Checklist text</th><th>Score</th><th>Status</th><th>Confidence</th><th>Severity basis</th><th>Evidence</th><th>Rationale</th></tr></thead>
+                <tbody><tr class="checklist-row checklist-state-issue"><td>h07_d_01</td><td>Useful content is presented on the home page or within one click of the home page</td><td><span class="score-pill severity-2">2.0</span></td><td>Issue</td><td>medium</td><td></td><td>img-2, img-3, img-4</td><td>No differentiated paths for experienced vs new users. Returning user must scan same full page as first-time visitor.</td></tr><tr class="checklist-row checklist-state-issue"><td>h07_d_02</td><td>The terms used for navigation items and hypertext links are unambiguous and jargon-free</td><td><span class="score-pill severity-1">1.0</span></td><td>Issue</td><td>low</td><td></td><td></td><td>Keyboard navigation not observable from screenshots.</td></tr><tr class="checklist-row checklist-state-issue"><td>h07_d_03</td><td>If there are product pages, they contain the detail necessary to make a purchase, and users can zoom in on product images</td><td><span class="score-pill severity-1">1.0</span></td><td>Issue</td><td>medium</td><td></td><td>img-1</td><td>No customization options visible. Not expected for a static download site.</td></tr><tr class="checklist-row checklist-state-passed"><td>h07_d_04</td><td>The words, phrases and concepts used will be familiar to the typical user</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>high</td><td></td><td>img-2, img-3, img-4</td><td>Download buttons are prominent and reachable in 1-2 clicks. Efficient for primary action.</td></tr><tr class="checklist-row checklist-state-issue"><td>h07_d_05</td><td>Content feels friendly for new users</td><td><span class="score-pill severity-1">1.0</span></td><td>Issue</td><td>medium</td><td></td><td>img-2, img-3, img-4</td><td>Best for hints are helpful but assume platform knowledge.</td></tr><tr class="checklist-row checklist-state-issue"><td>h07_d_06</td><td>Content feels customizable or useable for frequent or expert users</td><td><span class="score-pill severity-1">1.0</span></td><td>Issue</td><td>medium</td><td></td><td>img-1</td><td>No search functionality across the suite.</td></tr><tr class="checklist-row checklist-state-passed"><td>h07_d_07</td><td>The screen density is appropriate for the target users and their tasks</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>high</td><td></td><td>img-1</td><td>Bulk download not applicable to this site type.</td></tr><tr class="checklist-row checklist-state-passed"><td>h07_d_08</td><td>Icons and graphics are standard and/or intuitive (concrete and familiar)</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>high</td><td></td><td>img-2, img-3, img-4</td><td>Progressive disclosure used well: Pick Your Path, More download options expandable, Advanced tab for power users.</td></tr><tr class="checklist-row checklist-state-passed"><td>h07_d_09</td><td>Where tooltips are used, they provide useful additional help and do not simply duplicate text in the icon, link or field label</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>high</td><td></td><td>img-2, img-3, img-4</td><td>Primary download path is the most visually prominent CTA.</td></tr></tbody>
+              </table>
+            </details>
+            
+
+            <details class="checklist-table">
+              <summary>Aesthetic and Minimalist Design (h08) - 16 checklist items</summary>
+              <table>
+                <thead><tr><th>Item</th><th>Checklist text</th><th>Score</th><th>Status</th><th>Confidence</th><th>Severity basis</th><th>Evidence</th><th>Rationale</th></tr></thead>
+                <tbody><tr class="checklist-row checklist-state-issue"><td>h08_d_01</td><td>By just looking at the home page, the first time user will understand where to start</td><td><span class="score-pill severity-1">1.0</span></td><td>Issue</td><td>high</td><td></td><td>img-1, img-2</td><td>Pages are generally clean. Some minor clutter from multiple CTAs per tool card.</td></tr><tr class="checklist-row checklist-state-issue"><td>h08_d_02</td><td>Primary actions are easy to find and understand</td><td><span class="score-pill severity-2">2.0</span></td><td>Issue</td><td>high</td><td></td><td>img-1, img-2</td><td>Multiple competing CTAs per tool card: Learn More, GitHub, Download + Learn, Download Plugin, Download Extension. No single dominant action on home page grid.</td></tr><tr class="checklist-row checklist-state-issue"><td>h08_d_03</td><td>Individual pages are free of clutter and irrelevant information, and attention-attracting features are used sparingly and only where relevant</td><td><span class="score-pill severity-1">1.0</span></td><td>Issue</td><td>high</td><td></td><td>img-2, img-3</td><td>Tool name and primary tagline are large and prominent. Multiple CTAs create some hierarchy competition.</td></tr><tr class="checklist-row checklist-state-issue"><td>h08_d_04</td><td>The home page is professionally designed and will create a positive first impression</td><td><span class="score-pill severity-1">1.0</span></td><td>Issue</td><td>high</td><td></td><td>img-2, img-3, img-4</td><td>Version numbers appear in header area and within download cards. Some redundancy.</td></tr><tr class="checklist-row checklist-state-passed"><td>h08_d_05</td><td>The home page looks like a home page; pages lower in the site will not be confused with it</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>high</td><td></td><td>img-1, img-2</td><td>Compass icons purposeful. Status badges provide useful information. No purely decorative noise.</td></tr><tr class="checklist-row checklist-state-issue"><td>h08_d_06</td><td>The site avoids advertisements, especially pop-ups</td><td><span class="score-pill severity-2">2.0</span></td><td>Issue</td><td>high</td><td></td><td>img-2, img-3, img-4</td><td>Plugin download uses teal/green, Desktop Extension uses orange. Two competing primary button colors create visual noise and may imply unintended priority.</td></tr><tr class="checklist-row checklist-state-passed"><td>h08_d_07</td><td>Text is concise, with no needless instructions or welcome notes</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>high</td><td></td><td>img-2, img-3</td><td>Whitespace used effectively. Cards have adequate padding. Sections well-separated.</td></tr><tr class="checklist-row checklist-state-passed"><td>h08_d_08</td><td>Pages use bulleted and numbered lists in preference to narrative text</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>high</td><td></td><td>img-2, img-3</td><td>Typography hierarchy clear: large bold heading, descriptive tagline, body text. Good contrast.</td></tr><tr class="checklist-row checklist-state-passed"><td>h08_d_09</td><td>The most important items in a list are placed at the top</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>high</td><td></td><td>img-2, img-3, img-4</td><td>Download options and primary content visible without scrolling at 1440x900 viewport.</td></tr><tr class="checklist-row checklist-state-passed"><td>h08_d_10</td><td>Pages are quick to scan, with ample headings and subheadings and short paragraphs</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>high</td><td></td><td>img-1</td><td>No popups, interstitials, autoplay, or intrusive overlays observed.</td></tr><tr class="checklist-row checklist-state-passed"><td>h08_d_11</td><td>Information is organized hierarchically, from the general to the specific, and the organization is clear and logical</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>high</td><td></td><td>img-2, img-3</td><td>Pick Your Path table is well-structured with clear use-case and action columns.</td></tr><tr class="checklist-row checklist-state-issue"><td>h08_d_12</td><td>Text links are long enough to be understood, but short enough to minimize wrapping, especially when used as a navigation list</td><td><span class="score-pill severity-1">1.0</span></td><td>Issue</td><td>high</td><td></td><td>img-1, img-2</td><td>Home page 6 tools manageable. UXHC page 6 prompt card types slightly dense.</td></tr><tr class="checklist-row checklist-state-passed"><td>h08_d_13</td><td>On all pages, the most important information, such as frequently used topics, features and functions, is presented on the first screenful of information above the fold</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>high</td><td></td><td>img-2, img-3</td><td>Buttons appear well-sized and spaced.</td></tr><tr class="checklist-row checklist-state-passed"><td>h08_d_14</td><td>The relationship between controls and their actions is obvious</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>high</td><td></td><td>img-5</td><td>what-is-an-mcp infographic images are purposeful and explanatory.</td></tr><tr class="checklist-row checklist-state-passed"><td>h08_d_15</td><td>There is a clear visual starting point to every page</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>high</td><td></td><td>img-1, img-2, img-3</td><td>Overall design is polished. Consistent brand identity with teal/white/gray palette.</td></tr><tr class="checklist-row checklist-state-issue"><td>h08_d_16</td><td>The site is pleasant to look at</td><td><span class="score-pill severity-1">1.0</span></td><td>Issue</td><td>medium</td><td></td><td>img-2, img-4</td><td>UXHC page has 6 prompt card types which slightly strains the layout.</td></tr></tbody>
+              </table>
+            </details>
+            
+
+            <details class="checklist-table">
+              <summary>Help Users Recognize, Diagnose, and Recover from Errors (h09) - 2 checklist items</summary>
+              <table>
+                <thead><tr><th>Item</th><th>Checklist text</th><th>Score</th><th>Status</th><th>Confidence</th><th>Severity basis</th><th>Evidence</th><th>Rationale</th></tr></thead>
+                <tbody><tr class="checklist-row checklist-state-issue"><td>h09_d_01</td><td>The site uses a customised 404 page, which includes tips on how to find the missing page and links to Home and Search</td><td><span class="score-pill severity-1">1.0</span></td><td>Issue</td><td>low</td><td></td><td></td><td>No error states observable from static captures.</td></tr><tr class="checklist-row checklist-state-issue"><td>h09_d_02</td><td>Error messages contain clear instructions on what to do next, including form error states</td><td><span class="score-pill severity-1">1.0</span></td><td>Issue</td><td>low</td><td></td><td></td><td>No error recovery paths visible. Minor concern for informational site.</td></tr></tbody>
+              </table>
+            </details>
+            
+
+            <details class="checklist-table">
+              <summary>Help and Documentation (h10) - 5 checklist items</summary>
+              <table>
+                <thead><tr><th>Item</th><th>Checklist text</th><th>Score</th><th>Status</th><th>Confidence</th><th>Severity basis</th><th>Evidence</th><th>Rationale</th></tr></thead>
+                <tbody><tr class="checklist-row checklist-state-passed"><td>h10_d_01</td><td>Help is available and easy to find</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>high</td><td></td><td>img-2, img-3, img-4</td><td>How to install links are inline with each download option. Help findable at point of action.</td></tr><tr class="checklist-row checklist-state-passed"><td>h10_d_02</td><td>FAQs are present if appropriate</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>high</td><td></td><td>img-2, img-3, img-4</td><td>Install Guide and FAQ tabs available on all product pages.</td></tr><tr class="checklist-row checklist-state-passed"><td>h10_d_03</td><td>When giving instructions, pages tell users what to do rather than what to avoid doing</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>high</td><td></td><td>img-2, img-3, img-4</td><td>What is [Tool]? sections clearly explain purpose and value.</td></tr><tr class="checklist-row checklist-state-passed"><td>h10_d_04</td><td>The site shows users how to do common tasks where appropriate, such as demonstrations of the site&#x27;s functionality</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>high</td><td></td><td>img-2, img-3, img-4</td><td>Your First Prompt section with copyable prompts is excellent context-specific help at the moment of initial use.</td></tr><tr class="checklist-row checklist-state-passed"><td>h10_d_05</td><td>It is easy to contact someone for assistance and a reply is received quickly</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>high</td><td></td><td>img-2, img-3, img-4</td><td>Tab categories (Get Started, About, Install Guide, FAQ) allow users to find help without guessing search terms.</td></tr></tbody>
+              </table>
+            </details>
+            
+
+            <details class="checklist-table">
+              <summary>Accessibility and Ease of Access (h11) - 4 checklist items</summary>
+              <table>
+                <thead><tr><th>Item</th><th>Checklist text</th><th>Score</th><th>Status</th><th>Confidence</th><th>Severity basis</th><th>Evidence</th><th>Rationale</th></tr></thead>
+                <tbody><tr class="checklist-row checklist-state-issue"><td>h11_d_01</td><td>P - Content alternatives are provided, content is adaptable, and content is easy to hear and see</td><td><span class="score-pill severity-2">2.0</span></td><td>Issue</td><td>medium</td><td></td><td>img-2, img-3</td><td>Green/teal text for links on white backgrounds may not meet WCAG AA 4.5:1 for small text. Cannot verify exact ratio from screenshot.</td></tr><tr class="checklist-row checklist-state-issue"><td>h11_d_02</td><td>O - All functionality is available and flexible, enough time is provided, content is safe, and content is easy to find</td><td><span class="score-pill severity-1">1.0</span></td><td>Issue</td><td>medium</td><td></td><td>img-2, img-3, img-4</td><td>Primary download buttons appear well-sized. Tab navigation items appear smaller than recommended 44px touch target.</td></tr><tr class="checklist-row checklist-state-passed"><td>h11_d_03</td><td>U - Content text is readable and understandable, content appears and operates in predictable ways, and users are helped to avoid and correct mistakes</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>high</td><td></td><td>img-1, img-2</td><td>Status badges use both color AND text labels. No color-only information.</td></tr><tr class="checklist-row checklist-state-issue"><td>h11_d_04</td><td>R - Compatibility is maximized for current and future user agents</td><td><span class="score-pill severity-2">2.0</span></td><td>Issue</td><td>low</td><td></td><td>img-1, img-5</td><td>Cannot verify alt text from screenshots. Compass logo, infographic images, and author photos all require descriptive alt text. High likelihood of missing alt text.</td></tr></tbody>
+              </table>
+            </details>
+            
+
+            <details class="checklist-table">
+              <summary>Empathetic Engagement and Inclusion (h12) - 6 checklist items</summary>
+              <table>
+                <thead><tr><th>Item</th><th>Checklist text</th><th>Score</th><th>Status</th><th>Confidence</th><th>Severity basis</th><th>Evidence</th><th>Rationale</th></tr></thead>
+                <tbody><tr class="checklist-row checklist-state-major"><td>h12_d_01</td><td>The interface acknowledges and responds to user emotions, either through design, content, or interactive elements</td><td><span class="score-pill severity-3">3.0</span></td><td>Major</td><td>high</td><td></td><td>img-1, img-2, img-3, img-4</td><td>Technical jargon barrier on Get Started tab: Plugin Zip, MCP/extension, Claude Cowork, MCPB assume Claude ecosystem knowledge. FAQ tab defines these terms but is one click away from the download decision. Non-technical practitioners encounter jargon before finding help.</td></tr><tr class="checklist-row checklist-state-issue"><td>h12_d_02</td><td>The design ensures users feel safe and secure, minimizing anxiety-inducing elements</td><td><span class="score-pill severity-1">1.0</span></td><td>Issue</td><td>high</td><td></td><td>img-2, img-3</td><td>Tone is neutral and professional. Subtle exclusion through assumed knowledge rather than overt language.</td></tr><tr class="checklist-row checklist-state-issue"><td>h12_d_03</td><td>The content and design elements respect and reflect a wide range of cultural norms and values</td><td><span class="score-pill severity-2">2.0</span></td><td>Issue</td><td>high</td><td></td><td>img-1, img-2</td><td>No visible I am new to all of this path. First-time visitors unfamiliar with MCP/Claude/plugins have no simplified entry path. Pick Your Path helps but still assumes some familiarity.</td></tr><tr class="checklist-row checklist-state-issue"><td>h12_d_04</td><td>Information is presented in a way that shows understanding and consideration for the user&#x27;s emotional state</td><td><span class="score-pill severity-1">1.0</span></td><td>Issue</td><td>medium</td><td></td><td>img-1</td><td>Static GitHub Pages site is fast to load. Mobile layout not evaluated in this audit scope.</td></tr><tr class="checklist-row checklist-state-passed"><td>h12_d_05</td><td>Design and content are accessible to users with various physical and cognitive abilities, promoting inclusivity</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>high</td><td></td><td>img-1, img-2, img-3</td><td>No exclusionary patterns or stereotypes observed. Design is neutral and professional.</td></tr><tr class="checklist-row checklist-state-major"><td>h12_d_06</td><td>Features and functionalities empower users, giving them control and choice in their interactions</td><td><span class="score-pill severity-3">3.0</span></td><td>Major</td><td>high</td><td></td><td>img-1, img-2, img-4</td><td>What is an MCP? is a separate URL not linked from main navigation of tool product pages. A confused user on Critical Compass or UXHC page has no visible path to understanding the ecosystem. Footer link on home page is insufficient prominence.</td></tr></tbody>
+              </table>
+            </details>
+            
+
+            <details class="checklist-table">
+              <summary>Customer Journey and Satisfaction (h13) - 6 checklist items</summary>
+              <table>
+                <thead><tr><th>Item</th><th>Checklist text</th><th>Score</th><th>Status</th><th>Confidence</th><th>Severity basis</th><th>Evidence</th><th>Rationale</th></tr></thead>
+                <tbody><tr class="checklist-row checklist-state-passed"><td>h13_d_01</td><td>The interface reflects the brand&#x27;s values and aesthetics consistently across all elements</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>high</td><td></td><td>img-1, img-2, img-3, img-4</td><td>Page structure maps to journey stages: Home (discover) to Product page (learn/download) to Your First Prompt (activate). Journey is coherent.</td></tr><tr class="checklist-row checklist-state-issue"><td>h13_d_02</td><td>Navigation and workflows are intuitive, creating a seamless experience from start to finish</td><td><span class="score-pill severity-1">1.0</span></td><td>Issue</td><td>medium</td><td></td><td>img-2, img-3</td><td>What happens after downloading is not previewed. Users do not know if they will need to configure, register, or run commands.</td></tr><tr class="checklist-row checklist-state-issue"><td>h13_d_03</td><td>The system offers personalized options or content based on user data and preferences</td><td><span class="score-pill severity-1">1.0</span></td><td>Issue</td><td>medium</td><td></td><td>img-2, img-3, img-4</td><td>Back to Compass Suite and How to install links provide reasonable handoffs. The gap between downloading a file and using the tool in Claude is not fully bridged inline.</td></tr><tr class="checklist-row checklist-state-issue"><td>h13_d_04</td><td>Easy access to support and a straightforward method for users to provide feedback</td><td><span class="score-pill severity-2">2.0</span></td><td>Issue</td><td>medium</td><td></td><td>img-2, img-3</td><td>No visible post-install confirmation or you are set up state. Users do not know when they have successfully completed setup.</td></tr><tr class="checklist-row checklist-state-passed"><td>h13_d_05</td><td>Features or elements make the user feel valued and rewarded for their engagement</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>high</td><td></td><td>img-1, img-2</td><td>GitHub Pages design aligns with OSS tool expectations.</td></tr><tr class="checklist-row checklist-state-passed"><td>h13_d_06</td><td>Clear communication about data usage, privacy policies, and other aspects that build user trust</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>high</td><td></td><td>img-2, img-3, img-4</td><td>Your First Prompt section is genuinely motivating and sets users up for early success. Strong journey close for the download page.</td></tr></tbody>
+              </table>
+            </details>
+            
+
+            <details class="checklist-table">
+              <summary>UX Writing / Content and Tone (h14) - 7 checklist items</summary>
+              <table>
+                <thead><tr><th>Item</th><th>Checklist text</th><th>Score</th><th>Status</th><th>Confidence</th><th>Severity basis</th><th>Evidence</th><th>Rationale</th></tr></thead>
+                <tbody><tr class="checklist-row checklist-state-issue"><td>h14_d_01</td><td>Follows the current product&#x27;s established style guide and brand voice</td><td><span class="score-pill severity-2">2.0</span></td><td>Issue</td><td>high</td><td></td><td>img-1, img-2</td><td>Download + Learn combines two distinct actions in one button label which is non-standard and unclear. Learn More is generic. Inconsistent CTA writing quality.</td></tr><tr class="checklist-row checklist-state-passed"><td>h14_d_02</td><td>Content is clear</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>high</td><td></td><td>img-2, img-3, img-4</td><td>Headings are descriptive and scannable: What is Critical Compass?, Pick Your Path, Your First Prompt.</td></tr><tr class="checklist-row checklist-state-issue"><td>h14_d_03</td><td>Content avoids jargon and uses simple, everyday language</td><td><span class="score-pill severity-1">1.0</span></td><td>Issue</td><td>high</td><td></td><td>img-2, img-3</td><td>Instructions explain outcomes but require prior platform knowledge.</td></tr><tr class="checklist-row checklist-state-issue"><td>h14_d_04</td><td>All UI labels use simple and concise words</td><td><span class="score-pill severity-1">1.0</span></td><td>Issue</td><td>medium</td><td></td><td>img-1, img-2, img-3, img-4</td><td>Tone is professional and technical. Slightly cool for general public entry points.</td></tr><tr class="checklist-row checklist-state-issue"><td>h14_d_05</td><td>Calls to action are specific, use active language, and are clearly organized by importance</td><td><span class="score-pill severity-1">1.0</span></td><td>Issue</td><td>low</td><td></td><td></td><td>No error messages visible.</td></tr><tr class="checklist-row checklist-state-issue"><td>h14_d_06</td><td>No paragraphs more than three lines</td><td><span class="score-pill severity-2">2.0</span></td><td>Issue</td><td>high</td><td></td><td>img-1</td><td>Downloads Coming Later and Locked Until Privacy Scrub explain the state but do not suggest alternatives or offer a notification option. Users wanting locked tools have no clear next step.</td></tr><tr class="checklist-row checklist-state-issue"><td>h14_d_07</td><td>The content above the fold, including headings, subheadings, and copy, makes each page&#x27;s purpose clear and obvious</td><td><span class="score-pill severity-1">1.0</span></td><td>Issue</td><td>medium</td><td></td><td>img-2, img-3, img-4</td><td>Some helpful inline hints (Best for Claude Desktop) but minimal microcopy overall. No tooltips visible.</td></tr></tbody>
+              </table>
+            </details>
+            
+    </section>
+    <section><h2>Evidence Appendix</h2><p>No evidence references were supplied.</p></section>
+  </main>
+  <footer>UX Heuristic Compass - static one-page report - no links, scripts, or external assets.</footer>
+</body>
+</html>

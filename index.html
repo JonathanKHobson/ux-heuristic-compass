@@ -342,6 +342,12 @@ Help me turn this into:
         <p>See what a finished UX Heuristics Compass audit can look like. This example is fully public — nothing has been redacted.</p>
       </div>
 
+      <div class="example-switcher" role="tablist" aria-label="UX Heuristics Compass examples">
+        <button id="example-one-tab" type="button" role="tab" aria-controls="example-one-panel" aria-selected="true" data-example-target="example-one-panel">Example One</button>
+        <button id="example-two-tab" type="button" role="tab" aria-controls="example-two-panel" aria-selected="false" data-example-target="example-two-panel">Example Two</button>
+      </div>
+
+      <div id="example-one-panel" class="example-panel" role="tabpanel" aria-labelledby="example-one-tab">
       <div class="card">
         <h2>Finished Audit Snapshot</h2>
         <p>This public-safe example shows UX Heuristics Compass turning bounded page evidence into a scored heuristic audit, a plain-language readout, prioritized findings, evidence limits, and recommended next validation steps.</p>
@@ -391,6 +397,76 @@ Help me turn this into:
       <figure class="example-output">
         <img class="example-output-image" src="examples/screenshots/bonus-human-ai-output-snapshot-02.png" alt="Screenshot of the Human plus AI merged UX evaluation output showing a B minus grade, source scores, and a before-use warning." loading="lazy" decoding="async">
       </figure>
+      </div>
+
+      <div id="example-two-panel" class="example-panel" role="tabpanel" aria-labelledby="example-two-tab" hidden>
+        <div class="card">
+          <h2>Finished Audit Snapshot</h2>
+          <p>This example shows UX Heuristics Compass evaluating the public Compass Suite surface across multiple audit sources. It includes a merged Claude + Codex read, separate desktop and mobile reports, and a desktop/mobile comparison so the reader can see where the experience holds up and where mobile stress changes the priority order.</p>
+          <p><span class="tag">Example output</span> <span class="status-pill">3-source suite audit</span></p>
+        </div>
+
+        <div class="card">
+          <h2>What this example shows</h2>
+          <p>This example shows how UXHC can move from a single product-page audit into a cross-surface public-site review. It is useful for seeing how separate evaluations can be compared, merged, and turned into a remediation roadmap.</p>
+          <ul>
+            <li><strong>Multi-source scoring:</strong> compares Claude and Codex reads instead of treating one model output as final.</li>
+            <li><strong>Desktop/mobile differences:</strong> shows how the same site can score well on desktop while mobile exposes higher-friction issues.</li>
+            <li><strong>Remediation triage:</strong> turns findings into a high-impact, low-effort patch sequence.</li>
+            <li><strong>Heuristic coverage:</strong> keeps the 14-heuristic system visible across accessibility, writing, journey, recovery, and visual hierarchy.</li>
+            <li><strong>Agreement and disagreement:</strong> makes it easier to see which issues repeat across evaluators and which need human judgment.</li>
+            <li><strong>Public-surface closeout:</strong> connects the audit to a concrete Pages hardening pass rather than leaving it as critique.</li>
+          </ul>
+          <div class="example-actions report-link-grid" aria-label="Open Compass Suite audit examples">
+            <a class="button" href="examples/compass-suite-audit/compass-suite-ux-audit-merged.html" target="_blank" rel="noopener">Open Merged Audit</a>
+            <a class="button ghost" href="examples/compass-suite-audit/claude-compass-suite-ux-audit.html" target="_blank" rel="noopener">Open Claude Audit</a>
+            <a class="button ghost" href="examples/compass-suite-audit/codex-uxhc-advanced-audit.html" target="_blank" rel="noopener">Open Codex Advanced</a>
+            <a class="button ghost" href="examples/compass-suite-audit/codex-uxhc-desktop-audit.html" target="_blank" rel="noopener">Open Desktop Audit</a>
+            <a class="button ghost" href="examples/compass-suite-audit/mobile-audit.html" target="_blank" rel="noopener">Open Mobile Audit</a>
+            <a class="button ghost" href="examples/compass-suite-audit/desktop-mobile-comparison.html" target="_blank" rel="noopener">Open Comparison</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Output Snapshot</h2>
+          <p>These snapshots are captured directly from the HTML reports. They are meant to show the shape of the finished artifacts before you open the full examples.</p>
+        </div>
+        <div class="report-snapshot-stack">
+          <figure class="example-output">
+            <img class="example-output-image" src="examples/compass-suite-audit/screenshots/compass-suite-merged-report-snapshot.png" alt="Compass Suite merged UX audit report snapshot showing executive summary and blended scorecard." loading="lazy" decoding="async">
+          </figure>
+          <figure class="example-output">
+            <img class="example-output-image" src="examples/compass-suite-audit/screenshots/claude-compass-suite-ux-audit-snapshot.png" alt="Claude Compass Suite UX audit report snapshot showing mission context, heuristic scorecard, and prioritized findings." loading="lazy" decoding="async">
+          </figure>
+          <figure class="example-output">
+            <img class="example-output-image" src="examples/compass-suite-audit/screenshots/codex-uxhc-advanced-audit-snapshot.png" alt="Codex UXHC advanced audit report snapshot for the Compass Suite public surface." loading="lazy" decoding="async">
+          </figure>
+          <figure class="example-output">
+            <img class="example-output-image" src="examples/compass-suite-audit/screenshots/codex-uxhc-desktop-audit-snapshot.png" alt="Codex UXHC desktop audit report snapshot for the Compass Suite public surface." loading="lazy" decoding="async">
+          </figure>
+          <figure class="example-output">
+            <img class="example-output-image" src="examples/compass-suite-audit/screenshots/compass-suite-mobile-audit-snapshot.png" alt="Compass Suite mobile audit report snapshot showing mobile-specific UX findings." loading="lazy" decoding="async">
+          </figure>
+          <figure class="example-output">
+            <img class="example-output-image" src="examples/compass-suite-audit/screenshots/desktop-mobile-comparison-snapshot.png" alt="Compass Suite desktop and mobile comparison report snapshot showing fixed, new, unresolved, and severity-changed findings." loading="lazy" decoding="async">
+          </figure>
+        </div>
+
+        <div class="card report-viewer-card">
+          <h2>Browse the HTML Reports</h2>
+          <p>Use the buttons below to preview each report inside this tab. The new-tab links above remain the most reliable way to read or share a full report.</p>
+          <div class="report-selector" aria-label="Choose report preview">
+            <button type="button" data-report-src="examples/compass-suite-audit/compass-suite-ux-audit-merged.html" data-report-title="Merged Compass Suite UX audit" aria-pressed="true">Merged Audit</button>
+            <button type="button" data-report-src="examples/compass-suite-audit/claude-compass-suite-ux-audit.html" data-report-title="Claude Compass Suite UX audit" aria-pressed="false">Claude Audit</button>
+            <button type="button" data-report-src="examples/compass-suite-audit/codex-uxhc-advanced-audit.html" data-report-title="Codex UXHC advanced audit" aria-pressed="false">Codex Advanced</button>
+            <button type="button" data-report-src="examples/compass-suite-audit/codex-uxhc-desktop-audit.html" data-report-title="Codex UXHC desktop audit" aria-pressed="false">Desktop Audit</button>
+            <button type="button" data-report-src="examples/compass-suite-audit/mobile-audit.html" data-report-title="Compass Suite mobile audit" aria-pressed="false">Mobile Audit</button>
+            <button type="button" data-report-src="examples/compass-suite-audit/desktop-mobile-comparison.html" data-report-title="Compass Suite desktop/mobile comparison" aria-pressed="false">Comparison</button>
+          </div>
+          <p><a id="open-selected-report" class="button quiet" href="examples/compass-suite-audit/compass-suite-ux-audit-merged.html" target="_blank" rel="noopener">Open Selected Report (new tab)</a></p>
+          <iframe id="example-two-report-frame" class="report-frame" title="Merged Compass Suite UX audit preview" src="examples/compass-suite-audit/compass-suite-ux-audit-merged.html" loading="lazy" referrerpolicy="no-referrer" sandbox=""></iframe>
+        </div>
+      </div>
     </section>
 
     <section id="faq" class="tab-panel" role="tabpanel" aria-labelledby="tab-faq" hidden>

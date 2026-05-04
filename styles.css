@@ -283,6 +283,85 @@ h3 {
   box-shadow: var(--shadow);
 }
 
+.example-switcher {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 18px;
+  border-bottom: 1px solid var(--line);
+}
+
+.example-switcher button {
+  appearance: none;
+  min-height: 44px;
+  border: 1px solid var(--line);
+  border-bottom: 0;
+  border-radius: 8px 8px 0 0;
+  padding: 11px 15px;
+  background: #edf5f0;
+  color: var(--ink);
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.example-switcher button[aria-selected="true"] {
+  background: var(--paper);
+  color: var(--teal-dark);
+  box-shadow: 0 -3px 0 var(--coral) inset;
+}
+
+.example-panel[hidden] {
+  display: none;
+}
+
+.report-link-grid {
+  align-items: stretch;
+}
+
+.report-snapshot-stack {
+  display: grid;
+  gap: 18px;
+  margin: 0 0 18px;
+}
+
+.report-selector {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 10px;
+  margin: 14px 0;
+}
+
+.report-selector button {
+  min-height: 44px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 11px 13px;
+  background: #fbfdfb;
+  color: var(--ink);
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+  text-align: left;
+}
+
+.report-selector button[aria-pressed="true"] {
+  border-color: var(--teal);
+  background: var(--soft);
+  color: var(--teal-dark);
+  box-shadow: 0 0 0 2px rgba(15, 118, 110, 0.12);
+}
+
+.report-frame {
+  display: block;
+  width: 100%;
+  height: 720px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: var(--shadow);
+}
+
 .button {
   display: inline-flex;
   align-items: center;
@@ -454,6 +533,23 @@ footer {
 
   .example-card {
     grid-template-columns: 1fr;
+  }
+
+  .example-switcher {
+    display: grid;
+    grid-template-columns: 1fr;
+    border-bottom: 0;
+  }
+
+  .example-switcher button {
+    width: 100%;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    text-align: left;
+  }
+
+  .report-frame {
+    height: 560px;
   }
 
   .author-photo {

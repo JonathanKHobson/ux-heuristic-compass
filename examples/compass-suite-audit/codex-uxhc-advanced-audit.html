@@ -1,0 +1,813 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Compass Suite UXHC Advanced Audit</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { color-scheme: light; --uxhc-green: #0d6e6e; --ink: #24292e; --muted: #6a737d; --line: #e1e4e8; --soft-line: #f0f0f0; --bg: #f5f6fa; --panel: #ffffff; --warning-bg: #fff8e1; --warning-line: #f9a825; --danger: #cb2431; --major: #c96a00; --medium: #b8860b; --success: #22863a; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--ink); line-height: 1.6; }
+    .header { background: var(--uxhc-green); color: #ffffff; padding: 40px 48px; }
+    .header h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+    .header .meta { font-size: 14px; opacity: 0.86; margin-top: 4px; }
+    .header .grade-badge { display: inline-block; background: rgba(255,255,255,0.18); border: 2px solid #ffffff; border-radius: 8px; padding: 8px 20px; font-size: 32px; font-weight: 800; margin-top: 16px; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 32px 24px; }
+    .card, .plain-read, .overall-grade-card, .finding, .top-finding-alert, .scope-lock { background: var(--panel); border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); border: 1px solid var(--line); }
+    .card, .scope-lock { padding: 28px; margin-bottom: 24px; }
+    .card h2, .scope-lock h2 { font-size: 18px; font-weight: 700; margin-bottom: 16px; color: var(--uxhc-green); border-bottom: 2px solid var(--line); padding-bottom: 10px; }
+    .mission-box { background: var(--warning-bg); border-left: 4px solid var(--warning-line); border-radius: 0 8px 8px 0; }
+    .mission-box h2 { color: #6d4c00; border-bottom-color: var(--warning-line); }
+    .mission-box p { color: #5d4037; font-size: 14px; }
+    .overall-summary { display: flex; gap: 24px; align-items: flex-start; margin-bottom: 24px; flex-wrap: wrap; }
+    .overall-grade-card { padding: 24px 32px; text-align: center; min-width: 160px; align-self: flex-start; }
+    .overall-grade-card .big-grade { font-size: 64px; font-weight: 900; line-height: 1; }
+    .overall-grade-card .pct { font-size: 20px; font-weight: 600; color: var(--muted); margin-top: 4px; }
+    .overall-grade-card .descriptor { font-size: 13px; color: var(--muted); margin-top: 6px; max-width: 180px; }
+    .plain-read { padding: 24px; flex: 1; min-width: 300px; }
+    .label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 10px; }
+    .plain-read p { font-size: 15px; color: var(--ink); line-height: 1.7; }
+    .plain-read .before { font-size: 13px; color: #586069; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line); font-style: italic; }
+    .research-recommendation { background: #ffffff; border-radius: 12px; padding: 20px 24px; border: 1px solid #d0d7de; border-left: 4px solid var(--uxhc-green); margin-top: 16px; }
+    .research-recommendation .label { color: var(--uxhc-green); }
+    .research-recommendation p { font-size: 14px; }
+    .top-finding-alert { background: linear-gradient(135deg, #fff0f0, #fff8f0); border: 2px solid var(--danger); padding: 24px; margin-bottom: 24px; }
+    .top-finding-ok { background: #f6f8fa; border-color: var(--line); }
+    .top-finding-alert .label { color: var(--danger); }
+    .top-finding-alert h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+    .top-finding-alert p { font-size: 14px; color: #444; }
+    .scorecard-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+    .score-item { border: 1px solid var(--line); border-radius: 8px; padding: 16px; }
+    .score-item .grade { font-size: 28px; font-weight: 800; }
+    .score-item .pct { font-size: 13px; color: var(--muted); }
+    .score-item .name { font-size: 13px; font-weight: 600; margin-top: 4px; }
+    .score-item .desc { font-size: 11px; color: var(--muted); margin-top: 2px; }
+    .finding { padding: 20px; margin-bottom: 16px; border-left: 4px solid var(--medium); }
+    .finding-header { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; }
+    .rank { background: var(--uxhc-green); color: #ffffff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; flex-shrink: 0; margin-top: 2px; }
+    .severity-badge, .sprint-badge, .role-badge { display: inline-block; border-radius: 12px; padding: 3px 10px; font-size: 11px; font-weight: 700; color: #ffffff; white-space: nowrap; }
+    .heuristic-tag { font-size: 11px; color: var(--muted); margin-left: 4px; }
+    .finding h3 { font-size: 15px; font-weight: 700; margin-top: 4px; }
+    .section { margin-top: 10px; }
+    .section-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); margin-bottom: 4px; }
+    .section-content { font-size: 13px; color: #444; background: #f6f8fa; padding: 10px 12px; border-radius: 6px; }
+    .mission-note { font-size: 12px; color: #856404; background: #fff3cd; padding: 8px 10px; border-radius: 6px; margin-top: 8px; border-left: 3px solid var(--warning-line); }
+    .evidence-line { margin-top: 8px; font-size: 11px; color: var(--muted); }
+    .strengths-list { list-style: none; }
+    .strengths-list li { padding: 8px 0; border-bottom: 1px solid var(--soft-line); font-size: 14px; }
+    .evidence-box { background: #f6f8fa; border: 1px solid var(--line); border-radius: 6px; padding: 16px; font-size: 13px; color: #586069; }
+    .support-lens-warnings { margin-top: 14px; }
+    .validation-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+    .validation-option { border: 1px solid #d0d7de; background: #f6f8fa; border-radius: 8px; padding: 14px; }
+    .option-title { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+    .option-copy { font-size: 12px; color: #57606a; line-height: 1.55; }
+    table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 13px; }
+    th { text-align: left; padding: 10px 12px; background: #f6f8fa; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); border-bottom: 2px solid var(--line); }
+    td { padding: 10px 12px; border-bottom: 1px solid var(--soft-line); font-size: 13px; vertical-align: top; }
+    details { margin: 12px 0; }
+    summary { cursor: pointer; font-weight: 700; }
+    .section-intro { color: var(--muted); font-size: 13px; }
+    .score-pill { display: inline-block; min-width: 30px; text-align: center; border-radius: 999px; padding: 2px 8px; color: #ffffff; font-size: 11px; font-weight: 800; background: var(--muted); }
+    .severity-4, .severity-3 { background: var(--danger); }
+    .severity-2 { background: var(--medium); }
+    .severity-1 { background: var(--success); }
+    .severity-0 { background: var(--muted); }
+    .role-engineer { background: #0969da; }
+    .role-designer { background: #8250df; }
+    .role-product { background: var(--uxhc-green); }
+    .role-research { background: #6f42c1; }
+    .micro-solution-table th:last-child, .micro-solution-table td:last-child { min-width: 118px; white-space: nowrap; }
+    .effort-pill { display: inline-block; border: 1px solid #d0d7de; border-radius: 999px; padding: 2px 8px; font-size: 11px; font-weight: 700; color: #57606a; background: #ffffff; white-space: nowrap; }
+    footer { background: var(--ink); color: #8b949e; text-align: center; padding: 24px; font-size: 12px; margin-top: 48px; }
+    @media (max-width: 700px) { .header { padding: 32px 24px; } .container { padding: 24px 16px; } .scorecard-grid { grid-template-columns: 1fr; } .plain-read { min-width: 100%; } table { display: block; overflow-x: auto; } }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <h1>Compass Suite UXHC Advanced Audit</h1>
+    <div class="meta">AI audit - Mobile - 23 source item(s) - 102 checklist items</div>
+    <div class="meta">Generated: 2026-05-03 - UX Heuristic Compass report harness uxhc.report_design_system.v1</div>
+    <div class="grade-badge">C - 58.26%</div>
+  </header>
+  <main class="container">
+    
+    <section class="mission-box card">
+      <h2>Mission Context</h2>
+      <p>Severity ratings reflect the supplied evidence, user goal, optional-profile scope, and any stated evidence limits. Support flows and activities should never outrank the checklist scorecard.</p>
+    </section>
+    
+    
+    <section class="overall-summary" aria-label="Overall audit summary">
+      <div class="overall-grade-card">
+        <div class="big-grade" style="color:#c96a00">C</div>
+        <div class="pct">58.26%</div>
+        <div class="descriptor">Needs attention - failing in places</div>
+      </div>
+      <div class="plain-read">
+        <div class="label">Plain Language Read</div>
+        <p>This consolidated audit finds the desktop Compass public journey mostly understandable, but the mobile journey has a systemic responsive-layout failure that clips tabs, content, and CTAs across the captured states. The first fix should be mobile layout containment and tab navigation, then install-choice wording.</p>
+        <div class="research-recommendation">
+          <div class="label">Next Research Recommendation</div>
+          <p>Desktop/mobile comparison summary: desktop scored A- at 81.17 overall quality; mobile scored C at 58.26; the comparison found 66 mobile-only/new checklist issues with highest remaining severity 4.0.</p>
+        </div>
+        <p class="before">Before using this interface, a first-time mobile visitor may need to pan sideways or infer hidden labels, which weakens confidence before they can choose the right Compass.</p>
+      </div>
+    </section>
+    
+    
+    <section class="top-finding-alert">
+      <div class="label">Critical Finding - Immediate Attention</div>
+      <h3>Surface accessibility needs targeted review</h3>
+      <p>Average of 3 researcher persona ratings.</p>
+    </section>
+    
+    
+    <section class="card">
+      <h2>Heuristic Scorecard - AI Audit, 14 Heuristics</h2>
+      <div class="scorecard-grid">
+            <article class="score-item">
+              <div class="grade" style="color:#5a7f3e">B+</div>
+              <div class="pct">77.78% - avg severity 0.89</div>
+              <div class="name">Visibility of System Status</div>
+              <div class="desc">Good - a few notable issues</div>
+            </article>
+            
+            <article class="score-item">
+              <div class="grade" style="color:#c96a00">C</div>
+              <div class="pct">58.33% - avg severity 1.67</div>
+              <div class="name">Match Between System and the Real World</div>
+              <div class="desc">Needs attention - failing in places</div>
+            </article>
+            
+            <article class="score-item">
+              <div class="grade" style="color:#22863a">A-</div>
+              <div class="pct">80.0% - avg severity 0.8</div>
+              <div class="name">User Control and Freedom</div>
+              <div class="desc">Above average - minor gaps</div>
+            </article>
+            
+            <article class="score-item">
+              <div class="grade" style="color:#5a7f3e">B+</div>
+              <div class="pct">75.01% - avg severity 1.0</div>
+              <div class="name">Consistency and Standards</div>
+              <div class="desc">Good - a few notable issues</div>
+            </article>
+            
+            <article class="score-item">
+              <div class="grade" style="color:#cb2431">D</div>
+              <div class="pct">48.4% - avg severity 2.06</div>
+              <div class="name">Error Prevention</div>
+              <div class="desc">Poor - major usability problems</div>
+            </article>
+            
+            <article class="score-item">
+              <div class="grade" style="color:#5a7f3e">B+</div>
+              <div class="pct">75.0% - avg severity 1.0</div>
+              <div class="name">Recognition Rather Than Recall</div>
+              <div class="desc">Good - a few notable issues</div>
+            </article>
+            
+            <article class="score-item">
+              <div class="grade" style="color:#7a8c3e">B-</div>
+              <div class="pct">67.08% - avg severity 1.32</div>
+              <div class="name">Flexibility and Efficiency of Use</div>
+              <div class="desc">Below average - multiple issues</div>
+            </article>
+            
+            <article class="score-item">
+              <div class="grade" style="color:#cb2431">D</div>
+              <div class="pct">45.31% - avg severity 2.19</div>
+              <div class="name">Aesthetic and Minimalist Design</div>
+              <div class="desc">Poor - major usability problems</div>
+            </article>
+            
+            <article class="score-item">
+              <div class="grade" style="color:#c96a00">C-</div>
+              <div class="pct">50.0% - avg severity 2.0</div>
+              <div class="name">Help Users Recognize, Diagnose, and Recover from Errors</div>
+              <div class="desc">Struggling - widespread issues</div>
+            </article>
+            
+            <article class="score-item">
+              <div class="grade" style="color:#7a8c3e">B-</div>
+              <div class="pct">67.45% - avg severity 1.3</div>
+              <div class="name">Help and Documentation</div>
+              <div class="desc">Below average - multiple issues</div>
+            </article>
+            
+            <article class="score-item">
+              <div class="grade" style="color:#cb2431">F</div>
+              <div class="pct">18.81% - avg severity 3.25</div>
+              <div class="name">Accessibility and Ease of Access</div>
+              <div class="desc">Failing - unusable or near-unusable</div>
+            </article>
+            
+            <article class="score-item">
+              <div class="grade" style="color:#c96a00">C-</div>
+              <div class="pct">54.21% - avg severity 1.83</div>
+              <div class="name">Empathetic Engagement and Inclusion</div>
+              <div class="desc">Struggling - widespread issues</div>
+            </article>
+            
+            <article class="score-item">
+              <div class="grade" style="color:#c96a00">C+</div>
+              <div class="pct">63.21% - avg severity 1.47</div>
+              <div class="name">Customer Journey and Satisfaction</div>
+              <div class="desc">Developing - significant gaps</div>
+            </article>
+            
+            <article class="score-item">
+              <div class="grade" style="color:#cb2431">D-</div>
+              <div class="pct">35.11% - avg severity 2.6</div>
+              <div class="name">UX Writing / Content and Tone</div>
+              <div class="desc">Critical - severe experience failures</div>
+            </article>
+            </div>
+    </section>
+    
+    
+    <section class="card">
+      <h2>Findings - Prioritized Fix Order</h2>
+      
+            <article class="finding" style="border-left-color:#cb2431">
+              <div class="finding-header">
+                <div class="rank">1</div>
+                <div>
+                  <div><span class="severity-badge" style="background:#cb2431">Critical</span> <span class="heuristic-tag">Accessibility and Ease of Access - h11_m_03</span></div>
+                  <h3>Surface accessibility needs targeted review</h3>
+                </div>
+              </div>
+              <div class="section"><div class="section-label">Observed Issue</div><div class="section-content">Average of 3 researcher persona ratings.</div></div>
+              <div class="section"><div class="section-label">Recommendation</div><div class="section-content">Run a surface accessibility pass on the affected screen and fix the visible access barrier before deeper compliance review.</div></div>
+              <div class="mission-note">This checklist item indicates measurable heuristic friction for the evaluated surface.</div>
+              <div class="evidence-line">Supporting lenses: WCAG POUR Principles, Form Label and Error Conventions</div>
+              <div class="evidence-line">Evidence: state-01 - Confidence: medium</div>
+            </article>
+            
+            <article class="finding" style="border-left-color:#cb2431">
+              <div class="finding-header">
+                <div class="rank">2</div>
+                <div>
+                  <div><span class="severity-badge" style="background:#cb2431">Critical</span> <span class="heuristic-tag">Aesthetic and Minimalist Design - h08_m_13</span></div>
+                  <h3>Important information may appear too late</h3>
+                </div>
+              </div>
+              <div class="section"><div class="section-label">Observed Issue</div><div class="section-content">Average of 3 researcher persona ratings.</div></div>
+              <div class="section"><div class="section-label">Recommendation</div><div class="section-content">Move the task-critical information above the fold and defer supporting details until after the first decision.</div></div>
+              <div class="mission-note">This checklist item indicates measurable heuristic friction for the evaluated surface.</div>
+              <div class="evidence-line">Supporting lenses: Inverted Pyramid, Visual Hierarchy</div>
+              <div class="evidence-line">Evidence: state-01 - Confidence: medium</div>
+            </article>
+            
+            <article class="finding" style="border-left-color:#cb2431">
+              <div class="finding-header">
+                <div class="rank">3</div>
+                <div>
+                  <div><span class="severity-badge" style="background:#cb2431">Critical</span> <span class="heuristic-tag">Aesthetic and Minimalist Design - h08_m_01</span></div>
+                  <h3>Primary action hierarchy is not clear</h3>
+                </div>
+              </div>
+              <div class="section"><div class="section-label">Observed Issue</div><div class="section-content">Average of 3 researcher persona ratings.</div></div>
+              <div class="section"><div class="section-label">Recommendation</div><div class="section-content">Make the primary action the clearest visual starting point and reduce secondary actions around it.</div></div>
+              <div class="mission-note">This checklist item indicates measurable heuristic friction for the evaluated surface.</div>
+              <div class="evidence-line">Supporting lenses: Visual Hierarchy, Fitts&#x27;s Law</div>
+              <div class="evidence-line">Evidence: state-01 - Confidence: medium</div>
+            </article>
+            
+            <article class="finding" style="border-left-color:#cb2431">
+              <div class="finding-header">
+                <div class="rank">4</div>
+                <div>
+                  <div><span class="severity-badge" style="background:#cb2431">Critical</span> <span class="heuristic-tag">Aesthetic and Minimalist Design - h08_m_02</span></div>
+                  <h3>Primary action hierarchy is not clear</h3>
+                </div>
+              </div>
+              <div class="section"><div class="section-label">Observed Issue</div><div class="section-content">Average of 3 researcher persona ratings.</div></div>
+              <div class="section"><div class="section-label">Recommendation</div><div class="section-content">Make the primary action the clearest visual starting point and reduce secondary actions around it.</div></div>
+              <div class="mission-note">This checklist item indicates measurable heuristic friction for the evaluated surface.</div>
+              <div class="evidence-line">Supporting lenses: Visual Hierarchy, Fitts&#x27;s Law</div>
+              <div class="evidence-line">Evidence: state-01 - Confidence: medium</div>
+            </article>
+            
+            <article class="finding" style="border-left-color:#cb2431">
+              <div class="finding-header">
+                <div class="rank">5</div>
+                <div>
+                  <div><span class="severity-badge" style="background:#cb2431">Critical</span> <span class="heuristic-tag">Aesthetic and Minimalist Design - h08_m_10</span></div>
+                  <h3>Visual hierarchy is not supporting the task</h3>
+                </div>
+              </div>
+              <div class="section"><div class="section-label">Observed Issue</div><div class="section-content">Average of 3 researcher persona ratings.</div></div>
+              <div class="section"><div class="section-label">Recommendation</div><div class="section-content">Rework the visual hierarchy so the page guides users from the main purpose to the next action without extra scanning.</div></div>
+              <div class="mission-note">This checklist item indicates measurable heuristic friction for the evaluated surface.</div>
+              <div class="evidence-line">Supporting lenses: Visual Hierarchy, Inverted Pyramid</div>
+              <div class="evidence-line">Evidence: state-01 - Confidence: medium</div>
+            </article>
+            
+            <article class="finding" style="border-left-color:#cb2431">
+              <div class="finding-header">
+                <div class="rank">6</div>
+                <div>
+                  <div><span class="severity-badge" style="background:#cb2431">Critical</span> <span class="heuristic-tag">Aesthetic and Minimalist Design - h08_m_12</span></div>
+                  <h3>Visual hierarchy is not supporting the task</h3>
+                </div>
+              </div>
+              <div class="section"><div class="section-label">Observed Issue</div><div class="section-content">Average of 3 researcher persona ratings.</div></div>
+              <div class="section"><div class="section-label">Recommendation</div><div class="section-content">Rework the visual hierarchy so the page guides users from the main purpose to the next action without extra scanning.</div></div>
+              <div class="mission-note">This checklist item indicates measurable heuristic friction for the evaluated surface.</div>
+              <div class="evidence-line">Supporting lenses: Visual Hierarchy, Inverted Pyramid</div>
+              <div class="evidence-line">Evidence: state-04 - Confidence: medium</div>
+            </article>
+            
+            <article class="finding" style="border-left-color:#cb2431">
+              <div class="finding-header">
+                <div class="rank">7</div>
+                <div>
+                  <div><span class="severity-badge" style="background:#cb2431">Critical</span> <span class="heuristic-tag">Consistency and Standards - h04_m_20</span></div>
+                  <h3>Consistency and trust cues need review</h3>
+                </div>
+              </div>
+              <div class="section"><div class="section-label">Observed Issue</div><div class="section-content">Average of 3 researcher persona ratings.</div></div>
+              <div class="section"><div class="section-label">Recommendation</div><div class="section-content">Audit repeated navigation, labels, components, and trust cues, then align any pattern that changes meaning across screens.</div></div>
+              <div class="mission-note">This checklist item indicates measurable heuristic friction for the evaluated surface.</div>
+              <div class="evidence-line">Supporting lenses: Shneiderman&#x27;s Eight Golden Rules, Platform Human Interface Guidelines</div>
+              <div class="evidence-line">Evidence: state-01 - Confidence: medium</div>
+            </article>
+            
+            <article class="finding" style="border-left-color:#cb2431">
+              <div class="finding-header">
+                <div class="rank">8</div>
+                <div>
+                  <div><span class="severity-badge" style="background:#cb2431">Critical</span> <span class="heuristic-tag">UX Writing / Content and Tone - h14_m_04</span></div>
+                  <h3>UI labels need simpler wording</h3>
+                </div>
+              </div>
+              <div class="section"><div class="section-label">Observed Issue</div><div class="section-content">Average of 3 researcher persona ratings.</div></div>
+              <div class="section"><div class="section-label">Recommendation</div><div class="section-content">Shorten UI labels and test them in the narrowest viewport so the meaning stays complete and visible.</div></div>
+              <div class="mission-note">This checklist item indicates measurable heuristic friction for the evaluated surface.</div>
+              <div class="evidence-line">Supporting lenses: Mobile-First / Touch Conventions, Form Label and Error Conventions</div>
+              <div class="evidence-line">Evidence: state-01 - Confidence: medium</div>
+            </article>
+            
+            <article class="finding" style="border-left-color:#c96a00">
+              <div class="finding-header">
+                <div class="rank">9</div>
+                <div>
+                  <div><span class="severity-badge" style="background:#c96a00">Major</span> <span class="heuristic-tag">Accessibility and Ease of Access - h11_m_02</span></div>
+                  <h3>Interactive controls may exclude some users</h3>
+                </div>
+              </div>
+              <div class="section"><div class="section-label">Observed Issue</div><div class="section-content">Average of 3 researcher persona ratings.</div></div>
+              <div class="section"><div class="section-label">Recommendation</div><div class="section-content">Check touch targets, focus access, and gesture requirements, then enlarge or simplify controls that exclude users.</div></div>
+              <div class="mission-note">This checklist item indicates measurable heuristic friction for the evaluated surface.</div>
+              <div class="evidence-line">Supporting lenses: Mobile-First / Touch Conventions, Platform Human Interface Guidelines</div>
+              <div class="evidence-line">Evidence: state-04 - Confidence: medium</div>
+            </article>
+            
+            <article class="finding" style="border-left-color:#c96a00">
+              <div class="finding-header">
+                <div class="rank">10</div>
+                <div>
+                  <div><span class="severity-badge" style="background:#c96a00">Major</span> <span class="heuristic-tag">Accessibility and Ease of Access - h11_m_04</span></div>
+                  <h3>Surface accessibility needs targeted review</h3>
+                </div>
+              </div>
+              <div class="section"><div class="section-label">Observed Issue</div><div class="section-content">Average of 3 researcher persona ratings.</div></div>
+              <div class="section"><div class="section-label">Recommendation</div><div class="section-content">Run a surface accessibility pass on the affected screen and fix the visible access barrier before deeper compliance review.</div></div>
+              <div class="mission-note">This checklist item indicates measurable heuristic friction for the evaluated surface.</div>
+              <div class="evidence-line">Supporting lenses: WCAG POUR Principles, WAI-ARIA Authoring Practices</div>
+              <div class="evidence-line">Evidence: state-01 - Confidence: medium</div>
+            </article>
+            
+    </section>
+    
+    
+    <section class="card">
+      <h2>Owner-Role Triage Matrix</h2>
+      
+        <table class="owner-triage-table">
+          <thead><tr><th>Owner</th><th>Linked finding</th><th>Next action</th><th>Impact</th><th>Effort</th><th>Confidence</th><th>Supporting roles</th></tr></thead>
+          <tbody>
+                <tr>
+                  <td><span class="role-badge role-engineer">Engineer</span></td>
+                  <td>h11 / h11_m_03</td>
+                  <td>Run a surface accessibility pass on the affected screen and fix the visible access barrier before deeper compliance review.</td>
+                  <td>high</td>
+                  <td><span class="effort-pill">Medium</span></td>
+                  <td>medium</td>
+                  <td></td>
+                </tr>
+                
+                <tr>
+                  <td><span class="role-badge role-designer">Designer</span></td>
+                  <td>h08 / h08_m_13</td>
+                  <td>Move the task-critical information above the fold and defer supporting details until after the first decision.</td>
+                  <td>high</td>
+                  <td><span class="effort-pill">Medium</span></td>
+                  <td>medium</td>
+                  <td></td>
+                </tr>
+                
+                <tr>
+                  <td><span class="role-badge role-designer">Designer</span></td>
+                  <td>h08 / h08_m_01</td>
+                  <td>Make the primary action the clearest visual starting point and reduce secondary actions around it.</td>
+                  <td>high</td>
+                  <td><span class="effort-pill">Medium</span></td>
+                  <td>medium</td>
+                  <td></td>
+                </tr>
+                
+                <tr>
+                  <td><span class="role-badge role-designer">Designer</span></td>
+                  <td>h08 / h08_m_02</td>
+                  <td>Make the primary action the clearest visual starting point and reduce secondary actions around it.</td>
+                  <td>high</td>
+                  <td><span class="effort-pill">Medium</span></td>
+                  <td>medium</td>
+                  <td></td>
+                </tr>
+                
+                <tr>
+                  <td><span class="role-badge role-designer">Designer</span></td>
+                  <td>h08 / h08_m_10</td>
+                  <td>Rework the visual hierarchy so the page guides users from the main purpose to the next action without extra scanning.</td>
+                  <td>high</td>
+                  <td><span class="effort-pill">Medium</span></td>
+                  <td>medium</td>
+                  <td></td>
+                </tr>
+                
+                <tr>
+                  <td><span class="role-badge role-designer">Designer</span></td>
+                  <td>h08 / h08_m_12</td>
+                  <td>Rework the visual hierarchy so the page guides users from the main purpose to the next action without extra scanning.</td>
+                  <td>high</td>
+                  <td><span class="effort-pill">Medium</span></td>
+                  <td>medium</td>
+                  <td></td>
+                </tr>
+                
+                <tr>
+                  <td><span class="role-badge role-product">Product</span></td>
+                  <td>h04 / h04_m_20</td>
+                  <td>Audit repeated navigation, labels, components, and trust cues, then align any pattern that changes meaning across screens.</td>
+                  <td>high</td>
+                  <td><span class="effort-pill">Medium</span></td>
+                  <td>medium</td>
+                  <td></td>
+                </tr>
+                
+                <tr>
+                  <td><span class="role-badge role-designer">Designer</span></td>
+                  <td>h14 / h14_m_04</td>
+                  <td>Shorten UI labels and test them in the narrowest viewport so the meaning stays complete and visible.</td>
+                  <td>high</td>
+                  <td><span class="effort-pill">Medium</span></td>
+                  <td>medium</td>
+                  <td></td>
+                </tr>
+                
+                <tr>
+                  <td><span class="role-badge role-engineer">Engineer</span></td>
+                  <td>h11 / h11_m_02</td>
+                  <td>Check touch targets, focus access, and gesture requirements, then enlarge or simplify controls that exclude users.</td>
+                  <td>high</td>
+                  <td><span class="effort-pill">Medium</span></td>
+                  <td>medium</td>
+                  <td></td>
+                </tr>
+                
+                <tr>
+                  <td><span class="role-badge role-engineer">Engineer</span></td>
+                  <td>h11 / h11_m_04</td>
+                  <td>Run a surface accessibility pass on the affected screen and fix the visible access barrier before deeper compliance review.</td>
+                  <td>high</td>
+                  <td><span class="effort-pill">Medium</span></td>
+                  <td>medium</td>
+                  <td></td>
+                </tr>
+                </tbody>
+        </table>
+        
+    </section>
+    
+    
+    <section class="card">
+      <h2>What Is Working Well</h2>
+      <ul class="strengths-list"><li>User Control and Freedom holds up with A- (80.0%).</li></ul>
+    </section>
+    
+    
+    <section class="card">
+      <h2>Evidence Limits</h2>
+      <div class="evidence-box"><p>No major evidence limits were recorded.</p></div>
+    </section>
+    
+    
+    <section class="card">
+      <h2>Recommended Next Validation Steps</h2>
+      <div class="validation-list">
+        <article class="validation-option">
+          <div class="option-title">Validation Step 1</div>
+          <div class="option-copy">Desktop/mobile comparison summary: desktop scored A- at 81.17 overall quality; mobile scored C at 58.26; the comparison found 66 mobile-only/new checklist issues with highest remaining severity 4.0.</div>
+        </article>
+        
+        <article class="validation-option">
+          <div class="option-title">Validation Step 2</div>
+          <div class="option-copy">Run a mobile regression check at 390px and 320px across all 23 captured tab/page states after fixing overflow.</div>
+        </article>
+        
+        <article class="validation-option">
+          <div class="option-title">Validation Step 3</div>
+          <div class="option-copy">Use the support comparison report to confirm the mobile score moves closer to the desktop score without regressing desktop.</div>
+        </article>
+        
+        <article class="validation-option">
+          <div class="option-title">Validation Step 4</div>
+          <div class="option-copy">Fix severity 3-4 checklist items first, then rerun the same source state for comparison.</div>
+        </article>
+        </div>
+    </section>
+    
+    
+    <section class="card">
+      <h2>Supporting UX Laws And Principles</h2>
+      <p class="section-intro">Support-only explanation. These lenses do not create findings, change 0-4 checklist ratings, or certify compliance.</p>
+      <table>
+        <thead><tr><th>Lens</th><th>Source family</th><th>Applies to</th><th>Why it matters</th><th>Caveat</th></tr></thead>
+        <tbody>
+            <tr>
+              <td>Visual Hierarchy</td>
+              <td>UI design practice</td>
+              <td>h08/h08_m_13, h08/h08_m_01, h08/h08_m_02</td>
+              <td>The finding is supported by visual hierarchy: the screen does not make the most important next action visually primary.</td>
+              <td>Hierarchy needs to match the user&#x27;s current task, not only stakeholder importance.</td>
+            </tr>
+            
+            <tr>
+              <td>Plain Language Principle</td>
+              <td>Content design practice</td>
+              <td>h14/h14_m_02, h07/h07_m_02, h07/h07_m_04</td>
+              <td>The finding is supported by plain-language risk: the wording may slow understanding or recovery.</td>
+              <td>Plain language depends on audience, domain vocabulary, localization, and risk level.</td>
+            </tr>
+            
+            <tr>
+              <td>Information Scent</td>
+              <td>Information foraging / navigation conventions</td>
+              <td>h10/h10_m_01, h10/h10_m_04, h10/h10_m_05</td>
+              <td>The finding is supported by information scent: navigation cues do not clearly predict destination value.</td>
+              <td>Information scent depends on user goals and vocabulary.</td>
+            </tr>
+            
+            <tr>
+              <td>Shneiderman&#x27;s Eight Golden Rules</td>
+              <td>Shneiderman</td>
+              <td>h04/h04_m_20, h04/h04_m_18, h04/h04_m_04</td>
+              <td>The finding is also consistent with Shneiderman-style interface review principles.</td>
+              <td>The rules are broad and require domain-specific interpretation.</td>
+            </tr>
+            
+            <tr>
+              <td>Platform Human Interface Guidelines</td>
+              <td>Apple / Material / Fluent</td>
+              <td>h04/h04_m_20, h11/h11_m_02, h04/h04_m_18</td>
+              <td>The finding is supported by platform-guideline risk: the component may not match expected platform behavior.</td>
+              <td>Platform guidance differs across iOS, Android, web, and desktop.</td>
+            </tr>
+            
+            <tr>
+              <td>ISO 9241-110 Dialogue Principles</td>
+              <td>ISO</td>
+              <td>h02/h02_m_01, h13/h13_m_04, h05/h05_m_01</td>
+              <td>The finding aligns with ISO-style dialogue principles around clarity, control, task fit, or error tolerance.</td>
+              <td>Use as a support lens; UXHC is not performing a formal ISO certification process.</td>
+            </tr>
+            </tbody>
+      </table>
+      <div class="evidence-box support-lens-warnings"><p>Do not make every business priority visually dominant; hierarchy requires tradeoffs.</p><p>Do not remove precise domain terms that expert users need; explain them when needed.</p><p>Do not optimize navigation labels for internal taxonomy at the expense of user language.</p><p>Do not use this as a replacement rubric; map it back to the active UXHC checklist item.</p><p>Do not mix platform guidance without naming the evaluated platform.</p></div>
+    </section>
+    
+    
+    
+    <section class="card">
+      <h2>Prioritized Fix Roadmap</h2>
+      <table class="roadmap-table">
+        <thead><tr><th>When</th><th>Recommended action</th></tr></thead>
+        <tbody><tr><td><span class="sprint-badge" style="background:#cb2431">Immediate</span></td><td>Run a surface accessibility pass on the affected screen and fix the visible access barrier before deeper compliance review.</td></tr><tr><td><span class="sprint-badge" style="background:#cb2431">Immediate</span></td><td>Move the task-critical information above the fold and defer supporting details until after the first decision.</td></tr><tr><td><span class="sprint-badge" style="background:#cb2431">Immediate</span></td><td>Make the primary action the clearest visual starting point and reduce secondary actions around it.</td></tr><tr><td><span class="sprint-badge" style="background:#cb2431">Immediate</span></td><td>Make the primary action the clearest visual starting point and reduce secondary actions around it.</td></tr><tr><td><span class="sprint-badge" style="background:#cb2431">Immediate</span></td><td>Rework the visual hierarchy so the page guides users from the main purpose to the next action without extra scanning.</td></tr><tr><td><span class="sprint-badge" style="background:#cb2431">Immediate</span></td><td>Rework the visual hierarchy so the page guides users from the main purpose to the next action without extra scanning.</td></tr><tr><td><span class="sprint-badge" style="background:#cb2431">Immediate</span></td><td>Audit repeated navigation, labels, components, and trust cues, then align any pattern that changes meaning across screens.</td></tr><tr><td><span class="sprint-badge" style="background:#cb2431">Immediate</span></td><td>Shorten UI labels and test them in the narrowest viewport so the meaning stays complete and visible.</td></tr><tr><td><span class="sprint-badge" style="background:#c96a00">Sprint 1</span></td><td>Check touch targets, focus access, and gesture requirements, then enlarge or simplify controls that exclude users.</td></tr><tr><td><span class="sprint-badge" style="background:#c96a00">Sprint 1</span></td><td>Run a surface accessibility pass on the affected screen and fix the visible access barrier before deeper compliance review.</td></tr><tr><td><span class="sprint-badge" style="background:#c96a00">Sprint 1</span></td><td>Audit repeated navigation, labels, components, and trust cues, then align any pattern that changes meaning across screens.</td></tr><tr><td><span class="sprint-badge" style="background:#c96a00">Sprint 1</span></td><td>Review the affected element against Customer Journey and Satisfaction and make the next user action clearer, safer, or easier to recover from.</td></tr></tbody>
+      </table>
+    </section>
+    
+    
+    <section class="card">
+      <h2>High-Impact / Low-Effort Micro-Solutions</h2>
+      <table class="micro-solution-table">
+        <thead><tr><th>Role</th><th>Micro-solution</th><th>Linked finding</th><th>Why high impact</th><th>Estimated effort</th></tr></thead>
+        <tbody>
+                <tr>
+                  <td><span class="role-badge role-engineer">Engineer</span></td>
+                  <td>Run a surface accessibility pass on the affected screen and fix the visible access barrier before deeper compliance review.</td>
+                  <td>h11 / h11_m_03</td>
+                  <td>This checklist item indicates measurable heuristic friction for the evaluated surface.</td>
+                  <td><span class="effort-pill">Low-Medium</span></td>
+                </tr>
+                
+                <tr>
+                  <td><span class="role-badge role-designer">Designer</span></td>
+                  <td>Move the task-critical information above the fold and defer supporting details until after the first decision.</td>
+                  <td>h08 / h08_m_13</td>
+                  <td>This checklist item indicates measurable heuristic friction for the evaluated surface.</td>
+                  <td><span class="effort-pill">Low-Medium</span></td>
+                </tr>
+                
+                <tr>
+                  <td><span class="role-badge role-designer">Designer</span></td>
+                  <td>Make the primary action the clearest visual starting point and reduce secondary actions around it.</td>
+                  <td>h08 / h08_m_01</td>
+                  <td>This checklist item indicates measurable heuristic friction for the evaluated surface.</td>
+                  <td><span class="effort-pill">Low-Medium</span></td>
+                </tr>
+                
+                <tr>
+                  <td><span class="role-badge role-designer">Designer</span></td>
+                  <td>Make the primary action the clearest visual starting point and reduce secondary actions around it.</td>
+                  <td>h08 / h08_m_02</td>
+                  <td>This checklist item indicates measurable heuristic friction for the evaluated surface.</td>
+                  <td><span class="effort-pill">Low-Medium</span></td>
+                </tr>
+                
+                <tr>
+                  <td><span class="role-badge role-designer">Designer</span></td>
+                  <td>Rework the visual hierarchy so the page guides users from the main purpose to the next action without extra scanning.</td>
+                  <td>h08 / h08_m_10</td>
+                  <td>This checklist item indicates measurable heuristic friction for the evaluated surface.</td>
+                  <td><span class="effort-pill">Low-Medium</span></td>
+                </tr>
+                
+                <tr>
+                  <td><span class="role-badge role-designer">Designer</span></td>
+                  <td>Rework the visual hierarchy so the page guides users from the main purpose to the next action without extra scanning.</td>
+                  <td>h08 / h08_m_12</td>
+                  <td>This checklist item indicates measurable heuristic friction for the evaluated surface.</td>
+                  <td><span class="effort-pill">Low-Medium</span></td>
+                </tr>
+                </tbody>
+      </table>
+    </section>
+    
+    
+    <section class="scope-lock">
+      <h2>Audit Scope and Omitted Profiles</h2>
+      <p><strong>Status:</strong> all_optionals_active</p>
+      <p><strong>Optional profile mode:</strong> all_optionals</p>
+      <p><strong>Scored optional profiles:</strong> accessibility (h11), inclusion (h12), journey (h13), ux_writing (h14)</p>
+      <p><strong>Omitted optional profiles:</strong></p>
+      <p>None</p>
+      <p>For a full advanced audit, rerun with optional_profile_mode=&#x27;all_optionals&#x27; or profiles=[&#x27;accessibility&#x27;,&#x27;inclusion&#x27;,&#x27;journey&#x27;,&#x27;ux_writing&#x27;].</p>
+    </section>
+    
+    <section class="card">
+      <h2>Complete Checklist Scores</h2>
+      
+    <p class="section-intro">All checklist rows are shown. Use the Score and Status columns to scan Passed, Issue, and Major rows without JavaScript filters.</p>
+    
+            <details class="checklist-table">
+              <summary>Visibility of System Status (h01) - 9 checklist items</summary>
+              <table>
+                <thead><tr><th>Item</th><th>Checklist text</th><th>Score</th><th>Status</th><th>Confidence</th><th>Severity basis</th><th>Evidence</th><th>Rationale</th></tr></thead>
+                <tbody><tr class="checklist-row checklist-state-passed"><td>h01_m_01</td><td>Every interface begins with a title/header that describes page contents</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-23</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-passed"><td>h01_m_02</td><td>Headings and subheadings are short, straightforward and descriptive</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-23</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-passed"><td>h01_m_03</td><td>Value proposition is clearly stated on the home page (tagline or welcome blurb)</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-23</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-issue"><td>h01_m_04</td><td>The items on the home page are clearly focused on primary actions</td><td><span class="score-pill severity-2">2.0</span></td><td>Issue</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-22</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-passed"><td>h01_m_05</td><td>Each page is clearly branded so that the user knows they are on the same site</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-23</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-issue"><td>h01_m_06</td><td>Navigation makes it clear which page I am on</td><td><span class="score-pill severity-2">2.0</span></td><td>Issue</td><td>medium</td><td></td><td>state-04, state-10, state-16, state-22</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-passed"><td>h01_m_07</td><td>Link names match the title of destination pages, so users will know when they have reached the intended page</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-23</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-issue"><td>h01_m_08</td><td>Standard elements (page titles, site navigation, page navigation, privacy policy, etc.) are easy to locate</td><td><span class="score-pill severity-2">2.0</span></td><td>Issue</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-22</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-issue"><td>h01_m_09</td><td>Logo is in a consistent location, and clicking the logo returns the user back to the home page</td><td><span class="score-pill severity-2">2.0</span></td><td>Issue</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-23</td><td>Average of 3 researcher persona ratings.</td></tr></tbody>
+              </table>
+            </details>
+            
+
+            <details class="checklist-table">
+              <summary>Match Between System and the Real World (h02) - 3 checklist items</summary>
+              <table>
+                <thead><tr><th>Item</th><th>Checklist text</th><th>Score</th><th>Status</th><th>Confidence</th><th>Severity basis</th><th>Evidence</th><th>Rationale</th></tr></thead>
+                <tbody><tr class="checklist-row checklist-state-major"><td>h02_m_01</td><td>Navigation tabs are located at the top of the page, and look like clickable versions of real-world tabs</td><td><span class="score-pill severity-3">3.0</span></td><td>Major</td><td>medium</td><td></td><td>state-04, state-10, state-16, state-22</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-passed"><td>h02_m_02</td><td>Items that are not clickable do not have characteristics that suggest that they are clickable</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-23</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-issue"><td>h02_m_03</td><td>Items that are clickable look like they are clickable</td><td><span class="score-pill severity-2">2.0</span></td><td>Issue</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-22</td><td>Average of 3 researcher persona ratings.</td></tr></tbody>
+              </table>
+            </details>
+            
+
+            <details class="checklist-table">
+              <summary>User Control and Freedom (h03) - 5 checklist items</summary>
+              <table>
+                <thead><tr><th>Item</th><th>Checklist text</th><th>Score</th><th>Status</th><th>Confidence</th><th>Severity basis</th><th>Evidence</th><th>Rationale</th></tr></thead>
+                <tbody><tr class="checklist-row checklist-state-issue"><td>h03_m_01</td><td>There is a search box</td><td><span class="score-pill severity-1">1.0</span></td><td>Issue</td><td>medium</td><td></td><td>state-01, state-02, state-03, state-04, state-05, state-06, state-07, state-08, state-09, state-10, state-11, state-12, state-13, state-14, state-15, state-16, state-17, state-18, state-19, state-20, state-21, state-22, state-23</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-issue"><td>h03_m_02</td><td>There are clearly marked exits on every page allowing the user to bail out of the current task without having to depend on the browser Back button</td><td><span class="score-pill severity-2">2.0</span></td><td>Issue</td><td>medium</td><td></td><td>state-04, state-09, state-15, state-21, state-03, state-07</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-passed"><td>h03_m_03</td><td>The site does not disable the browser Back button and the Back button appears on the browser toolbar on every page</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-23</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-passed"><td>h03_m_04</td><td>Clicking the back button always takes the user back to the page they came from</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-23</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-issue"><td>h03_m_05</td><td>Undo and redo are supported</td><td><span class="score-pill severity-1">1.0</span></td><td>Issue</td><td>medium</td><td></td><td>state-23</td><td>Average of 3 researcher persona ratings.</td></tr></tbody>
+              </table>
+            </details>
+            
+
+            <details class="checklist-table">
+              <summary>Consistency and Standards (h04) - 21 checklist items</summary>
+              <table>
+                <thead><tr><th>Item</th><th>Checklist text</th><th>Score</th><th>Status</th><th>Confidence</th><th>Severity basis</th><th>Evidence</th><th>Rationale</th></tr></thead>
+                <tbody><tr class="checklist-row checklist-state-passed"><td>h04_m_01</td><td>In your expert opinion, site content does not look like advertisements</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-23</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-passed"><td>h04_m_02</td><td>Clickable elements use a consistent style/color for primary, secondary, and tertiary actions</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-23</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-passed"><td>h04_m_03</td><td>Value proposition is clearly stated on the home page (tagline or welcome blurb)</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-23</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-issue"><td>h04_m_04</td><td>Navigation choices are ordered in the most logical or task-oriented manner, with less important corporate information at the bottom</td><td><span class="score-pill severity-2">2.33</span></td><td>Issue</td><td>medium</td><td></td><td>state-04, state-10, state-16, state-22</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-passed"><td>h04_m_05</td><td>All corporate information is grouped in one distinct area, such as About Us</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-23</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-passed"><td>h04_m_06</td><td>The home page of the site has a memorable URL</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-23</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-issue"><td>h04_m_07</td><td>Terminology is consistent with general web usage</td><td><span class="score-pill severity-2">2.33</span></td><td>Issue</td><td>medium</td><td></td><td>state-03, state-07, state-13, state-19</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-passed"><td>h04_m_08</td><td>There is a visible change when the mouse points at something clickable, excluding cursor changes</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-23</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-issue"><td>h04_m_09</td><td>Hypertext links that invoke actions, such as downloads or new windows, are clearly distinguished from hypertext links that load another page</td><td><span class="score-pill severity-2">2.33</span></td><td>Issue</td><td>medium</td><td></td><td>state-03, state-07, state-13, state-19</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-passed"><td>h04_m_10</td><td>If the site spawns new windows, these will not confuse the user and can be easily closed</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-23</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-passed"><td>h04_m_11</td><td>Menu instructions, prompts and messages appear in the same place on each screen</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-23</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-passed"><td>h04_m_12</td><td>The content is up-to-date, authoritative and trustworthy</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-23</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-issue"><td>h04_m_13</td><td>The site contains third-party support, such as citations or testimonials, to verify the accuracy of information</td><td><span class="score-pill severity-2">2.17</span></td><td>Issue</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-23, state-03, state-07, state-13, state-19</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-issue"><td>h04_m_14</td><td>It is clear that there is a real organization behind the site, such as a physical address or office photo</td><td><span class="score-pill severity-2">2.17</span></td><td>Issue</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-23, state-03, state-07, state-13, state-19</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-passed"><td>h04_m_15</td><td>The content is fresh: the site includes recent content</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-23</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-passed"><td>h04_m_16</td><td>The site is free of typographic errors and spelling mistakes</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-23</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-passed"><td>h04_m_17</td><td>The visual design is consistent, including colors, layout, iconography, etc.</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-23</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-major"><td>h04_m_18</td><td>On content pages, line lengths are neither too short (under 50 characters per line) nor too long (over 100 characters per line) when viewed in a standard browser width window</td><td><span class="score-pill severity-3">3.33</span></td><td>Major</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-22</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-issue"><td>h04_m_19</td><td>Fonts are used consistently and are legible</td><td><span class="score-pill severity-2">2.33</span></td><td>Issue</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-22</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-major"><td>h04_m_20</td><td>The site can be used without scrolling horizontally</td><td><span class="score-pill severity-4">4.0</span></td><td>Major</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-22</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-passed"><td>h04_m_21</td><td>Design components, such as radio buttons and checkboxes, are used appropriately</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-23</td><td>Average of 3 researcher persona ratings.</td></tr></tbody>
+              </table>
+            </details>
+            
+
+            <details class="checklist-table">
+              <summary>Error Prevention (h05) - 5 checklist items</summary>
+              <table>
+                <thead><tr><th>Item</th><th>Checklist text</th><th>Score</th><th>Status</th><th>Confidence</th><th>Severity basis</th><th>Evidence</th><th>Rationale</th></tr></thead>
+                <tbody><tr class="checklist-row checklist-state-issue"><td>h05_m_01</td><td>Pages are free of scroll stoppers: headings or page elements that create the illusion that users have reached the top or bottom of a page when they have not</td><td><span class="score-pill severity-2">2.33</span></td><td>Issue</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-22</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-issue"><td>h05_m_02</td><td>The user does not need to consult user manuals or other external information to use the site</td><td><span class="score-pill severity-2">2.33</span></td><td>Issue</td><td>medium</td><td></td><td>state-03, state-07, state-13, state-19</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-passed"><td>h05_m_03</td><td>User confirmation is required before carrying out potentially dangerous actions, such as deleting something</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-23</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-issue"><td>h05_m_04</td><td>The site provides feedback that helps the user learn how to use the site</td><td><span class="score-pill severity-2">2.33</span></td><td>Issue</td><td>medium</td><td></td><td>state-03, state-07, state-13, state-19</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-major"><td>h05_m_05</td><td>There is sufficient space between targets to prevent the user from hitting multiple or incorrect targets</td><td><span class="score-pill severity-3">3.33</span></td><td>Major</td><td>medium</td><td></td><td>state-04, state-10, state-16, state-22</td><td>Average of 3 researcher persona ratings.</td></tr></tbody>
+              </table>
+            </details>
+            
+
+            <details class="checklist-table">
+              <summary>Recognition Rather Than Recall (h06) - 4 checklist items</summary>
+              <table>
+                <thead><tr><th>Item</th><th>Checklist text</th><th>Score</th><th>Status</th><th>Confidence</th><th>Severity basis</th><th>Evidence</th><th>Rationale</th></tr></thead>
+                <tbody><tr class="checklist-row checklist-state-issue"><td>h06_m_01</td><td>Search suggestions or filters are provided</td><td><span class="score-pill severity-1">1.0</span></td><td>Issue</td><td>medium</td><td></td><td>state-01, state-02, state-03, state-04, state-05, state-06, state-07, state-08, state-09, state-10, state-11, state-12, state-13, state-14, state-15, state-16, state-17, state-18, state-19, state-20, state-21, state-22, state-23</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-issue"><td>h06_m_02</td><td>Each page is clearly labeled with a descriptive and useful title that makes sense as a bookmark</td><td><span class="score-pill severity-1">1.0</span></td><td>Issue</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-22</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-passed"><td>h06_m_03</td><td>Links and link titles are descriptive and predictive, and there are no Click here links</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-23</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-issue"><td>h06_m_04</td><td>Buttons and links show that they have been clicked</td><td><span class="score-pill severity-2">2.0</span></td><td>Issue</td><td>medium</td><td></td><td>state-04, state-10, state-16, state-22</td><td>Average of 3 researcher persona ratings.</td></tr></tbody>
+              </table>
+            </details>
+            
+
+            <details class="checklist-table">
+              <summary>Flexibility and Efficiency of Use (h07) - 9 checklist items</summary>
+              <table>
+                <thead><tr><th>Item</th><th>Checklist text</th><th>Score</th><th>Status</th><th>Confidence</th><th>Severity basis</th><th>Evidence</th><th>Rationale</th></tr></thead>
+                <tbody><tr class="checklist-row checklist-state-passed"><td>h07_m_01</td><td>Useful content is presented on the home page or within one click of the home page</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-23</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-issue"><td>h07_m_02</td><td>The terms used for navigation items and hypertext links are unambiguous and jargon-free</td><td><span class="score-pill severity-2">2.17</span></td><td>Issue</td><td>medium</td><td></td><td>state-03, state-07, state-13, state-19</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-passed"><td>h07_m_03</td><td>If there are product pages, they contain the detail necessary to make a purchase, and users can zoom in on product images</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-23</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-issue"><td>h07_m_04</td><td>The words, phrases and concepts used will be familiar to the typical user</td><td><span class="score-pill severity-2">2.17</span></td><td>Issue</td><td>medium</td><td></td><td>state-03, state-07, state-13, state-19</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-issue"><td>h07_m_05</td><td>Content feels friendly for new users</td><td><span class="score-pill severity-2">2.17</span></td><td>Issue</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-22</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-issue"><td>h07_m_06</td><td>Content feels customizable or useable for frequent or expert users</td><td><span class="score-pill severity-2">2.17</span></td><td>Issue</td><td>medium</td><td></td><td>state-03, state-07, state-13, state-19</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-major"><td>h07_m_07</td><td>The screen density is appropriate for the target users and their tasks</td><td><span class="score-pill severity-3">3.17</span></td><td>Major</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-22</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-passed"><td>h07_m_08</td><td>Icons and graphics are standard and/or intuitive (concrete and familiar)</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-23</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-passed"><td>h07_m_09</td><td>Where tooltips are used, they provide useful additional help and do not simply duplicate text in the icon, link or field label</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-23</td><td>Average of 3 researcher persona ratings.</td></tr></tbody>
+              </table>
+            </details>
+            
+
+            <details class="checklist-table">
+              <summary>Aesthetic and Minimalist Design (h08) - 16 checklist items</summary>
+              <table>
+                <thead><tr><th>Item</th><th>Checklist text</th><th>Score</th><th>Status</th><th>Confidence</th><th>Severity basis</th><th>Evidence</th><th>Rationale</th></tr></thead>
+                <tbody><tr class="checklist-row checklist-state-major"><td>h08_m_01</td><td>By just looking at the home page, the first time user will understand where to start</td><td><span class="score-pill severity-4">3.5</span></td><td>Major</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-22</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-major"><td>h08_m_02</td><td>Primary actions are easy to find and understand</td><td><span class="score-pill severity-4">3.5</span></td><td>Major</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-22</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-issue"><td>h08_m_03</td><td>Individual pages are free of clutter and irrelevant information, and attention-attracting features are used sparingly and only where relevant</td><td><span class="score-pill severity-2">2.5</span></td><td>Issue</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-22</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-issue"><td>h08_m_04</td><td>The home page is professionally designed and will create a positive first impression</td><td><span class="score-pill severity-2">2.5</span></td><td>Issue</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-22</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-passed"><td>h08_m_05</td><td>The home page looks like a home page; pages lower in the site will not be confused with it</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-23</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-passed"><td>h08_m_06</td><td>The site avoids advertisements, especially pop-ups</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-23</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-issue"><td>h08_m_07</td><td>Text is concise, with no needless instructions or welcome notes</td><td><span class="score-pill severity-2">2.5</span></td><td>Issue</td><td>medium</td><td></td><td>state-03, state-07, state-13, state-19</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-passed"><td>h08_m_08</td><td>Pages use bulleted and numbered lists in preference to narrative text</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-23</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-passed"><td>h08_m_09</td><td>The most important items in a list are placed at the top</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-23</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-major"><td>h08_m_10</td><td>Pages are quick to scan, with ample headings and subheadings and short paragraphs</td><td><span class="score-pill severity-4">3.5</span></td><td>Major</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-22</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-issue"><td>h08_m_11</td><td>Information is organized hierarchically, from the general to the specific, and the organization is clear and logical</td><td><span class="score-pill severity-2">2.5</span></td><td>Issue</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-22</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-major"><td>h08_m_12</td><td>Text links are long enough to be understood, but short enough to minimize wrapping, especially when used as a navigation list</td><td><span class="score-pill severity-4">3.5</span></td><td>Major</td><td>medium</td><td></td><td>state-04, state-10, state-16, state-22</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-major"><td>h08_m_13</td><td>On all pages, the most important information, such as frequently used topics, features and functions, is presented on the first screenful of information above the fold</td><td><span class="score-pill severity-4">3.5</span></td><td>Major</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-22</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-issue"><td>h08_m_14</td><td>The relationship between controls and their actions is obvious</td><td><span class="score-pill severity-2">2.5</span></td><td>Issue</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-22</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-issue"><td>h08_m_15</td><td>There is a clear visual starting point to every page</td><td><span class="score-pill severity-2">2.5</span></td><td>Issue</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-22</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-issue"><td>h08_m_16</td><td>The site is pleasant to look at</td><td><span class="score-pill severity-2">2.5</span></td><td>Issue</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-22</td><td>Average of 3 researcher persona ratings.</td></tr></tbody>
+              </table>
+            </details>
+            
+
+            <details class="checklist-table">
+              <summary>Help Users Recognize, Diagnose, and Recover from Errors (h09) - 2 checklist items</summary>
+              <table>
+                <thead><tr><th>Item</th><th>Checklist text</th><th>Score</th><th>Status</th><th>Confidence</th><th>Severity basis</th><th>Evidence</th><th>Rationale</th></tr></thead>
+                <tbody><tr class="checklist-row checklist-state-issue"><td>h09_m_01</td><td>The site uses a customised 404 page, which includes tips on how to find the missing page and links to Home and Search</td><td><span class="score-pill severity-2">2.0</span></td><td>Issue</td><td>medium</td><td></td><td>state-23</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-issue"><td>h09_m_02</td><td>Error messages contain clear instructions on what to do next, including form error states</td><td><span class="score-pill severity-2">2.0</span></td><td>Issue</td><td>medium</td><td></td><td>state-23</td><td>Average of 3 researcher persona ratings.</td></tr></tbody>
+              </table>
+            </details>
+            
+
+            <details class="checklist-table">
+              <summary>Help and Documentation (h10) - 5 checklist items</summary>
+              <table>
+                <thead><tr><th>Item</th><th>Checklist text</th><th>Score</th><th>Status</th><th>Confidence</th><th>Severity basis</th><th>Evidence</th><th>Rationale</th></tr></thead>
+                <tbody><tr class="checklist-row checklist-state-issue"><td>h10_m_01</td><td>Help is available and easy to find</td><td><span class="score-pill severity-2">2.17</span></td><td>Issue</td><td>medium</td><td></td><td>state-04, state-09, state-15, state-21, state-03, state-07</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-passed"><td>h10_m_02</td><td>FAQs are present if appropriate</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>medium</td><td></td><td>state-04, state-09, state-15, state-21</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-passed"><td>h10_m_03</td><td>When giving instructions, pages tell users what to do rather than what to avoid doing</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>medium</td><td></td><td>state-04, state-09, state-15, state-21</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-issue"><td>h10_m_04</td><td>The site shows users how to do common tasks where appropriate, such as demonstrations of the site&#x27;s functionality</td><td><span class="score-pill severity-2">2.17</span></td><td>Issue</td><td>medium</td><td></td><td>state-03, state-07, state-13, state-19</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-issue"><td>h10_m_05</td><td>It is easy to contact someone for assistance and a reply is received quickly</td><td><span class="score-pill severity-2">2.17</span></td><td>Issue</td><td>medium</td><td></td><td>state-04, state-09, state-15, state-21, state-03, state-07</td><td>Average of 3 researcher persona ratings.</td></tr></tbody>
+              </table>
+            </details>
+            
+
+            <details class="checklist-table">
+              <summary>Accessibility and Ease of Access (h11) - 4 checklist items</summary>
+              <table>
+                <thead><tr><th>Item</th><th>Checklist text</th><th>Score</th><th>Status</th><th>Confidence</th><th>Severity basis</th><th>Evidence</th><th>Rationale</th></tr></thead>
+                <tbody><tr class="checklist-row checklist-state-issue"><td>h11_m_01</td><td>P (Perceivable): Content alternatives provided; text resizable without layout breakage; color not sole conveyor of information; audio/video has captions or transcripts</td><td><span class="score-pill severity-2">2.33</span></td><td>Issue</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-22</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-major"><td>h11_m_02</td><td>O (Operable): All interactive elements reachable by touch or keyboard; touch targets meet 44x44pt / 48x48dp minimum; no interaction requires precise gestures that exclude motor-impaired users; auto-playing content can be paused</td><td><span class="score-pill severity-3">3.33</span></td><td>Major</td><td>medium</td><td></td><td>state-04, state-10, state-16, state-22</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-major"><td>h11_m_03</td><td>U (Understandable): Text readable at default zoom without horizontal scroll; forms use visible labels not placeholder-only; error recovery in plain language; app behaves predictably across screen transitions</td><td><span class="score-pill severity-4">4.0</span></td><td>Major</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-22</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-major"><td>h11_m_04</td><td>R (Robust): Compatible with VoiceOver on iOS and TalkBack on Android; interactive elements have meaningful accessibility labels; interface does not break when system font size or display zoom is increased</td><td><span class="score-pill severity-3">3.33</span></td><td>Major</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-22</td><td>Average of 3 researcher persona ratings.</td></tr></tbody>
+              </table>
+            </details>
+            
+
+            <details class="checklist-table">
+              <summary>Empathetic Engagement and Inclusion (h12) - 6 checklist items</summary>
+              <table>
+                <thead><tr><th>Item</th><th>Checklist text</th><th>Score</th><th>Status</th><th>Confidence</th><th>Severity basis</th><th>Evidence</th><th>Rationale</th></tr></thead>
+                <tbody><tr class="checklist-row checklist-state-issue"><td>h12_m_01</td><td>Interface is designed for interrupted use; users can pause, resume, or recover place without losing context or progress</td><td><span class="score-pill severity-2">2.33</span></td><td>Issue</td><td>medium</td><td></td><td>state-04, state-10, state-16, state-22</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-issue"><td>h12_m_02</td><td>No anxiety-inducing mobile patterns: no aggressive push notification prompts, no hard-to-dismiss fullscreen interstitials, no dark patterns on small screens</td><td><span class="score-pill severity-1">1.0</span></td><td>Issue</td><td>medium</td><td></td><td>state-03, state-07, state-13, state-19, state-04, state-09, state-15, state-21</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-passed"><td>h12_m_03</td><td>Content and visual design are culturally appropriate for target regions, including icon choices, color meanings, and imagery</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>medium</td><td></td><td>state-01, state-02, state-03, state-04, state-05, state-11, state-17, state-10</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-major"><td>h12_m_04</td><td>App is usable in situational impairment contexts: bright sunlight, one-handed use, moving/vibrating environment, low-battery/low-data mode</td><td><span class="score-pill severity-3">3.33</span></td><td>Major</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-22</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-major"><td>h12_m_05</td><td>Interface accommodates users with varying motor control; thumb-zone-friendly layouts; sufficiently spaced interactive targets</td><td><span class="score-pill severity-3">3.33</span></td><td>Major</td><td>medium</td><td></td><td>state-04, state-10, state-16, state-22</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-issue"><td>h12_m_06</td><td>Users have meaningful control over notifications, permissions, data sharing, and personalization; these choices are easy to find and change</td><td><span class="score-pill severity-1">1.0</span></td><td>Issue</td><td>medium</td><td></td><td>state-03, state-07, state-13, state-19, state-04, state-09, state-15, state-21</td><td>Average of 3 researcher persona ratings.</td></tr></tbody>
+              </table>
+            </details>
+            
+
+            <details class="checklist-table">
+              <summary>Customer Journey and Satisfaction (h13) - 6 checklist items</summary>
+              <table>
+                <thead><tr><th>Item</th><th>Checklist text</th><th>Score</th><th>Status</th><th>Confidence</th><th>Severity basis</th><th>Evidence</th><th>Rationale</th></tr></thead>
+                <tbody><tr class="checklist-row checklist-state-passed"><td>h13_m_01</td><td>App visual identity, tone, and brand are consistent from launch screen through core flows and notifications</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>medium</td><td></td><td>state-01, state-02, state-03, state-04, state-05, state-11, state-17, state-10</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-major"><td>h13_m_02</td><td>Core task flows are optimized for mobile: minimal steps, no unnecessary context-switching, back navigation always recovers state</td><td><span class="score-pill severity-3">3.0</span></td><td>Major</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-22</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-issue"><td>h13_m_03</td><td>App offers personalized or contextually relevant content based on behavior, location if permitted, or preferences without requiring excessive setup</td><td><span class="score-pill severity-1">1.0</span></td><td>Issue</td><td>medium</td><td></td><td>state-01, state-02, state-05, state-11, state-17</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-issue"><td>h13_m_04</td><td>Support is reachable within the app without leaving to a browser or switching apps</td><td><span class="score-pill severity-2">2.0</span></td><td>Issue</td><td>medium</td><td></td><td>state-04, state-09, state-15, state-21, state-03, state-07</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-issue"><td>h13_m_05</td><td>App provides positive reinforcement or progress acknowledgment at appropriate moments without being patronizing</td><td><span class="score-pill severity-1">1.0</span></td><td>Issue</td><td>medium</td><td></td><td>state-01, state-02, state-05, state-11, state-17</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-issue"><td>h13_m_06</td><td>Privacy and data practices are communicated at appropriate moments and permission requests explain why access is needed, not buried in settings only</td><td><span class="score-pill severity-2">1.83</span></td><td>Issue</td><td>medium</td><td></td><td>state-03, state-07, state-13, state-19, state-04, state-09, state-15, state-21</td><td>Average of 3 researcher persona ratings.</td></tr></tbody>
+              </table>
+            </details>
+            
+
+            <details class="checklist-table">
+              <summary>UX Writing / Content and Tone (h14) - 7 checklist items</summary>
+              <table>
+                <thead><tr><th>Item</th><th>Checklist text</th><th>Score</th><th>Status</th><th>Confidence</th><th>Severity basis</th><th>Evidence</th><th>Rationale</th></tr></thead>
+                <tbody><tr class="checklist-row checklist-state-passed"><td>h14_m_01</td><td>Follows the current product&#x27;s established style guide and brand voice across all screens including push notifications, empty states, and error messages</td><td><span class="score-pill severity-0">0.0</span></td><td>Passed</td><td>medium</td><td></td><td>state-03, state-07, state-13, state-19, state-01</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-major"><td>h14_m_02</td><td>Content is scannable: short headlines, front-loaded information, minimal body copy on primary screens</td><td><span class="score-pill severity-3">3.17</span></td><td>Major</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-22</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-issue"><td>h14_m_03</td><td>Content avoids jargon and uses plain conversational language appropriate for a mobile-first audience</td><td><span class="score-pill severity-2">2.33</span></td><td>Issue</td><td>medium</td><td></td><td>state-03, state-07, state-13, state-19</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-major"><td>h14_m_04</td><td>UI labels are short enough to render completely at minimum viewport width without truncation; critical labels tested at smallest supported screen</td><td><span class="score-pill severity-4">4.0</span></td><td>Major</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-22</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-major"><td>h14_m_05</td><td>CTAs are verb-led, specific, and dominant tap targets; not competing with secondary actions of similar visual weight</td><td><span class="score-pill severity-3">3.33</span></td><td>Major</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-22</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-issue"><td>h14_m_06</td><td>Instructional content is broken into single-thought lines or steps; no block paragraphs in primary flows</td><td><span class="score-pill severity-2">2.17</span></td><td>Issue</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-22</td><td>Average of 3 researcher persona ratings.</td></tr><tr class="checklist-row checklist-state-major"><td>h14_m_07</td><td>Push notifications and alerts use clear non-alarming language, include context for why sent, and lead with user benefit rather than app&#x27;s need</td><td><span class="score-pill severity-3">3.17</span></td><td>Major</td><td>medium</td><td></td><td>state-01, state-05, state-11, state-17, state-22</td><td>Average of 3 researcher persona ratings.</td></tr></tbody>
+              </table>
+            </details>
+            
+    </section>
+    
+    <section>
+      <h2>Evidence Appendix</h2>
+      <table>
+        <thead><tr><th>Evidence ref</th><th>Parent</th><th>Source type</th><th>Quality</th><th>Label/title</th><th>Bounds/notes</th><th>Screenshot/source</th><th>Metadata</th></tr></thead>
+        <tbody><tr><td>state-01</td><td></td><td>url_capture</td><td>ready</td><td>Compass Suite</td><td></td><td>[local path redacted]</td><td>[local path redacted]</td></tr><tr><td>state-02</td><td></td><td>url_capture</td><td>ready</td><td>Compass Suite</td><td></td><td>[local path redacted]</td><td>[local path redacted]</td></tr><tr><td>state-03</td><td></td><td>url_capture</td><td>ready</td><td>Compass Suite</td><td></td><td>[local path redacted]</td><td>[local path redacted]</td></tr><tr><td>state-04</td><td></td><td>url_capture</td><td>ready</td><td>Compass Suite</td><td></td><td>[local path redacted]</td><td>[local path redacted]</td></tr><tr><td>state-05</td><td></td><td>url_capture</td><td>ready</td><td>Download Critical Compass</td><td></td><td>[local path redacted]</td><td>[local path redacted]</td></tr><tr><td>state-06</td><td></td><td>url_capture</td><td>ready</td><td>Download Critical Compass</td><td></td><td>[local path redacted]</td><td>[local path redacted]</td></tr><tr><td>state-07</td><td></td><td>url_capture</td><td>ready</td><td>Download Critical Compass</td><td></td><td>[local path redacted]</td><td>[local path redacted]</td></tr><tr><td>state-08</td><td></td><td>url_capture</td><td>ready</td><td>Download Critical Compass</td><td></td><td>[local path redacted]</td><td>[local path redacted]</td></tr><tr><td>state-09</td><td></td><td>url_capture</td><td>ready</td><td>Download Critical Compass</td><td></td><td>[local path redacted]</td><td>[local path redacted]</td></tr><tr><td>state-10</td><td></td><td>url_capture</td><td>ready</td><td>Download Critical Compass</td><td></td><td>[local path redacted]</td><td>[local path redacted]</td></tr><tr><td>state-11</td><td></td><td>url_capture</td><td>ready</td><td>Download Prompt Compass</td><td></td><td>[local path redacted]</td><td>[local path redacted]</td></tr><tr><td>state-12</td><td></td><td>url_capture</td><td>ready</td><td>Download Prompt Compass</td><td></td><td>[local path redacted]</td><td>[local path redacted]</td></tr><tr><td>state-13</td><td></td><td>url_capture</td><td>ready</td><td>Download Prompt Compass</td><td></td><td>[local path redacted]</td><td>[local path redacted]</td></tr><tr><td>state-14</td><td></td><td>url_capture</td><td>ready</td><td>Download Prompt Compass</td><td></td><td>[local path redacted]</td><td>[local path redacted]</td></tr><tr><td>state-15</td><td></td><td>url_capture</td><td>ready</td><td>Download Prompt Compass</td><td></td><td>[local path redacted]</td><td>[local path redacted]</td></tr><tr><td>state-16</td><td></td><td>url_capture</td><td>ready</td><td>Download Prompt Compass</td><td></td><td>[local path redacted]</td><td>[local path redacted]</td></tr><tr><td>state-17</td><td></td><td>url_capture</td><td>ready</td><td>Download UX Heuristics Compass</td><td></td><td>[local path redacted]</td><td>[local path redacted]</td></tr><tr><td>state-18</td><td></td><td>url_capture</td><td>ready</td><td>Download UX Heuristics Compass</td><td></td><td>[local path redacted]</td><td>[local path redacted]</td></tr><tr><td>state-19</td><td></td><td>url_capture</td><td>ready</td><td>Download UX Heuristics Compass</td><td></td><td>[local path redacted]</td><td>[local path redacted]</td></tr><tr><td>state-20</td><td></td><td>url_capture</td><td>ready</td><td>Download UX Heuristics Compass</td><td></td><td>[local path redacted]</td><td>[local path redacted]</td></tr><tr><td>state-21</td><td></td><td>url_capture</td><td>ready</td><td>Download UX Heuristics Compass</td><td></td><td>[local path redacted]</td><td>[local path redacted]</td></tr><tr><td>state-22</td><td></td><td>url_capture</td><td>ready</td><td>Download UX Heuristics Compass</td><td></td><td>[local path redacted]</td><td>[local path redacted]</td></tr><tr><td>state-23</td><td></td><td>url_capture</td><td>ready</td><td>What is an MCP?</td><td></td><td>[local path redacted]</td><td>[local path redacted]</td></tr></tbody>
+      </table>
+    </section>
+    
+  </main>
+  <footer>UX Heuristic Compass - static one-page report - no links, scripts, or external assets.</footer>
+</body>
+</html>
