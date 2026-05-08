@@ -2,7 +2,7 @@
   "schema_version": "uxhc.public_landing_manifest.v1",
   "product": {
     "name": "UX Heuristics Compass",
-    "version": "0.1.0-beta.1",
+    "version": "0.1.0-beta.10",
     "planned_public_url": "https://jonathankhobson.github.io/ux-heuristic-compass/",
     "repo_url": "https://github.com/JonathanKHobson/ux-heuristic-compass",
     "status": "public_beta_available"
@@ -14,8 +14,8 @@
       "filename": "ux-heuristic-compass-plugin.zip",
       "availability": "available",
       "target_users": "Claude Cowork or Claude Code",
-      "url": "https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.1/ux-heuristic-compass-plugin.zip",
-      "checksum": "f54afb8be72d067c2b315dfff444300b5c27fe30b4447334cb9829fea33ea397"
+      "url": "https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.10/ux-heuristic-compass-plugin.zip",
+      "checksum": "dc40974b0602f1f1d7188e4d06f90cf73472e0d4743d55359b10b042d22010c2"
     },
     {
       "label": "Desktop Extension",
@@ -23,8 +23,8 @@
       "filename": "ux-heuristic-compass-0.1.0.mcpb",
       "availability": "available",
       "target_users": "Claude Desktop",
-      "url": "https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.1/ux-heuristic-compass-0.1.0.mcpb",
-      "checksum": "06fa89dcab73aea50297510c7568ee5b5ef205daf25e69b3815bf4f776f1b9a4"
+      "url": "https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.10/ux-heuristic-compass-0.1.0.mcpb",
+      "checksum": "fcbea8b3352cd9b096ece5729977ccd5d6c878116b77a7fd65c6c4078881b2f8"
     },
     {
       "label": "Skill File",
@@ -32,8 +32,8 @@
       "filename": "ux-heuristic-compass.skill",
       "availability": "available",
       "target_users": "Prompt-only skill use",
-      "url": "https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.1/ux-heuristic-compass.skill",
-      "checksum": "2ce183910446ac132e3a60f94bb7fa722d0719990dc2594e19b988775e2fa450"
+      "url": "https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.10/ux-heuristic-compass.skill",
+      "checksum": "0be58675d60e137626303783f1a0dd3d154d1453f597fbe33b8261fcef8f132a"
     },
     {
       "label": "Skill Zip",
@@ -41,8 +41,8 @@
       "filename": "skill.zip",
       "availability": "available",
       "target_users": "Skill import workflows",
-      "url": "https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.1/skill.zip",
-      "checksum": "13ab2212ef345df6bfb4d4c21ed080e75175ccd8b73d12c83f38197f735f03e4"
+      "url": "https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.10/skill.zip",
+      "checksum": "0d13f5389adb9a269689f83dc76e0fcfd10306b4e1b5e9e3ad73ef24f2b13448"
     },
     {
       "label": "Source Zip",
@@ -50,8 +50,8 @@
       "filename": "ux-heuristic-compass-source.zip",
       "availability": "available",
       "target_users": "Technical reviewers and source installs",
-      "url": "https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.1/ux-heuristic-compass-source.zip",
-      "checksum": "f55a9795f21e540e94eb002cf85ec40614303e49b45ab2ab27abd2c02e94efaa"
+      "url": "https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.10/ux-heuristic-compass-source.zip",
+      "checksum": "18dcd62231a9d3932de81f024b185acbaf5d59d9c1124262bfdbc86ca4d3e0b8"
     },
     {
       "label": "Checksums",
@@ -59,8 +59,8 @@
       "filename": "checksums.txt",
       "availability": "available",
       "target_users": "Technical verification",
-      "url": "https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.1/checksums.txt",
-      "checksum": "6ed4d08c87eca5c3261405dc68e4815e751b17c5be01426e14aea36ae8c39a12"
+      "url": "https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.10/checksums.txt",
+      "checksum": "f16c1e354a1c177517fd91c16c5a8d0f08d97f2dbb92963459501fd326940c8c"
     }
   ],
   "public_examples": [
@@ -74,7 +74,7 @@
     }
   ],
   "public_page_guardrails": [
-    "download buttons use verified beta.1 release URLs",
+    "download buttons use verified 0.1.0-beta.10 release URLs",
     "example tab must not link private screenshots, client material, local paths, or draft reports",
     "tab order must remain Get Started, About, Install Guide, Example, FAQ, Advanced",
     "no combined About/FAQ tab",
