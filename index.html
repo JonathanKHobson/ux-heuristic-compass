@@ -6,67 +6,32 @@
   <title>Download UX Heuristics Compass</title>
   <meta name="description" content="UX Heuristics Compass helps you audit websites, app screens, prototypes, and short task flows for visible usability issues before they ship.">
   <link rel="icon" href="assets/compass-badge.svg" type="image/svg+xml">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
-  <div id="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Reading progress"></div>
-
-  <nav class="site-nav" aria-label="Compass network">
-    <div class="site-nav-inner">
-      <a class="site-nav-brand" href="https://jonathankhobson.github.io/compass-suite/">
-        <img src="assets/compass-badge.svg" alt="">
-        <span>Compass Suite</span>
-      </a>
-      <div class="site-nav-sep" aria-hidden="true"></div>
-      <button class="site-nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav-menu">
-        <span class="site-nav-toggle-icon" aria-hidden="true"></span>
-        <span>Menu</span>
-      </button>
-      <div class="site-nav-links" id="site-nav-menu">
-        <a class="site-nav-link" href="https://jonathankhobson.github.io/compass-suite/">Suite</a>
-        <a class="site-nav-link" href="https://jonathankhobson.github.io/critical-compass/">Critical Compass</a>
-        <a class="site-nav-link" href="https://jonathankhobson.github.io/prompt-compass/">Prompt Compass</a>
-        <a class="site-nav-link" aria-current="page" href="https://jonathankhobson.github.io/ux-heuristic-compass/">UX Heuristics</a>
-        <a class="site-nav-link" href="https://jonathankhobson.github.io/shareables/s/understanding-ai-2026/">AI Basics</a>
-        <a class="site-nav-link" href="https://jonathankhobson.github.io/what-is-an-mcp/">MCP Basics</a>
+  <header>
+    <div class="brand">
+      <img alt="Compass badge" src="assets/compass-badge.svg">
+      <div>
+        <span class="tag">UX Heuristics Compass 0.1.0-beta.10</span>
+        <h1>Download UX Heuristics Compass</h1>
       </div>
     </div>
-  </nav>
-
-  <header class="hero" aria-label="UX Heuristics Compass">
-    <div class="hero-lockup">
-      <img class="hero-badge" src="assets/compass-badge.svg" alt="UX Heuristics Compass badge">
-      <div class="hero-id">
-        <span class="hero-eyebrow">UX Heuristics Compass · v0.1.0-beta.10</span>
-        <h1>Spot usability problems before they ship.</h1>
-      </div>
+    <p class="lead">UX Heuristics Compass helps you spot usability problems people are likely to trip over before your site, app, or prototype goes live. Give it screenshots, a small page capture, or a bounded task flow, and it turns what it can see into a scored UX health snapshot and a practical fix list.</p>
+    <div class="header-actions">
+      <a class="button ghost" href="https://jonathankhobson.github.io/compass-suite/">Back to Compass Suite</a>
     </div>
-    <p class="hero-lead">Give it screenshots, a small page capture, or a bounded task flow. It turns what it can see into a scored UX health snapshot and a practical fix list — before your site, app, or prototype goes live.</p>
-    <p class="hero-actions"><a class="button ghost" href="https://jonathankhobson.github.io/compass-suite/">Back to Compass Suite</a></p>
   </header>
 
-  <div class="page-nav-wrap">
-    <div class="page-nav-inner">
-      <button class="section-nav-toggle" type="button" aria-expanded="false" aria-controls="section-nav-menu">
-        <span>Sections</span>
-        <span class="section-nav-current">Get Started</span>
-      </button>
-      <nav class="tab-nav" id="section-nav-menu" role="tablist" aria-label="UX Heuristics Compass sections">
-        <button id="tab-get-started" role="tab" aria-controls="get-started" aria-selected="true" data-tab-target="get-started">Get Started</button>
-        <button id="tab-about" role="tab" aria-controls="about" aria-selected="false" data-tab-target="about">About</button>
-        <button id="tab-install" role="tab" aria-controls="install" aria-selected="false" data-tab-target="install">Install Guide</button>
-        <button id="tab-example" role="tab" aria-controls="example" aria-selected="false" data-tab-target="example">Example</button>
-        <button id="tab-faq" role="tab" aria-controls="faq" aria-selected="false" data-tab-target="faq">FAQ</button>
-        <button id="tab-advanced" role="tab" aria-controls="advanced" aria-selected="false" data-tab-target="advanced">Advanced</button>
-      </nav>
-    </div>
-  </div>
-
   <main>
+    <nav class="tab-nav" role="tablist" aria-label="UX Heuristics Compass download sections">
+      <button id="tab-get-started" role="tab" aria-controls="get-started" aria-selected="true" data-tab-target="get-started">Get Started</button>
+      <button id="tab-about" role="tab" aria-controls="about" aria-selected="false" data-tab-target="about">About</button>
+      <button id="tab-install" role="tab" aria-controls="install" aria-selected="false" data-tab-target="install">Install Guide</button>
+      <button id="tab-example" role="tab" aria-controls="example" aria-selected="false" data-tab-target="example">Example</button>
+      <button id="tab-faq" role="tab" aria-controls="faq" aria-selected="false" data-tab-target="faq">FAQ</button>
+      <button id="tab-advanced" role="tab" aria-controls="advanced" aria-selected="false" data-tab-target="advanced">Advanced</button>
+    </nav>
 
     <section id="get-started" class="tab-panel" role="tabpanel" aria-labelledby="tab-get-started">
       <div class="card">
@@ -329,40 +294,202 @@ Help me turn this into:
     <section id="install" class="tab-panel" role="tabpanel" aria-labelledby="tab-install" hidden>
       <div class="section-heading">
         <h2>Install Guide</h2>
-        <p>Choose the install path for the Claude surface you use. UXHC beta.10 packages are available now; manual target-client install QA is still tracked separately from package build verification.</p>
+        <p>Choose the install path for the Claude surface you use. These screenshots show the tested UI. If your app does not show this path, stop and use the diagnostic prompt instead of improvising.</p>
       </div>
+
+      <section class="card notice">
+        <h2>Tested Claude Surfaces</h2>
+        <p>The screenshots below reflect the Claude Code, Claude Cowork, and Claude Desktop surfaces available during testing. Claude's install UI can differ by platform, account, and version. Local MCP/plugin and Desktop extension installs are not claimed for Claude.ai in a web browser.</p>
+      </section>
+
+      <section class="card notice install-warning">
+        <h2>Before Manual Config Edits</h2>
+        <p>Do not hand-edit Claude config, or let an assistant rewrite it, unless it first backs up the file, reads the existing server names, merges only <code>ux-heuristic-compass</code>, writes UTF-8 without a BOM, and verifies that no existing MCPs disappeared.</p>
+      </section>
 
       <section class="grid">
         <div class="card" id="install-cowork">
           <h2>Claude Code / Cowork Plugin</h2>
           <ol>
             <li>Download <code>ux-heuristic-compass-plugin.zip</code>.</li>
-            <li>Install it through the current Claude Cowork or Claude Code plugin flow.</li>
+            <li>Open Claude Cowork or Claude Code.</li>
+            <li>Click <strong>Customize</strong> in the left sidebar.</li>
+            <li>Under <strong>Personal Plugins</strong>, click the <strong>+</strong> button.</li>
+            <li>Hover over <strong>Create Plugin</strong>, then click <strong>Upload Plugin</strong>.</li>
+            <li>Drag the zip file into the upload area.</li>
             <li>Run <code>get_started</code> or use the first prompt on the Get Started tab.</li>
+          </ol>
+          <p class="install-subnote">If you only see Skills and Connectors, and Connectors only accepts a remote MCP URL, stop. That is not the plugin upload path.</p>
+          <ol class="install-walkthrough" aria-label="Claude Cowork plugin install screenshots">
+          <li>
+            <figure class="install-step-shot">
+              <img src="install-guide/plugin/plugin-01-open-claude-code.png" alt="Claude Code or Claude Cowork open before plugin installation" loading="lazy">
+              <figcaption><strong>Step 1:</strong> Open Claude Code or Claude Cowork.</figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure class="install-step-shot">
+              <img src="install-guide/plugin/plugin-02-customize.png" alt="Customize entry point in Claude Code or Claude Cowork" loading="lazy">
+              <figcaption><strong>Step 2:</strong> Open Customize from the left sidebar.</figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure class="install-step-shot">
+              <img src="install-guide/plugin/plugin-03-personal-plugins.png" alt="Customize screen showing Personal Plugins" loading="lazy">
+              <figcaption><strong>Step 3:</strong> Confirm you can see Personal Plugins.</figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure class="install-step-shot">
+              <img src="install-guide/plugin/plugin-04-plus-hover.png" alt="Personal Plugins plus button hover state" loading="lazy">
+              <figcaption><strong>Step 4:</strong> Hover over the plus button until Add Plugin appears.</figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure class="install-step-shot">
+              <img src="install-guide/plugin/plugin-05-add-menu.png" alt="Plugin add menu opened from Personal Plugins" loading="lazy">
+              <figcaption><strong>Step 5:</strong> Click the plus button to open the plugin menu.</figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure class="install-step-shot">
+              <img src="install-guide/plugin/plugin-06-upload-plugin-menu.png" alt="Create Plugin menu with Upload Plugin option" loading="lazy">
+              <figcaption><strong>Step 6:</strong> Choose Create Plugin, then Upload Plugin.</figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure class="install-step-shot">
+              <img src="install-guide/plugin/plugin-07-upload-local-plugin.png" alt="Upload local plugin screen" loading="lazy">
+              <figcaption><strong>Step 7:</strong> Choose the local upload option.</figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure class="install-step-shot">
+              <img src="install-guide/plugin/plugin-08-drop-plugin-zip.png" alt="Plugin upload area with drag and drop target" loading="lazy">
+              <figcaption><strong>Step 8:</strong> Drag in ux-heuristic-compass-plugin.zip.</figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure class="install-step-shot">
+              <img src="install-guide/plugin/plugin-09-installed.png" alt="UX Heuristics Compass plugin installed confirmation" loading="lazy">
+              <figcaption><strong>Step 9:</strong> Confirm UX Heuristics Compass appears as installed.</figcaption>
+            </figure>
+          </li>
           </ol>
         </div>
         <div class="card" id="install-desktop">
           <h2>Claude Desktop Extension</h2>
           <ol>
             <li>Download <code>ux-heuristic-compass-0.1.0.mcpb</code>.</li>
-            <li>Open Claude Desktop settings and find Extensions.</li>
-            <li>Install the MCPB file and approve the standard local-extension warning.</li>
+            <li>Open the Claude Desktop app.</li>
+            <li>Go to <strong>Settings</strong> &rarr; <strong>Extensions</strong>.</li>
+            <li>Drag the downloaded file into the Extensions panel.</li>
+            <li>Approve the standard local-extension warning.</li>
             <li>Ask Claude to use UX Heuristics Compass for a quick audit.</li>
+          </ol>
+          <p class="install-subnote">If your Claude Desktop build does not show Settings &rarr; Extensions, do not hand-edit config as a beginner workaround. Use the diagnostic prompt.</p>
+          <ol class="install-walkthrough" aria-label="Claude Desktop extension install screenshots">
+          <li>
+            <figure class="install-step-shot">
+              <img src="install-guide/mcpb/mcpb-01-download.png" alt="UX Heuristics Compass MCPB file ready for install" loading="lazy">
+              <figcaption><strong>Step 1:</strong> Download the UX Heuristics Compass .mcpb file.</figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure class="install-step-shot">
+              <img src="install-guide/mcpb/mcpb-02-open-settings.png" alt="Claude Desktop settings entry point" loading="lazy">
+              <figcaption><strong>Step 2:</strong> Open Claude Desktop settings.</figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure class="install-step-shot">
+              <img src="install-guide/mcpb/mcpb-03-extensions.png" alt="Claude Desktop Extensions area" loading="lazy">
+              <figcaption><strong>Step 3:</strong> Open the Extensions area if your build has it.</figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure class="install-step-shot">
+              <img src="install-guide/mcpb/mcpb-04-drop-file.png" alt="MCPB drag and drop install area" loading="lazy">
+              <figcaption><strong>Step 4:</strong> Drag the .mcpb file into the Extensions panel.</figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure class="install-step-shot">
+              <img src="install-guide/mcpb/mcpb-05-installed.png" alt="UX Heuristics Compass extension installed confirmation" loading="lazy">
+              <figcaption><strong>Step 5:</strong> Confirm the extension is installed.</figcaption>
+            </figure>
+          </li>
           </ol>
         </div>
         <div class="card" id="install-skill">
           <h2>Skill File or Skill Zip</h2>
           <ol>
             <li>Download <code>ux-heuristic-compass.skill</code> or <code>skill.zip</code>.</li>
-            <li>Add it through your host app's skill import flow.</li>
+            <li>Open Claude or Claude Code.</li>
+            <li>Go to <strong>Skills</strong>, then click the <strong>+</strong> button.</li>
+            <li>Hover over <strong>Create Skill</strong>, then click <strong>Upload Skill</strong>.</li>
+            <li>Drag in your downloaded file.</li>
             <li>Use the Skill Audit prompt on the Get Started tab.</li>
           </ol>
+          <p class="install-subnote">Use the skill when the MCP/plugin path is unavailable, or keep it as a prompt-only fallback alongside the tool connection.</p>
+          <ol class="install-walkthrough" aria-label="UX Heuristics Compass skill install screenshots">
+          <li>
+            <figure class="install-step-shot">
+              <img src="install-guide/skill/skill-01-open-skills.png" alt="Claude Skills area before upload" loading="lazy">
+              <figcaption><strong>Step 1:</strong> Open the Skills area.</figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure class="install-step-shot">
+              <img src="install-guide/skill/skill-02-plus-button.png" alt="Skills plus button" loading="lazy">
+              <figcaption><strong>Step 2:</strong> Click the plus button.</figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure class="install-step-shot">
+              <img src="install-guide/skill/skill-03-upload-skill-menu.png" alt="Create Skill menu with Upload Skill option" loading="lazy">
+              <figcaption><strong>Step 3:</strong> Choose Create Skill, then Upload Skill.</figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure class="install-step-shot">
+              <img src="install-guide/skill/skill-04-select-file.png" alt="Skill file selection screen" loading="lazy">
+              <figcaption><strong>Step 4:</strong> Select ux-heuristic-compass.skill or skill.zip.</figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure class="install-step-shot">
+              <img src="install-guide/skill/skill-05-installed.png" alt="UX Heuristics Compass skill installed confirmation" loading="lazy">
+              <figcaption><strong>Step 5:</strong> Confirm UX Heuristics Compass is available as a skill.</figcaption>
+            </figure>
+          </li>
+          </ol>
+        </div>
+      </section>
+
+      <section class="grid">
+        <div class="card">
+          <h2>After Install, Verify</h2>
+          <ol>
+            <li>Fully restart Claude if the tool list does not refresh.</li>
+            <li>Start a new chat.</li>
+            <li>Ask for <code>get_started</code> or use the Skill Audit prompt.</li>
+            <li>If you had other MCPs installed before, confirm they still appear.</li>
+          </ol>
+        </div>
+        <div class="card">
+          <h2>If the Expected UI Is Missing</h2>
+          <p>Do not improvise in Connectors unless that surface clearly accepts the exact file type you downloaded. Use the skill/reference path or the diagnostic prompt instead.</p>
+        </div>
+        <div class="card">
+          <h2>Back Out Safely</h2>
+          <p>Restore the latest config backup or remove only the <code>ux-heuristic-compass</code> entry from <code>mcpServers</code>. Never reset the whole config to fix one install.</p>
         </div>
       </section>
 
       <div class="card">
         <h2>Source Install</h2>
-        <p>Technical users can download <code>ux-heuristic-compass-source.zip</code>, inspect the source, run the self-test, and connect the MCP manually. This path is useful for review, development, or local troubleshooting.</p>
+        <p>Technical users can download <code>ux-heuristic-compass-source.zip</code>, inspect the source, run the self-test, and connect the MCP manually. This is a fallback for review, development, or local troubleshooting, not the beginner install path.</p>
       </div>
 
       <section class="card notice">
@@ -370,7 +497,6 @@ Help me turn this into:
         <p>Use the diagnostic prompt in the Advanced tab before editing files manually. Most failed installs come from an unavailable package, a host app that has not reloaded the MCP, or a path that needs local-machine adjustment.</p>
       </section>
     </section>
-
     <section id="example" class="tab-panel" role="tabpanel" aria-labelledby="tab-example" hidden>
       <div class="card">
         <h2>Example</h2>
@@ -562,11 +688,11 @@ Help me turn this into:
           <summary>Advanced: Verify Download</summary>
           <p>These SHA-256 checksums help technical reviewers confirm that downloaded files match this release.</p>
           <table>
-                                                                                                <tr><td><a href="https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.10/ux-heuristic-compass-plugin.zip" download><code>ux-heuristic-compass-plugin.zip</code></a></td><td><code>dc40974b0602f1f1d7188e4d06f90cf73472e0d4743d55359b10b042d22010c2</code></td></tr>
-            <tr><td><a href="https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.10/ux-heuristic-compass-0.1.0.mcpb" download><code>ux-heuristic-compass-0.1.0.mcpb</code></a></td><td><code>fcbea8b3352cd9b096ece5729977ccd5d6c878116b77a7fd65c6c4078881b2f8</code></td></tr>
-            <tr><td><a href="https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.10/ux-heuristic-compass.skill" download><code>ux-heuristic-compass.skill</code></a></td><td><code>0be58675d60e137626303783f1a0dd3d154d1453f597fbe33b8261fcef8f132a</code></td></tr>
-            <tr><td><a href="https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.10/skill.zip" download><code>skill.zip</code></a></td><td><code>0d13f5389adb9a269689f83dc76e0fcfd10306b4e1b5e9e3ad73ef24f2b13448</code></td></tr>
-            <tr><td><a href="https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.10/ux-heuristic-compass-source.zip" download><code>ux-heuristic-compass-source.zip</code></a></td><td><code>18dcd62231a9d3932de81f024b185acbaf5d59d9c1124262bfdbc86ca4d3e0b8</code></td></tr>
+                                                                                                            <tr><td><a href="https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.10/ux-heuristic-compass-plugin.zip" download><code>ux-heuristic-compass-plugin.zip</code></a></td><td><code>927649bd3e152b7551e3dff935cc4a62d8a54d5ff28c7946a025324490ab3567</code></td></tr>
+            <tr><td><a href="https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.10/ux-heuristic-compass-0.1.0.mcpb" download><code>ux-heuristic-compass-0.1.0.mcpb</code></a></td><td><code>6892f583afaeb5e39a2c7640327264eeca9b908f89fd17155cef1b574119b04d</code></td></tr>
+            <tr><td><a href="https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.10/ux-heuristic-compass.skill" download><code>ux-heuristic-compass.skill</code></a></td><td><code>18507c693379eefb37ac0fdb89224d11c93bd4a70573e39026076137466872d6</code></td></tr>
+            <tr><td><a href="https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.10/skill.zip" download><code>skill.zip</code></a></td><td><code>83a885597a48ee44665bb726648720c856cc49f1adb831d234a785a3ef7bcf93</code></td></tr>
+            <tr><td><a href="https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.10/ux-heuristic-compass-source.zip" download><code>ux-heuristic-compass-source.zip</code></a></td><td><code>33a97cb4d74a19287f04eb321bf37e49a21ee68407c927589021e5dc8d1c183a</code></td></tr>
             <tr><td><a href="https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.10/checksums.txt" download><code>checksums.txt</code></a></td><td>SHA-256 manifest</td></tr>
           </table>
         </details>
@@ -612,7 +738,6 @@ Do not delete files or rewrite unrelated configuration.</textarea>
   </main>
 
   <footer class="suite-footer" role="contentinfo">
-    <div class="suite-footer-inner">
     <div class="suite-footer-card">
       <p class="suite-footer-note">UX Heuristics Compass is part of Jonathan Kyle Hobson's Compass Suite.</p>
       <p class="suite-footer-heading">Compass Suite is created and maintained by Jonathan Kyle Hobson.</p>
@@ -622,9 +747,8 @@ Do not delete files or rewrite unrelated configuration.</textarea>
           <h2 id="footer-start-here">Start Here</h2>
           <div class="suite-footer-links">
             <a href="https://jonathankhobson.github.io/compass-suite/">Compass Suite Home</a>
-            <a href="https://jonathankhobson.github.io/shareables/s/understanding-ai-2026/">AI Basics</a>
-            <a href="https://jonathankhobson.github.io/what-is-an-mcp/">MCP Basics</a>
             <a href="https://jonathankhobson.github.io/compass-suite/#install">Install Guide</a>
+            <a href="https://jonathankhobson.github.io/what-is-an-mcp/">MCP Basics</a>
           </div>
         </section>
         <section class="suite-footer-group" aria-labelledby="footer-public-compasses">
@@ -645,7 +769,6 @@ Do not delete files or rewrite unrelated configuration.</textarea>
         </section>
       </nav>
       <p class="suite-footer-legal">&copy; 2026 Jonathan Kyle Hobson. Code AGPL-3.0-only; docs, prompts, skills, and methodology CC BY-SA 4.0 unless otherwise noted. Compass names, logos, author photo, and official trade dress reserved.</p>
-    </div>
     </div>
   </footer>
   <script src="site.js"></script>
