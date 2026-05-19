@@ -9,6 +9,24 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <div id="progress-bar" class="progress-bar" role="progressbar" aria-label="Reading progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
+
+  <nav class="site-nav" aria-label="Compass network">
+    <a class="site-nav-brand" href="https://jonathankhobson.github.io/compass-suite/">Compass Suite</a>
+    <button class="site-nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav-menu">
+      <span aria-hidden="true">☰</span>
+      <span>Menu</span>
+    </button>
+    <div id="site-nav-menu" class="site-nav-links">
+      <a href="https://jonathankhobson.github.io/compass-suite/">Suite</a>
+      <a href="https://jonathankhobson.github.io/critical-compass/">Critical Compass</a>
+      <a href="https://jonathankhobson.github.io/prompt-compass/">Prompt Compass</a>
+      <a href="https://jonathankhobson.github.io/ux-heuristic-compass/" aria-current="page">UX Heuristics</a>
+      <a href="https://jonathankhobson.github.io/shareables/s/understanding-ai-2026/">AI Basics</a>
+      <a href="https://jonathankhobson.github.io/what-is-an-mcp/">MCP Basics</a>
+    </div>
+  </nav>
+
   <header>
     <div class="brand">
       <img alt="Compass badge" src="assets/compass-badge.svg">
@@ -24,7 +42,12 @@
   </header>
 
   <main>
-    <nav class="tab-nav" role="tablist" aria-label="UX Heuristics Compass download sections">
+    <div class="section-nav-shell">
+    <button class="section-nav-toggle" type="button" aria-expanded="false" aria-controls="section-nav-menu">
+      <span>Sections</span>
+      <span class="section-nav-current">Get Started</span>
+    </button>
+    <nav id="section-nav-menu" class="tab-nav" role="tablist" aria-label="UX Heuristics Compass download sections">
       <button id="tab-get-started" role="tab" aria-controls="get-started" aria-selected="true" data-tab-target="get-started">Get Started</button>
       <button id="tab-about" role="tab" aria-controls="about" aria-selected="false" data-tab-target="about">About</button>
       <button id="tab-install" role="tab" aria-controls="install" aria-selected="false" data-tab-target="install">Install Guide</button>
@@ -32,6 +55,7 @@
       <button id="tab-faq" role="tab" aria-controls="faq" aria-selected="false" data-tab-target="faq">FAQ</button>
       <button id="tab-advanced" role="tab" aria-controls="advanced" aria-selected="false" data-tab-target="advanced">Advanced</button>
     </nav>
+    </div>
 
     <section id="get-started" class="tab-panel" role="tabpanel" aria-labelledby="tab-get-started">
       <div class="card">
@@ -506,6 +530,7 @@ Help me turn this into:
       <div class="example-switcher" role="tablist" aria-label="UX Heuristics Compass examples">
         <button id="example-one-tab" type="button" role="tab" aria-controls="example-one-panel" aria-selected="true" data-example-target="example-one-panel">Example One</button>
         <button id="example-two-tab" type="button" role="tab" aria-controls="example-two-panel" aria-selected="false" data-example-target="example-two-panel">Example Two</button>
+        <button id="example-three-tab" type="button" role="tab" aria-controls="example-three-panel" aria-selected="false" data-example-target="example-three-panel">Example Three</button>
       </div>
 
       <div id="example-one-panel" class="example-panel" role="tabpanel" aria-labelledby="example-one-tab">
@@ -626,6 +651,66 @@ Help me turn this into:
           </div>
           <p><a id="open-selected-report" class="button quiet" href="examples/compass-suite-audit/compass-suite-ux-audit-merged.html" target="_blank" rel="noopener">Open Selected Report (new tab)</a></p>
           <iframe id="example-two-report-frame" class="report-frame" title="Merged Compass Suite UX audit preview" src="examples/compass-suite-audit/compass-suite-ux-audit-merged.html" loading="lazy" referrerpolicy="no-referrer" sandbox=""></iframe>
+        </div>
+      </div>
+
+      <div id="example-three-panel" class="example-panel" role="tabpanel" aria-labelledby="example-three-tab" hidden>
+        <div class="card">
+          <h2>Finished Audit Snapshot</h2>
+          <p>This example shows UX Heuristics Compass running a logged-in learner audit across a set of critical Oppia user journeys. The AI was given the journey set, then moved through each flow on its own to gather evidence, score the experience, and surface cross-journey patterns.</p>
+          <p><span class="tag">Example output</span> <span class="status-pill">9 critical journeys</span> <span class="status-pill">B / 73.39%</span></p>
+        </div>
+
+        <div class="card">
+          <h2>What this example shows</h2>
+          <p>This example shows how UXHC can move from a single-screen review into a multi-journey audit. It is especially useful for seeing how an AI assistant can inspect authenticated flows, compare journey-level failures, and then support a follow-up synthesis that combines AI findings with a human heuristic review.</p>
+          <ul>
+            <li><strong>Critical user journey coverage:</strong> follows sign-up, dashboard, progress, permissions, reporting, checkpoints, post-lesson steps, logout, collection play, and a new dashboard preview.</li>
+            <li><strong>AI-led traversal:</strong> shows the assistant moving through each journey and gathering evidence instead of only reacting to one provided screenshot.</li>
+            <li><strong>Journey-by-journey scoring:</strong> separates individual CUJ scores from the overall health read so weak flows do not disappear inside one average.</li>
+            <li><strong>Evidence limits:</strong> keeps source limits visible, including where logged-in access, environment state, or surface-only inspection affects confidence.</li>
+            <li><strong>Human + AI synthesis:</strong> demonstrates a follow-up report that incorporates a human UX heuristic evaluation alongside the AI audit.</li>
+            <li><strong>Stakeholder-ready export:</strong> includes both HTML and PDF forms of the Human + AI output for easier review and sharing.</li>
+          </ul>
+          <table>
+            <tr><td><strong>Main audit</strong></td><td>Logged-in learner UXHC audit across 9 critical journeys plus a new dashboard preview.</td></tr>
+            <tr><td><strong>Human + AI output</strong></td><td>A follow-up synthesis that merges the AI journey audit with a human evaluator's heuristic review.</td></tr>
+            <tr><td><strong>Primary lesson</strong></td><td>Multi-journey audits reveal system-level blockers that a single-page review can miss.</td></tr>
+          </table>
+          <div class="example-actions report-link-grid" aria-label="Open logged-in learner audit examples">
+            <a class="button" href="examples/oppia-logged-in-learner-audit/oppia-logged-in-learner-uxhc-audit.html" target="_blank" rel="noopener">Open Logged-In Learner HTML (new tab)</a>
+            <a class="button ghost" href="examples/oppia-logged-in-learner-audit/oppia-logged-in-learner-uxhc-audit-human-ai.html" target="_blank" rel="noopener">Open Human + AI HTML (new tab)</a>
+            <a class="button ghost" href="examples/oppia-logged-in-learner-audit/oppia-logged-in-learner-uxhc-audit-human-ai.pdf" target="_blank" rel="noopener">Open Human + AI PDF (new tab)</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Output Snapshot</h2>
+          <p>These snapshots show the two finished report surfaces: first the AI-led logged-in learner audit, then the Human + AI synthesis output that incorporates a human evaluator's heuristic read.</p>
+        </div>
+        <div class="report-snapshot-stack">
+          <figure class="example-output">
+            <img class="example-output-image" src="examples/oppia-logged-in-learner-audit/screenshots/oppia-logged-in-learner-audit-snapshot.png" alt="Logged-in learner UXHC audit snapshot showing 9 critical user journeys, B grade, journey scorecards, and critical findings." loading="lazy" decoding="async">
+          </figure>
+          <figure class="example-output">
+            <img class="example-output-image" src="examples/oppia-logged-in-learner-audit/screenshots/oppia-logged-in-learner-human-ai-snapshot.png" alt="Human plus AI logged-in learner audit snapshot showing combined score, AI and human scores, journey cards, and critical findings." loading="lazy" decoding="async">
+          </figure>
+        </div>
+
+        <div class="card">
+          <h2>Conversation Snapshot</h2>
+          <p>These stitched Claude Code screenshots show the multi-journey workflow in motion: the prompt, journey setup, evidence gathering, user-journey traversal, report generation, and Human + AI synthesis follow-up.</p>
+        </div>
+        <div class="report-snapshot-stack">
+          <figure class="example-output">
+            <img class="example-output-image" src="examples/oppia-logged-in-learner-audit/screenshots/oppia-logged-in-learner-conversation-01.png" alt="Stitched Claude Code conversation snapshot showing the logged-in learner audit prompt, setup, and early evidence-gathering flow." loading="lazy" decoding="async">
+          </figure>
+          <figure class="example-output">
+            <img class="example-output-image" src="examples/oppia-logged-in-learner-audit/screenshots/oppia-logged-in-learner-conversation-02.png" alt="Stitched Claude Code conversation snapshot showing critical user journey traversal, findings, and report-generation steps." loading="lazy" decoding="async">
+          </figure>
+          <figure class="example-output">
+            <img class="example-output-image" src="examples/oppia-logged-in-learner-audit/screenshots/oppia-logged-in-learner-conversation-03.png" alt="Stitched Claude Code conversation snapshot showing final report review and Human plus AI synthesis workflow." loading="lazy" decoding="async">
+          </figure>
         </div>
       </div>
     </section>

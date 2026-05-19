@@ -1,6 +1,64 @@
 (function () {
+  document.documentElement.classList.add("js-enabled");
+
+  const bar = document.getElementById("progress-bar");
+  if (bar) {
+    window.addEventListener("scroll", () => {
+      const scrolled = document.documentElement.scrollTop;
+      const total = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const pct = total > 0 ? Math.round((scrolled / total) * 100) : 0;
+      bar.style.width = pct + "%";
+      bar.setAttribute("aria-valuenow", String(pct));
+    }, { passive: true });
+  }
+
   const tabs = Array.from(document.querySelectorAll("[data-tab-target]"));
   const panels = Array.from(document.querySelectorAll(".tab-panel"));
+  const sectionLabel = document.querySelector(".section-nav-current");
+
+  function wireMenuToggle(toggleSelector, menuSelector, openClass) {
+    const toggle = document.querySelector(toggleSelector);
+    const menu = document.querySelector(menuSelector);
+    if (!toggle || !menu) return;
+
+    function setOpen(isOpen) {
+      toggle.setAttribute("aria-expanded", String(isOpen));
+      menu.classList.toggle(openClass, isOpen);
+    }
+
+    toggle.addEventListener("click", (event) => {
+      event.stopPropagation();
+      setOpen(toggle.getAttribute("aria-expanded") !== "true");
+    });
+
+    menu.addEventListener("click", (event) => {
+      if (event.target.closest("a, button")) {
+        setOpen(false);
+      }
+    });
+
+    document.addEventListener("click", (event) => {
+      if (!menu.classList.contains(openClass)) return;
+      if (menu.contains(event.target) || toggle.contains(event.target)) return;
+      setOpen(false);
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        setOpen(false);
+      }
+    });
+  }
+
+  wireMenuToggle(".site-nav-toggle", "#site-nav-menu", "is-open");
+  wireMenuToggle(".section-nav-toggle", "#section-nav-menu", "is-open");
+
+  function updateSectionLabel() {
+    const selected = tabs.find((tab) => tab.getAttribute("aria-selected") === "true");
+    if (sectionLabel && selected) {
+      sectionLabel.textContent = selected.textContent.trim();
+    }
+  }
 
   function activateTab(id, updateHash) {
     const target = panels.find((panel) => panel.id === id) ? id : "get-started";
@@ -12,6 +70,7 @@
     panels.forEach((panel) => {
       panel.hidden = panel.id !== target;
     });
+    updateSectionLabel();
     if (updateHash) {
       history.replaceState(null, "", "#" + target);
     }
