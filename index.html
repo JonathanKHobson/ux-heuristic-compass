@@ -5,9 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>UX Heuristics Compass — Working Tools</title>
   <meta name="description" content="UX Heuristics Compass helps you audit websites, app screens, prototypes, and short task flows for visible usability issues before they ship.">
-  <link rel="icon" href="assets/working-tools-mark.svg" type="image/svg+xml">
+  <link rel="icon" type="image/png" sizes="32x32" href="/compass-suite/assets/brand/working-tools-favicon-32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/compass-suite/assets/brand/working-tools-icon-180.png">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="assets/network.css">
+  <link rel="stylesheet" href="/compass-suite/assets/css/network-frame.css">
 </head>
 <body>
   <div id="progress-bar" class="progress-bar" role="progressbar" aria-label="Reading progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
@@ -78,7 +80,7 @@
           <p><a href="#install-desktop">How this will install</a></p>
         </div>
         <div class="card">
-          <h2>Skill / Prompt-Only Alternative</h2>
+          <h2>Skill</h2>
           <p>Use this when you want prompt guidance without the MCP tools, or when your host app cannot use local connectors yet.</p>
           <p><span class="tag">Public beta</span></p>
           <a class="button ghost" href="https://github.com/JonathanKHobson/ux-heuristic-compass/releases/download/v0.1.0-beta.10/ux-heuristic-compass.skill" download>Download Skill</a>
@@ -330,7 +332,7 @@ Help me turn this into:
             <li>Run <code>get_started</code> or use the first prompt on the Get Started tab.</li>
           </ol>
           <p class="install-subnote">If you only see Skills and Connectors, and Connectors only accepts a remote MCP URL, stop. That is not the plugin upload path.</p>
-          <ol class="install-walkthrough" aria-label="Claude Cowork plugin install screenshots">
+          <ol class="install-walkthrough">
           <li>
             <figure class="install-step-shot">
               <img src="install-guide/plugin/plugin-01-open-claude-code.png" alt="Claude Code or Claude Cowork open before plugin installation" loading="lazy">
@@ -398,7 +400,7 @@ Help me turn this into:
             <li>Ask Claude to use UX Heuristics Compass for a quick audit.</li>
           </ol>
           <p class="install-subnote">If your Claude Desktop build does not show Settings &rarr; Extensions, do not hand-edit config as a beginner workaround. Use the diagnostic prompt.</p>
-          <ol class="install-walkthrough" aria-label="Claude Desktop extension install screenshots">
+          <ol class="install-walkthrough">
           <li>
             <figure class="install-step-shot">
               <img src="install-guide/mcpb/mcpb-01-download.png" alt="UX Heuristics Compass MCPB file ready for install" loading="lazy">
@@ -442,7 +444,7 @@ Help me turn this into:
             <li>Use the Skill Audit prompt on the Get Started tab.</li>
           </ol>
           <p class="install-subnote">Use the skill when the MCP/plugin path is unavailable, or keep it as a prompt-only fallback alongside the tool connection.</p>
-          <ol class="install-walkthrough" aria-label="UX Heuristics Compass skill install screenshots">
+          <ol class="install-walkthrough">
           <li>
             <figure class="install-step-shot">
               <img src="install-guide/skill/skill-01-open-skills.png" alt="Claude Skills area before upload" loading="lazy">
@@ -843,5 +845,6 @@ Do not delete files or rewrite unrelated configuration.</textarea>
     </div>
   </footer>
   <script src="site.js"></script>
+  <script type="module" src="/compass-suite/assets/js/network-frame.js"></script>
 </body>
 </html>
