@@ -1,44 +1,30 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Download UX Heuristics Compass</title>
+  <title>UX Heuristics Compass — Working Tools</title>
   <meta name="description" content="UX Heuristics Compass helps you audit websites, app screens, prototypes, and short task flows for visible usability issues before they ship.">
-  <link rel="icon" href="assets/compass-badge.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/working-tools-mark.svg" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="assets/network.css">
 </head>
 <body>
   <div id="progress-bar" class="progress-bar" role="progressbar" aria-label="Reading progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
 
-  <nav class="site-nav" aria-label="Compass network">
-    <a class="site-nav-brand" href="https://jonathankhobson.github.io/compass-suite/">Compass Suite</a>
-    <button class="site-nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav-menu">
-      <span aria-hidden="true">☰</span>
-      <span>Menu</span>
-    </button>
-    <div id="site-nav-menu" class="site-nav-links">
-      <a href="https://jonathankhobson.github.io/compass-suite/">Suite</a>
-      <a href="https://jonathankhobson.github.io/critical-compass/">Critical Compass</a>
-      <a href="https://jonathankhobson.github.io/prompt-compass/">Prompt Compass</a>
-      <a href="https://jonathankhobson.github.io/ux-heuristic-compass/" aria-current="page">UX Heuristics</a>
-      <a href="https://jonathankhobson.github.io/shareables/s/understanding-ai-2026/">AI Basics</a>
-      <a href="https://jonathankhobson.github.io/what-is-an-mcp/">MCP Basics</a>
-    </div>
-  </nav>
+  <a class="skip-link" href="#get-started">Skip to downloads</a>
+  <nav class="site-nav" aria-label="Working Tools network"><div class="site-nav-inner"><a class="site-nav-brand" href="https://jonathankhobson.github.io/compass-suite/"><span>Working Tools</span></a><button class="site-nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav-menu"><span>Menu</span></button><div id="site-nav-menu" class="site-nav-links"><a class="site-nav-link" href="https://jonathankhobson.github.io/compass-suite/">Library</a><a class="site-nav-link" href="https://jonathankhobson.github.io/critical-compass/">Critical Compass</a><a class="site-nav-link" href="https://jonathankhobson.github.io/prompt-compass/">Prompt Compass</a><a class="site-nav-link" href="https://jonathankhobson.github.io/ux-heuristic-compass/" aria-current="page">UX Heuristics</a><a class="site-nav-link" href="https://jonathankhobson.github.io/shareables/s/understanding-ai-2026/">AI Basics</a><a class="site-nav-link" href="https://jonathankhobson.github.io/what-is-an-mcp/">MCP Basics</a></div></div></nav>
 
-  <header>
-    <div class="brand">
-      <img alt="Compass badge" src="assets/compass-badge.svg">
+  <header class="hero" aria-label="UX Heuristics Compass">
+    <div class="hero-lockup">
       <div>
-        <span class="tag">UX Heuristics Compass 0.1.0-beta.10</span>
-        <h1>Download UX Heuristics Compass</h1>
+        <span class="hero-eyebrow">UX Heuristics Compass · v0.1.0-beta.10</span>
+        <h1>Turn visible friction into a fix someone can test.</h1>
       </div>
     </div>
-    <p class="lead">UX Heuristics Compass helps you spot usability problems people are likely to trip over before your site, app, or prototype goes live. Give it screenshots, a small page capture, or a bounded task flow, and it turns what it can see into a scored UX health snapshot and a practical fix list.</p>
-    <div class="header-actions">
-      <a class="button ghost" href="https://jonathankhobson.github.io/compass-suite/">Back to Compass Suite</a>
-    </div>
+    <p class="hero-lead">UX Heuristics Compass helps you spot usability problems people are likely to trip over before your site, app, or prototype goes live. Give it screenshots, a small page capture, or a bounded task flow, and it turns what it can see into a scored UX health snapshot and a practical fix list.</p>
+    <div class="hero-actions"><a class="button" href="#get-started">Choose a download</a><a class="button ghost" href="https://jonathankhobson.github.io/compass-suite/">Working Tools library</a></div>
+    <aside class="work-specimen" aria-label="UX finding specimen"><div class="specimen-top"><span>Finding / UX-08</span><span>Task: submit</span></div><h2>The control is visible. The outcome is not.</h2><p class="specimen-after">Change “Continue” to “Review application,” then show what can still be edited before submission.</p><ol class="specimen-list"><li><span>01</span><strong>Observation: label hides the next state</strong></li><li><span>02</span><strong>Impact: users hesitate at commitment</strong></li><li><span>03</span><strong>Check: test the revised handoff</strong></li></ol><div class="specimen-foot"><span>Evidence bounded</span><span>Repair testable</span></div></aside>
   </header>
 
   <main>
@@ -48,12 +34,12 @@
       <span class="section-nav-current">Get Started</span>
     </button>
     <nav id="section-nav-menu" class="tab-nav" role="tablist" aria-label="UX Heuristics Compass download sections">
-      <button id="tab-get-started" role="tab" aria-controls="get-started" aria-selected="true" data-tab-target="get-started">Get Started</button>
-      <button id="tab-about" role="tab" aria-controls="about" aria-selected="false" data-tab-target="about">About</button>
-      <button id="tab-install" role="tab" aria-controls="install" aria-selected="false" data-tab-target="install">Install Guide</button>
-      <button id="tab-example" role="tab" aria-controls="example" aria-selected="false" data-tab-target="example">Example</button>
-      <button id="tab-faq" role="tab" aria-controls="faq" aria-selected="false" data-tab-target="faq">FAQ</button>
-      <button id="tab-advanced" role="tab" aria-controls="advanced" aria-selected="false" data-tab-target="advanced">Advanced</button>
+      <button type="button" id="tab-get-started" role="tab" aria-controls="get-started" aria-selected="true" data-tab-target="get-started">Get Started</button>
+      <button type="button" id="tab-about" role="tab" aria-controls="about" aria-selected="false" data-tab-target="about">About</button>
+      <button type="button" id="tab-install" role="tab" aria-controls="install" aria-selected="false" data-tab-target="install">Install Guide</button>
+      <button type="button" id="tab-example" role="tab" aria-controls="example" aria-selected="false" data-tab-target="example">Example</button>
+      <button type="button" id="tab-faq" role="tab" aria-controls="faq" aria-selected="false" data-tab-target="faq">FAQ</button>
+      <button type="button" id="tab-advanced" role="tab" aria-controls="advanced" aria-selected="false" data-tab-target="advanced">Advanced</button>
     </nav>
     </div>
 
@@ -123,7 +109,7 @@
           <h2>Skill Audit</h2>
           <p><strong>When to use:</strong> You want a prompt-only UX review before the MCP package is installed.</p>
           <button class="button secondary" type="button" data-copy-target="prompt-skill-audit">Copy prompt</button>
-          <textarea id="prompt-skill-audit" readonly>I have the UX Heuristics Compass skill or prompt guidance available.
+          <textarea id="prompt-skill-audit" aria-label="UX Heuristics skill audit prompt" readonly>I have the UX Heuristics Compass skill or prompt guidance available.
 
 Before you begin, ask me these questions one at a time. If your host supports a native question UI, use it instead of asking in plain chat:
 
@@ -146,7 +132,7 @@ After I answer, run a UX Heuristics Compass audit. Return:
           <h2>MCP Quick Audit</h2>
           <p><strong>When to use:</strong> You have UXHC installed and want a compact audit.</p>
           <button class="button secondary" type="button" data-copy-target="prompt-mcp-quick">Copy prompt</button>
-          <textarea id="prompt-mcp-quick" readonly>Use UX Heuristics Compass for a quick audit.
+          <textarea id="prompt-mcp-quick" aria-label="UX Heuristics quick MCP audit prompt" readonly>Use UX Heuristics Compass for a quick audit.
 
 If you need context before scoring, use the native question UI if available and ask only the minimum questions needed.
 
@@ -168,7 +154,7 @@ Return a compact UX Health Snapshot, the top 5 findings, and one concrete next a
           <h2>Full Checklist Audit</h2>
           <p><strong>When to use:</strong> You want scored findings across the active heuristic checklist.</p>
           <button class="button secondary" type="button" data-copy-target="prompt-full-audit">Copy prompt</button>
-          <textarea id="prompt-full-audit" readonly>Use UX Heuristics Compass for a full checklist-level audit.
+          <textarea id="prompt-full-audit" aria-label="UX Heuristics full audit prompt" readonly>Use UX Heuristics Compass for a full checklist-level audit.
 
 Ask me one context question at a time before scoring if the target user, task, platform, or source scope is unclear. Use native question UI if your host supports it.
 
@@ -191,7 +177,7 @@ Include:
           <h2>Advanced Human-Loop Audit</h2>
           <p><strong>When to use:</strong> You want context, calibration, and report-readiness questions built into the audit.</p>
           <button class="button secondary" type="button" data-copy-target="prompt-advanced">Copy prompt</button>
-          <textarea id="prompt-advanced" readonly>Use UX Heuristics Compass for an advanced audit with human-in-the-loop support.
+          <textarea id="prompt-advanced" aria-label="UX Heuristics advanced audit prompt" readonly>Use UX Heuristics Compass for an advanced audit with human-in-the-loop support.
 
 Use native question UI if available. Ask:
 - beginning context questions before scoring
@@ -215,7 +201,7 @@ Return the audit in phases:
           <h2>Multi-Agent UX Panel</h2>
           <p><strong>When to use:</strong> You want several UX perspectives without pretending there was a real user study.</p>
           <button class="button secondary" type="button" data-copy-target="prompt-agent-panel">Copy prompt</button>
-          <textarea id="prompt-agent-panel" readonly>Use UX Heuristics Compass Agent Mode 1.
+          <textarea id="prompt-agent-panel" aria-label="UX Heuristics agent panel prompt" readonly>Use UX Heuristics Compass Agent Mode 1.
 
 Have three evaluator perspectives review the same bounded interface evidence:
 - generalist UX researcher
@@ -236,7 +222,7 @@ Return:
           <h2>UX Coaching</h2>
           <p><strong>When to use:</strong> You want help turning findings into practical fixes.</p>
           <button class="button secondary" type="button" data-copy-target="prompt-coaching">Copy prompt</button>
-          <textarea id="prompt-coaching" readonly>Use UX Heuristics Compass as a coaching partner.
+          <textarea id="prompt-coaching" aria-label="UX Heuristics coaching prompt" readonly>Use UX Heuristics Compass as a coaching partner.
 
 Here is the interface or finding I want to improve:
 """
@@ -603,7 +589,7 @@ Help me turn this into:
             <li><strong>Agreement and disagreement:</strong> makes it easier to see which issues repeat across evaluators and which need human judgment.</li>
             <li><strong>Public-surface closeout:</strong> connects the audit to a concrete Pages hardening pass rather than leaving it as critique.</li>
           </ul>
-          <div class="example-actions report-link-grid" aria-label="Open Compass Suite audit examples">
+          <div class="example-actions report-link-grid" role="group" aria-label="Open Compass Suite audit examples">
             <a class="button" href="examples/compass-suite-audit/compass-suite-ux-audit-merged.html" target="_blank" rel="noopener">Open Merged Audit</a>
             <a class="button ghost" href="examples/compass-suite-audit/claude-compass-suite-ux-audit.html" target="_blank" rel="noopener">Open Claude Audit</a>
             <a class="button ghost" href="examples/compass-suite-audit/codex-uxhc-advanced-audit.html" target="_blank" rel="noopener">Open Codex Advanced</a>
@@ -641,7 +627,7 @@ Help me turn this into:
         <div class="card report-viewer-card">
           <h2>Browse the HTML Reports</h2>
           <p>Use the buttons below to preview each report inside this tab. The new-tab links above remain the most reliable way to read or share a full report.</p>
-          <div class="report-selector" aria-label="Choose report preview">
+          <div class="report-selector" role="group" aria-label="Choose report preview">
             <button type="button" data-report-src="examples/compass-suite-audit/compass-suite-ux-audit-merged.html" data-report-title="Merged Compass Suite UX audit" aria-pressed="true">Merged Audit</button>
             <button type="button" data-report-src="examples/compass-suite-audit/claude-compass-suite-ux-audit.html" data-report-title="Claude Compass Suite UX audit" aria-pressed="false">Claude Audit</button>
             <button type="button" data-report-src="examples/compass-suite-audit/codex-uxhc-advanced-audit.html" data-report-title="Codex UXHC advanced audit" aria-pressed="false">Codex Advanced</button>
@@ -677,7 +663,7 @@ Help me turn this into:
             <tr><td><strong>Human + AI output</strong></td><td>A follow-up synthesis that merges the AI journey audit with a human evaluator's heuristic review.</td></tr>
             <tr><td><strong>Primary lesson</strong></td><td>Multi-journey audits reveal system-level blockers that a single-page review can miss.</td></tr>
           </table>
-          <div class="example-actions report-link-grid" aria-label="Open logged-in learner audit examples">
+          <div class="example-actions report-link-grid" role="group" aria-label="Open logged-in learner audit examples">
             <a class="button" href="examples/oppia-logged-in-learner-audit/oppia-logged-in-learner-uxhc-audit.html" target="_blank" rel="noopener">Open Logged-In Learner HTML (new tab)</a>
             <a class="button ghost" href="examples/oppia-logged-in-learner-audit/oppia-logged-in-learner-uxhc-audit-human-ai.html" target="_blank" rel="noopener">Open Human + AI HTML (new tab)</a>
             <a class="button ghost" href="examples/oppia-logged-in-learner-audit/oppia-logged-in-learner-uxhc-audit-human-ai.pdf" target="_blank" rel="noopener">Open Human + AI PDF (new tab)</a>
@@ -786,7 +772,7 @@ Help me turn this into:
         <h2>AI-Assisted Install Prompt</h2>
         <p>Use this prompt when you want a careful AI assistant to help inspect and install the package.</p>
         <button class="button" type="button" data-copy-target="ai-install-text">Copy install prompt</button>
-        <textarea id="ai-install-text" readonly>You are a careful, technically conservative AI install assistant. Your job is to help me add or install UX Heuristics Compass safely, without modifying unrelated configuration or introducing unexpected dependencies. Do not delete anything; only add.
+        <textarea id="ai-install-text" aria-label="UX Heuristics AI-assisted install prompt" readonly>You are a careful, technically conservative AI install assistant. Your job is to help me add or install UX Heuristics Compass safely, without modifying unrelated configuration or introducing unexpected dependencies. Do not delete anything; only add.
 
 Release page: https://jonathankhobson.github.io/ux-heuristic-compass/
 
@@ -808,7 +794,7 @@ After install, ask the host to run get_started or use the first quick-audit prom
       <div id="diagnostics-prompt" class="card">
         <h2>Diagnostic Prompt</h2>
         <button class="button" type="button" data-copy-target="diagnostic-text">Copy diagnostic prompt</button>
-        <textarea id="diagnostic-text" readonly>Help me diagnose a UX Heuristics Compass install.
+        <textarea id="diagnostic-text" aria-label="UX Heuristics diagnostic prompt" readonly>Help me diagnose a UX Heuristics Compass install.
 
 First, identify which host I am using and which install path I attempted. Then check:
 - whether the package file exists
@@ -824,14 +810,14 @@ Do not delete files or rewrite unrelated configuration.</textarea>
 
   <footer class="suite-footer" role="contentinfo">
     <div class="suite-footer-card">
-      <p class="suite-footer-note">UX Heuristics Compass is part of Jonathan Kyle Hobson's Compass Suite.</p>
-      <p class="suite-footer-heading">Compass Suite is created and maintained by Jonathan Kyle Hobson.</p>
-      <p class="suite-footer-purpose">Local-first AI tools for reasoning, prompt work, UX review, and evidence-bound workflows.</p>
-      <nav class="suite-footer-grid" aria-label="Compass network footer">
+      <p class="suite-footer-note">UX Heuristics Compass is a public Working Tools resource.</p>
+      <p class="suite-footer-heading">UX Heuristics Compass is part of Working Tools by J. Kyle Hobson.</p>
+      <p class="suite-footer-purpose">Public resources for writing, evidence, design, building, career work, teaching, and games with AI.</p>
+      <nav class="suite-footer-grid" aria-label="Working Tools network footer">
         <section class="suite-footer-group" aria-labelledby="footer-start-here">
           <h2 id="footer-start-here">Start Here</h2>
           <div class="suite-footer-links">
-            <a href="https://jonathankhobson.github.io/compass-suite/">Compass Suite Home</a>
+            <a href="https://jonathankhobson.github.io/compass-suite/">Working Tools Library</a>
             <a href="https://jonathankhobson.github.io/compass-suite/#install">Install Guide</a>
             <a href="https://jonathankhobson.github.io/what-is-an-mcp/">MCP Basics</a>
           </div>
@@ -853,7 +839,7 @@ Do not delete files or rewrite unrelated configuration.</textarea>
           </div>
         </section>
       </nav>
-      <p class="suite-footer-legal">&copy; 2026 Jonathan Kyle Hobson. Code AGPL-3.0-only; docs, prompts, skills, and methodology CC BY-SA 4.0 unless otherwise noted. Compass names, logos, author photo, and official trade dress reserved.</p>
+      <p class="suite-footer-legal">&copy; 2026 Jonathan Kyle Hobson. Code AGPL-3.0-only; docs, prompts, skills, and methodology CC BY-SA 4.0 unless otherwise noted. Product names and official brand assets are reserved.</p>
     </div>
   </footer>
   <script src="site.js"></script>
