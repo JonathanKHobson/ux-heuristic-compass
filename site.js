@@ -85,8 +85,8 @@
     downloadButton.addEventListener("click", () => {
       const originalLabel = downloadButton.dataset.originalLabel || downloadButton.textContent;
       downloadButton.dataset.originalLabel = originalLabel;
-      downloadButton.textContent = "Download started. Guide opened.";
-      downloadFeedback.textContent = "Download started. Install guide opened.";
+      downloadButton.textContent = "Download requested. Guide opened.";
+      downloadFeedback.textContent = "Download requested. Check your browser downloads. Install guide opened.";
       const guideHash = (downloadButton.dataset.guideHash || "#install").replace("#", "");
       window.setTimeout(() => {
         activateTab(guideHash, true);
@@ -168,17 +168,30 @@
     button.addEventListener("click", () => activateReportPreview(button));
   });
 
+  function revealFragment(id, updateHash = false, scroll = false) {
+    const destination = document.getElementById(id);
+    const panel = destination?.closest(".tab-panel");
+    if (!panel) return false;
+    activateTab(panel.id, false);
+    const example = destination.closest(".example-panel");
+    if (example) activateExamplePanel(example.id);
+    if (updateHash) history.pushState(null, "", "#" + id);
+    if (scroll) {
+      destination.scrollIntoView({ behavior: "auto", block: "start" });
+      if (!destination.hasAttribute("tabindex")) destination.tabIndex = -1;
+      destination.focus({ preventScroll: true });
+    }
+    return true;
+  }
+
   document.querySelectorAll('a[href^="#"]').forEach((link) => {
     link.addEventListener("click", (event) => {
       const id = link.getAttribute("href").slice(1);
-      if (!id) return;
-      const panel = panels.find((item) => item.id === id);
-      if (panel) {
-        event.preventDefault();
-        activateTab(id, true);
-        panel.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
+      if (revealFragment(id, true, true)) event.preventDefault();
     });
+  });
+  window.addEventListener("hashchange", () => {
+    revealFragment(window.location.hash.slice(1), false, true);
   });
 
   document.querySelectorAll("[data-copy-target]").forEach((button) => {
@@ -200,6 +213,6 @@
   });
 
   const initial = window.location.hash ? window.location.hash.slice(1) : "get-started";
-  activateTab(initial, false);
   activateExamplePanel("example-one-panel");
+  if (!revealFragment(initial)) activateTab("get-started", false);
 })();

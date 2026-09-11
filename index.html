@@ -3,13 +3,18 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>UX Heuristics Compass — Working Tools</title>
+  <title>UX Heuristics Compass — Kyle Hobson</title>
   <meta name="description" content="UX Heuristics Compass helps you audit websites, app screens, prototypes, and short task flows for visible usability issues before they ship.">
   <link rel="icon" type="image/png" sizes="32x32" href="/compass-suite/assets/brand/working-tools-favicon-32.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/compass-suite/assets/brand/working-tools-icon-180.png">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="assets/network.css">
   <link rel="stylesheet" href="/compass-suite/assets/css/network-frame.css">
+  <link rel="stylesheet" href="assets/project.css">
+  <meta name="author" content="Kyle Hobson">
+  <meta property="og:title" content="UX Heuristics Compass — Kyle Hobson">
+  <meta property="og:description" content="A usability review tool that connects findings, evidence limits, and practical next checks. Explore the public beta and archived report examples.">
+  <meta property="og:image" content="https://jonathankhobson.github.io/ux-heuristic-compass/examples/compass-suite-audit/screenshots/codex-uxhc-desktop-audit-snapshot.png">
 </head>
 <body>
   <div id="progress-bar" class="progress-bar" role="progressbar" aria-label="Reading progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
@@ -17,19 +22,52 @@
   <a class="skip-link" href="#get-started">Skip to downloads</a>
   <nav class="site-nav" aria-label="Working Tools network"><div class="site-nav-inner"><a class="site-nav-brand" href="https://jonathankhobson.github.io/compass-suite/"><span>Working Tools</span></a><button class="site-nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav-menu"><span>Menu</span></button><div id="site-nav-menu" class="site-nav-links"><a class="site-nav-link" href="https://jonathankhobson.github.io/compass-suite/">Library</a><a class="site-nav-link" href="https://jonathankhobson.github.io/critical-compass/">Critical Compass</a><a class="site-nav-link" href="https://jonathankhobson.github.io/prompt-compass/">Prompt Compass</a><a class="site-nav-link" href="https://jonathankhobson.github.io/ux-heuristic-compass/" aria-current="page">UX Heuristics</a><a class="site-nav-link" href="https://jonathankhobson.github.io/shareables/s/understanding-ai-2026/">AI Basics</a><a class="site-nav-link" href="https://jonathankhobson.github.io/what-is-an-mcp/">MCP Basics</a></div></div></nav>
 
-  <header class="hero" aria-label="UX Heuristics Compass">
-    <div class="hero-lockup">
-      <div>
-        <span class="hero-eyebrow">UX Heuristics Compass · v0.1.0-beta.10</span>
-        <h1>Turn visible friction into a fix someone can test.</h1>
-      </div>
+  <header class="hero project-hero" aria-label="UX Heuristics Compass">
+    <div class="project-intro">
+      <p class="hero-eyebrow">UX Heuristics Compass · Public beta</p>
+      <h1>Usability feedback you can trace.</h1>
+      <p class="project-lead">Turn screenshots and a focused task flow into a structured review: what looks difficult, what supports the finding, and what to check next.</p>
+      <p class="project-byline">Created by <a href="#about">Kyle Hobson</a> · UX research and applied AI</p>
+      <div class="hero-actions"><a class="button" href="#case-study">Read the project story</a><a class="button ghost" href="#get-started">Get the tool</a></div>
+      <p class="project-limit">AI-assisted heuristic review. Scores reflect the supplied evidence and rubric; they do not establish participant outcomes or accessibility compliance.</p>
     </div>
-    <p class="hero-lead">UX Heuristics Compass helps you spot usability problems people are likely to trip over before your site, app, or prototype goes live. Give it screenshots, a small page capture, or a bounded task flow, and it turns what it can see into a scored UX health snapshot and a practical fix list.</p>
-    <div class="hero-actions"><a class="button" href="#get-started">Choose a download</a><a class="button ghost" href="https://jonathankhobson.github.io/compass-suite/">Working Tools library</a></div>
-    <aside class="work-specimen" aria-label="UX finding specimen"><div class="specimen-top"><span>Finding / UX-08</span><span>Task: submit</span></div><h2>The control is visible. The outcome is not.</h2><p class="specimen-after">Change “Continue” to “Review application,” then show what can still be edited before submission.</p><ol class="specimen-list"><li><span>01</span><strong>Observation: label hides the next state</strong></li><li><span>02</span><strong>Impact: users hesitate at commitment</strong></li><li><span>03</span><strong>Check: test the revised handoff</strong></li></ol><div class="specimen-foot"><span>Evidence bounded</span><span>Repair testable</span></div></aside>
+    <figure class="project-proof">
+      <a href="examples/compass-suite-audit/codex-uxhc-desktop-audit.html" aria-label="Open the archived Compass Suite desktop audit report"><img src="examples/compass-suite-audit/screenshots/codex-uxhc-desktop-audit-snapshot.png" width="1440" height="1180" alt="Archived Compass Suite desktop audit with an AI-generated score, evidence limits, consistency finding, and next research recommendation."></a>
+      <figcaption><strong>A real report, with its limits attached.</strong> Compass Suite desktop audit · May 3, 2026. An archived AI review of the site at that time, not a current rating. <a href="examples/compass-suite-audit/codex-uxhc-desktop-audit.html">Read the full report</a>.</figcaption>
+    </figure>
   </header>
 
+  <section class="project-context" aria-label="Project purpose and authorship">
+    <div><h2>Why I built it</h2><p>Interface feedback is hard to act on when the observation, severity, and proposed fix are mixed together. This tool gives that review a consistent structure.</p></div>
+    <div><h2>My contribution</h2><p>I created UX Heuristics Compass: the audit workflow, evidence and scoring contracts, and shareable report output. Its rubric builds on Nielsen Norman Group’s ten heuristics with four additional profiles.</p><a href="https://jonathankhobson.github.io/portfolio/">More work by Kyle Hobson</a></div>
+    <div><h2>What you can inspect</h2><p>Public report examples, prompt guidance, source downloads, and the beta install guide. The examples show outputs and review methods; learning or usability improvements have not been measured here.</p></div>
+  </section>
+
   <main>
+    <section class="case-study" id="case-study" aria-labelledby="case-title">
+      <div class="case-opening">
+        <p class="eyebrow">Project story / May–September 2026</p>
+        <h2 id="case-title">A useful review needs more than a convincing answer.</h2>
+        <p>The starting job was simple: help a builder review an interface before showing or shipping it. The difficult part was making an AI-assisted audit explicit about its scope, evidence, and uncertainty.</p>
+      </div>
+      <ol class="audit-flow" aria-label="The audit workflow">
+        <li><strong>Define the task</strong><span>Choose the screens, audience, and review scope.</span></li>
+        <li><strong>Inspect the evidence</strong><span>Connect each finding to a captured state.</span></li>
+        <li><strong>Review the judgment</strong><span>Resolve missing context and calibrate severity.</span></li>
+        <li><strong>Share the next check</strong><span>Keep the recommendation and its limits together.</span></li>
+      </ol>
+      <div class="case-decisions">
+        <article><span class="decision-number" aria-hidden="true">01</span><div><h3>Make “full audit” mean something explicit.</h3><p>A May 2 beta exercise requested all 14 heuristics but omitted two optional profiles. The response was an explicit scope lock: show which profiles were scored, which were omitted, and when the review needs to run again.</p><p class="decision-evidence">Recorded implementation: scope controls and confirmation behavior. The public reports expose an “Audit Scope and Omitted Profiles” section.</p></div></article>
+        <article><span class="decision-number" aria-hidden="true">02</span><div><h3>Pause for a person without losing the work.</h3><p>Human answers initially needed manual translation back into the audit. Checkpointed resumption restored the source, scope, ratings, and review state. Compact status responses kept the conversation usable while full audit data stayed in local files.</p><p class="decision-evidence">Recorded implementation: resumable checkpoints and compact outputs, May 4. Both are present in the published beta source.</p></div></article>
+        <article><span class="decision-number" aria-hidden="true">03</span><div><h3>Treat evidence limits as part of the deliverable.</h3><p>The report system gained readiness checks, a finding-linked Evidence Gallery, and clearer separation of AI evaluation from human research. When visual review cannot run, the tool reports that state instead of presenting a generated document as visually checked.</p><p class="decision-evidence">Recorded implementation: report validation, evidence traceability, and visual-review preflight. See the <a href="release-notes.md">beta.10 release notes</a> and <a href="docs/case-study-evidence.md">case-study evidence record</a>.</p></div></article>
+      </div>
+      <div class="case-evidence">
+        <div><p class="eyebrow">Using the tool on its own ecosystem</p><h3>Desktop evidence did not tell the mobile story.</h3><p>A May audit covered five public Compass pages and 23 page/tab states per platform. The review surfaced mobile clipping and crowded navigation that a default desktop screen would miss.</p><p>The archived comparison also revealed a reporting problem: “fixed” and “new” could describe differences between platforms, not improvements over time. That distinction informed clearer desktop/mobile language.</p><p class="case-note">These are development and audit records. They do not demonstrate a measured improvement in user performance.</p><a class="button ghost" href="#example">Explore the archived reports</a></div>
+        <figure><a href="examples/compass-suite-audit/desktop-mobile-comparison.html"><img src="examples/compass-suite-audit/screenshots/desktop-mobile-comparison-snapshot.png" width="1440" height="1180" loading="lazy" alt="Original desktop/mobile comparison report using Fixed and New labels, an example of wording identified for improvement."></a><figcaption>Original comparison output, preserved as evidence of the iteration. Its “fixed” count is not a shipped-fix count. <a href="examples/compass-suite-audit/desktop-mobile-comparison.html">Open the archived comparison</a>.</figcaption></figure>
+      </div>
+      <div class="case-outcome"><h3>What exists today</h3><p>A public beta with downloadable source, a desktop extension, a plugin, standalone guidance, and report examples. The six release files have been checked against their published checksums. The landing page has been reviewed on desktop and mobile; installation compatibility, adoption, and participant outcomes are separate questions.</p><p><a href="#get-started">Choose a format</a> · <a href="docs/case-study-evidence.md">Inspect the evidence and limits</a></p></div>
+    </section>
+
     <div class="section-nav-shell">
     <button class="section-nav-toggle" type="button" aria-expanded="false" aria-controls="section-nav-menu">
       <span>Sections</span>
@@ -246,7 +284,7 @@ Help me turn this into:
         <img class="author-photo" src="assets/jonathan-kyle-hobson.png" alt="Jonathan Kyle Hobson">
         <div>
           <h2>About the author</h2>
-          <p><strong>Jonathan Kyle Hobson</strong> is a UX researcher, product strategist, and AI tool builder with 10+ years of experience across design, storytelling, and emerging technology. He holds a master's degree in User Experience from Arizona State University. Kyle created UX Heuristics Compass to make heuristic UX audits more concrete, structured, and useful for people who need interface feedback before they ship.</p>
+          <p><strong>Kyle Hobson</strong> created UX Heuristics Compass to make usability reviews more concrete, structured, and useful. His work connects UX research, design, and applied AI. <a href="https://jonathankhobson.github.io/portfolio/">Explore Kyle’s portfolio</a>.</p>
           <p><a href="https://www.linkedin.com/in/jonathankylehobson/" target="_blank" rel="noopener">Connect on LinkedIn</a></p>
         </div>
       </div>
@@ -512,13 +550,13 @@ Help me turn this into:
     <section id="example" class="tab-panel" role="tabpanel" aria-labelledby="tab-example" hidden>
       <div class="card">
         <h2>Example</h2>
-        <p>See what a finished UX Heuristics Compass audit can look like. This example is fully public — nothing has been redacted.</p>
+        <p>Explore previously published reports and their supporting captures. These are archived review outputs, not current assessments of the sites. AI scores and researcher personas are evaluation aids, not participant-study results.</p>
       </div>
 
       <div class="example-switcher" role="tablist" aria-label="UX Heuristics Compass examples">
-        <button id="example-one-tab" type="button" role="tab" aria-controls="example-one-panel" aria-selected="true" data-example-target="example-one-panel">Example One</button>
-        <button id="example-two-tab" type="button" role="tab" aria-controls="example-two-panel" aria-selected="false" data-example-target="example-two-panel">Example Two</button>
-        <button id="example-three-tab" type="button" role="tab" aria-controls="example-three-panel" aria-selected="false" data-example-target="example-three-panel">Example Three</button>
+        <button id="example-one-tab" type="button" role="tab" aria-controls="example-one-panel" aria-selected="true" data-example-target="example-one-panel">Oppia page review</button>
+        <button id="example-two-tab" type="button" role="tab" aria-controls="example-two-panel" aria-selected="false" data-example-target="example-two-panel">Compass Suite review</button>
+        <button id="example-three-tab" type="button" role="tab" aria-controls="example-three-panel" aria-selected="false" data-example-target="example-three-panel">Oppia learner journeys</button>
       </div>
 
       <div id="example-one-panel" class="example-panel" role="tabpanel" aria-labelledby="example-one-tab">
@@ -530,7 +568,7 @@ Help me turn this into:
 
       <div class="card">
         <h2>What this example shows</h2>
-        <p>This example shows how UX Heuristics Compass turns a provided source into a ready-to-read audit report. It does more than list UI issues. It identifies progress loss as the highest-priority problem because it breaks the core learning loop, then separates what was observed from what still needs validation.</p>
+        <p>This example shows how UX Heuristics Compass turns a provided source into a ready-to-read audit report. It does more than list UI issues. It prioritizes a reported progress-persistence issue and separates the report’s observations from what still needs validation.</p>
         <ul>
           <li><strong>UX Health Snapshot:</strong> gives the grade, percentage score, plain-language read, and the highest-priority before-use warning.</li>
           <li><strong>Scorecard:</strong> shows how each heuristic performed and where the biggest friction concentrates.</li>
@@ -540,7 +578,7 @@ Help me turn this into:
           <li><strong>Next validation:</strong> points toward the follow-up checks that would make the audit stronger.</li>
         </ul>
         <table>
-          <tr><td><strong>Top finding</strong></td><td>Progress is lost for all users, including logged-in accounts.</td></tr>
+          <tr><td><strong>Top finding</strong></td><td>The archived report flags progress persistence as its top concern; this is not a current verification of all accounts or flows.</td></tr>
           <tr><td><strong>Primary themes</strong></td><td>Progress persistence, lesson loading feedback, visible exit path, and screen-reader loading state.</td></tr>
           <tr><td><strong>Evidence limit</strong></td><td>The audit is bounded to selected pages and is not a full WCAG compliance test.</td></tr>
         </table>
