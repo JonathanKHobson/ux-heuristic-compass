@@ -1,5 +1,15 @@
 # UX Heuristics Compass
 
+## Historical repository
+
+This repository preserves the earlier public guide and downloads. Current methods
+and onboarding live in [UX Design Studio](https://github.com/JonathanKHobson/working-tools-plugins/tree/main/plugins/ux-design-toolkit).
+Existing Pages URLs, release assets, checksums and examples remain available.
+
+The documentation below describes the preserved edition. Archival does not remove
+separately configured runtimes, change their data, or make the successor a bundled
+replacement for every historical backend.
+
 Public downloads, installation guidance and example usability reports for UX Heuristics Compass. Start at the [product page](https://jonathankhobson.github.io/ux-heuristic-compass/) to choose a download, or read the [Oppia example report](https://jonathankhobson.github.io/ux-heuristic-compass/examples/oppia-ux-audit-report.html).
 
 This repository maintains the public website and packaged release references. The application runtime is maintained in a separate source project. A source ZIP in [Releases](https://github.com/JonathanKHobson/ux-heuristic-compass/releases) is a versioned snapshot, not proof that this checkout can rebuild it. The published beta's version and asset hashes are recorded in [landing-manifest.json](landing-manifest.json).
